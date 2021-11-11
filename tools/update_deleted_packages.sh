@@ -56,6 +56,12 @@ join_by() {
   echo "$*"
 }
 
+sort_items() {
+  local IFS=$'\n'
+  shift
+  sort -u <<<"$*"
+}
+
 script_dir="$(normalize_path "${BASH_SOURCE[0]}")"
 starting_dir=$(pwd)
 pkg_search_dirs=()
@@ -91,7 +97,7 @@ set -x
 [[ -z "${bazelrc_path:-}" ]] && bazelrc_path=$(upsearch .bazelrc)
 [[ -f "${bazelrc_path:-}" ]] || exit_on_error "The bazelrc was not found. ${bazelrc_path:-}"
 
-[[ -z "${workspace_root:-}" ]] && bazelrc_path="$(dirname "$(upsearch WORKSPACE)")"
+[[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
 
 [[ ${#pkg_search_dirs[@]} == 0 ]] && \
@@ -105,6 +111,8 @@ pkgs=()
 for search_dir in "${pkg_search_dirs[@]}" ; do
   pkgs+=( $(find_bazel_pkgs "${search_dir}") )
 done
+
+pkgs=( $(sort_items "${pkgs[@]}") )
 
 # Update the .bazelrc file with the deleted packages flag.
 # The sed -i.bak pattern is compatible between macos and linux
