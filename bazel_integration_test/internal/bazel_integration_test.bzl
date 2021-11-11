@@ -9,7 +9,7 @@ an integration test.
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/bazel_integration_test.bzl.
 
-DEFAULT_TEST_RUNNER = "//tools/bazel_integration_test:integration_test_runner.sh"
+DEFAULT_TEST_RUNNER = "@cgrindel_rules_bazel_integration_test//tools/bazel_integration_test:integration_test_runner.sh"
 
 DEFAULT_BAZEL_CMDS = ["info", "test //..."]
 
