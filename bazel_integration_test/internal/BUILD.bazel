@@ -1,18 +1,21 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
 
+package(default_visibility = ["//bazel_integration_test:__subpackages__"])
+
 bzlformat_pkg(name = "bzlformat")
 
 bzl_library(
-    name = "deps",
-    srcs = ["deps.bzl"],
+    name = "integration_test_utils",
+    srcs = ["integration_test_utils.bzl"],
 )
 
 bzl_library(
     name = "bazel_integration_test",
     srcs = ["bazel_integration_test.bzl"],
     deps = [
-        "//bazel_integration_test/internal:bazel_integration_test",
-        "//bazel_integration_test/internal:integration_test_utils",
+        ":integration_test_utils",
+        "@bazel_skylib//lib:paths",
+        "@bazel_skylib//rules:select_file",
     ],
 )
