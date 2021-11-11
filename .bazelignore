@@ -1,0 +1,3 @@
+# Do not add the examples directories here. Execute
+# tools/bazel_integration_test/update_deleted_packages.sh to update the
+# deleted packages in the .bazelrc.

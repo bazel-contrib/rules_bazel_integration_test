@@ -1,0 +1,92 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  macos_build:
+
+    runs-on: macos-11.0
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Write local.bazelrc File
+      shell: bash
+      run: |
+        cat >local.bazelrc <<EOF
+        common --config=ci
+        EOF
+
+    - name: Output the Bazel Info
+      shell: bash
+      run: |
+        bazelisk info
+
+    - name: Execute Tests
+      shell: bash
+      run: |
+        bazelisk test //... 
+
+    - name: Build Anything Not Tested
+      shell: bash
+      run: |
+        bazelisk build //... 
+
+    - name: Execute Integration Tests
+      shell: bash
+      run: |
+        bazelisk test //examples:all_integration_tests
+
+  ubuntu_build:
+
+    runs-on: ubuntu-20.04
+
+    env:
+      CC: clang
+
+    steps:
+    - uses: actions/checkout@v2
+
+
+    - name: Write local.bazelrc File
+      shell: bash
+      run: |
+        cat >local.bazelrc <<EOF
+        common --config=ci
+        EOF
+
+    - name: Bazel Config for Linux
+      shell: bash
+      run: |
+        # Make sure that the Swift bin directory is first in the PATH. This addresses
+        # the `invalid linker name in argument '-fuse-ld=gold'` error when running
+        # SPM. In short, it allows SPM to find the correct linker.
+        swift_exec=$(which swift)
+        real_swift_exec=$(realpath $swift_exec)
+        real_swift_dir=$(dirname $real_swift_exec)
+        new_path="${real_swift_dir}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        cat >>local.bazelrc <<EOF
+        build --action_env=PATH=${new_path}
+        EOF
+
+    - name: Output the Bazel Info
+      shell: bash
+      run: |
+        bazelisk info
+
+    - name: Execute Tests
+      shell: bash
+      run: |
+        bazelisk test //... 
+
+    - name: Build Anything Not Tested
+      shell: bash
+      run: |
+        bazelisk build //... 
+
+    - name: Execute Integration Tests
+      shell: bash
+      run: |
+        bazelisk test //examples:all_integration_tests
