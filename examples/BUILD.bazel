@@ -9,16 +9,25 @@ load(
 
 bzlformat_pkg(name = "bzlformat")
 
+# If you only want to execute against a single version of Bazel, use
+# bazel_integration_test.
 bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
 )
 
+# If you want to execute an integration test using multiple versions of Bazel,
+# use bazel_integration_tests. It will generate multiple integration test
+# targets with names derived from the base name and the bazel version.
 bazel_integration_tests(
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
 )
 
+# By default, the integration test targets are tagged as `manual`. This
+# prevents the targets from being found from most target expansion (e.g.
+# `//...`, `:all`). To easily execute a group of integration tests, you may
+# want to define a test suite which includes the desired test targets.
 test_suite(
     name = "all_integration_tests",
     # If you don't apply the test tags to the test suite, the test suite will
