@@ -2,4 +2,8 @@ load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
 
 bzlformat_pkg(name = "bzlformat")
 
-exports_files(["update_deleted_packages.sh"])
+sh_binary(
+    name = "update_deleted_packages",
+    srcs = ["update_deleted_packages.sh"],
+    visibility = ["//visibility:public"],
+)
