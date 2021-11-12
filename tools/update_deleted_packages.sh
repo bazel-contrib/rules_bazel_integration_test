@@ -64,12 +64,6 @@ sort_items() {
   sort -u <<<"$*"
 }
 
-# expand() { 
-#   for arg in "$@"; do 
-#     [[ -f $arg ]] && echo $arg 
-#   done 
-# }
-
 # MARK - Main
 
 script_dir="$(normalize_path "${BASH_SOURCE[0]}")"
@@ -105,16 +99,9 @@ done
 [[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
 
-# DEBUG BEGIN
-set -x
-# DEBUG END
-
 [[ ${#pkg_search_dirs[@]} == 0 ]] && \
   examples_dir="${workspace_root}/examples" && \
   [[ -d "${examples_dir}" ]] && \
-  # pkg_search_dirs+=( $(find ${examples_dir}/*/*) )
-  # pkg_search_dirs+=( ${examples_dir}/*/* )
-  # pkg_search_dirs+=( "${examples_dir}/*/*" )
   pkg_search_dirs+=( $(find ${examples_dir}/* -maxdepth 1 -type directory) )
 
 [[ ${#pkg_search_dirs[@]} -gt 0 ]] || exit_on_error "No search directories were specified."
@@ -123,12 +110,10 @@ absolute_path_pkgs=()
 for search_dir in "${pkg_search_dirs[@]}" ; do
   absolute_path_pkgs+=( $(find_bazel_pkgs "${search_dir}") )
 done
-
 absolute_path_pkgs=( $(sort_items "${absolute_path_pkgs[@]}") )
 
 # Strip the workspace_root prefix from the paths
 pkgs=( "${absolute_path_pkgs[@]#"${workspace_root}/"}")
-
 
 # Update the .bazelrc file with the deleted packages flag.
 # The sed -i.bak pattern is compatible between macos and linux
@@ -136,15 +121,3 @@ sed -i.bak "/^[^#].*--deleted_packages/s#=.*#=$(\
     join_by , "${pkgs[@]}"\
 )#" "${bazelrc_path}"
 rm -f "${bazelrc_path}.bak"
-
-# cd "${workspace_root}"
-
-# # Update the .bazelrc file with the deleted packages flag.
-# # The sed -i.bak pattern is compatible between macos and linux
-# sed -i.bak "/^[^#].*--deleted_packages/s#=.*#=$(\
-#     find examples/*/* \( -name BUILD -or -name BUILD.bazel \) | xargs -n 1 dirname | paste -sd, -\
-# )#" .bazelrc
-
-# # Remove the the backup file.
-# rm .bazelrc.bak
-
