@@ -2,10 +2,19 @@ load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
 
 bzlformat_pkg(name = "bzlformat")
 
+sh_library(
+    name = "common",
+    srcs = ["common.sh"],
+)
+
 sh_binary(
     name = "find_child_workspace_packages",
     srcs = ["find_child_workspace_packages.sh"],
     visibility = ["//visibility:public"],
+    deps = [
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
 )
 
 sh_binary(
