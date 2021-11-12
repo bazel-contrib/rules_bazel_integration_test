@@ -7,3 +7,5 @@ load(
 )
 
 bzlformat_pkg(name = "bzlformat")
+
+# TODO: Add integration tests and test suites.
