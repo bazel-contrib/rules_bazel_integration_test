@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This was lovingly copied from
+# This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/update_deleted_packages.sh.
 
 # For integration tests, we want to be able to glob() up the sources inside a nested package
