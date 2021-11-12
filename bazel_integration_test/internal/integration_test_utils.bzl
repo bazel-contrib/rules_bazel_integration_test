@@ -48,6 +48,7 @@ def _bazel_integration_test_names(name, versions = []):
         version: A `list` of semantic version `string` values.
 
     Returns:
+        A `list` of integration test names as `string` values.
     """
     return [
         _bazel_integration_test_name(name, version)
