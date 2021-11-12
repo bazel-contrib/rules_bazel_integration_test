@@ -1,0 +1,6 @@
+load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+load(":mockascript_tests.bzl", "mockascript_test_suite")
+
+bzlformat_pkg(name = "bzlformat")
+
+mockascript_test_suite()

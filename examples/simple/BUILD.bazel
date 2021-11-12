@@ -1,0 +1,13 @@
+load(
+    "@cgrindel_rules_updatesrc//updatesrc:updatesrc.bzl",
+    "updatesrc_update_all",
+)
+load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+
+bzlformat_pkg()
+
+# Define a runnable target to execute all of the updatesrc_update targets
+# that are defined in your workspace.
+updatesrc_update_all(
+    name = "update_all",
+)
