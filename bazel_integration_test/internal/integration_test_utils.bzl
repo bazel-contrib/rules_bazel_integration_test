@@ -40,6 +40,20 @@ def _bazel_integration_test_name(name, version):
         version = _semantic_version_to_name(version),
     )
 
+def _bazel_integration_test_names(name, versions = []):
+    """Generates a `list` of integration test names based upon provided the base name and the versions.
+
+    Args:
+        name: The base name as a `string`.
+        version: A `list` of semantic version `string` values.
+
+    Returns:
+    """
+    return [
+        _bazel_integration_test_name(name, version)
+        for version in versions
+    ]
+
 # MARK: - Glob Functions
 
 def _glob_workspace_files(workspace_path):
@@ -70,6 +84,7 @@ integration_test_utils = struct(
     semantic_version_to_name = _semantic_version_to_name,
     bazel_binary_label = _bazel_binary_label,
     bazel_integration_test_name = _bazel_integration_test_name,
+    bazel_integration_test_names = _bazel_integration_test_names,
     glob_workspace_files = _glob_workspace_files,
     DEFAULT_BAZEL_CMDS = _DEFAULT_BAZEL_CMDS,
     DEFAULT_INTEGRATION_TEST_TAGS = _DEFAULT_INTEGRATION_TEST_TAGS,

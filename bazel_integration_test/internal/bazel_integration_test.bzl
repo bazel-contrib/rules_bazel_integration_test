@@ -118,8 +118,8 @@ def bazel_integration_test(
 
 def bazel_integration_tests(
         name,
-        workspace_path,
         bazel_versions = [],
+        workspace_path = None,
         workspace_files = None,
         bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
         test_runner_srcs = [DEFAULT_TEST_RUNNER],
@@ -148,6 +148,13 @@ def bazel_integration_tests(
     """
     if bazel_versions == []:
         fail("One or more Bazel versions must be specified.")
+
+    if workspace_path == None:
+        if name.endswith("_test"):
+            workspace_path = name[:-len("_test")]
+        else:
+            workspace_path = name
+
     for bazel_version in bazel_versions:
         bazel_integration_test(
             name = integration_test_utils.bazel_integration_test_name(
