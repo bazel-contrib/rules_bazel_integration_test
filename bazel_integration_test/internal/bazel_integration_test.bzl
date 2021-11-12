@@ -11,37 +11,15 @@ an integration test.
 
 DEFAULT_TEST_RUNNER = "@cgrindel_rules_bazel_integration_test//tools/bazel_integration_test:integration_test_runner.sh"
 
-DEFAULT_BAZEL_CMDS = ["info", "test //..."]
-
-DEFAULT_INTEGRATION_TEST_TAGS = [
-    "exclusive",
-    "manual",
-]
-
-def glob_workspace_files(workspace_path):
-    """Recursively globs the Bazel workspace files at the specified path.
-
-    Args:
-        workspace_path: A `string` representing the path to glob.
-
-    Returns:
-        A `list` of the files under the specified path ignoring certain Bazel
-        artifacts (e.g. `bazel-*`).
-    """
-    return native.glob(
-        [paths.join(workspace_path, "**", "*")],
-        exclude = [paths.join(workspace_path, "bazel-*", "**")],
-    )
-
 def bazel_integration_test(
         name,
         bazel_version = None,
         bazel_binary = None,
         workspace_path = None,
         workspace_files = None,
-        bazel_cmds = DEFAULT_BAZEL_CMDS,
+        bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
         test_runner_srcs = [DEFAULT_TEST_RUNNER],
-        tags = DEFAULT_INTEGRATION_TEST_TAGS,
+        tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
@@ -73,7 +51,7 @@ def bazel_integration_test(
     if bazel_binary == None and bazel_version == None:
         fail("The `bazel_binary` or the `bazel_version` must be specified.")
     if bazel_binary == None:
-        bazel_binary = bazel_binary_label(bazel_version)
+        bazel_binary = integration_test_utils.bazel_binary_label(bazel_version)
 
     if workspace_path == None:
         if name.endswith("_test"):
@@ -83,7 +61,7 @@ def bazel_integration_test(
 
     # Collect the workspace files into a filegroup
     if workspace_files == None:
-        workspace_files = glob_workspace_files(workspace_path)
+        workspace_files = integration_test_utils.glob_workspace_files(workspace_path)
 
     workspace_files_name = name + "_sources"
     native.filegroup(
@@ -143,7 +121,7 @@ def bazel_integration_tests(
         workspace_path,
         bazel_versions = [],
         workspace_files = None,
-        bazel_cmds = DEFAULT_BAZEL_CMDS,
+        bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
         test_runner_srcs = [DEFAULT_TEST_RUNNER],
         timeout = "long",
         **kwargs):

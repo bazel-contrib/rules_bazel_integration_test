@@ -1,3 +1,7 @@
+load("@bazel_skylib//lib:paths.bzl", "paths")
+
+# MARK: - Name Functions
+
 def _semantic_version_to_name(version):
     """Converts a semantic version string (e.g. X.Y.Z) to a suitable name string (e.g. X_Y_Z).
 
@@ -19,7 +23,7 @@ def _bazel_binary_label(version):
     Returns:
         A `string` representing a label for a version of Bazel.
     """
-    return "@build_bazel_bazel_%s//:bazel_binary" % semantic_version_to_name(version)
+    return "@build_bazel_bazel_%s//:bazel_binary" % _semantic_version_to_name(version)
 
 def _bazel_integration_test_name(name, version):
     """Generates a test name from the provided base name and the Bazel version.
@@ -33,11 +37,40 @@ def _bazel_integration_test_name(name, version):
     """
     return "{name}_bazel_{version}".format(
         name = name,
-        version = semantic_version_to_name(version),
+        version = _semantic_version_to_name(version),
     )
+
+# MARK: - Glob Functions
+
+def _glob_workspace_files(workspace_path):
+    """Recursively globs the Bazel workspace files at the specified path.
+
+    Args:
+        workspace_path: A `string` representing the path to glob.
+
+    Returns:
+        A `list` of the files under the specified path ignoring certain Bazel
+        artifacts (e.g. `bazel-*`).
+    """
+    return native.glob(
+        [paths.join(workspace_path, "**", "*")],
+        exclude = [paths.join(workspace_path, "bazel-*", "**")],
+    )
+
+# MARK: - Constants
+
+_DEFAULT_BAZEL_CMDS = ["info", "test //..."]
+
+_DEFAULT_INTEGRATION_TEST_TAGS = [
+    "exclusive",
+    "manual",
+]
 
 integration_test_utils = struct(
     semantic_version_to_name = _semantic_version_to_name,
     bazel_binary_label = _bazel_binary_label,
     bazel_integration_test_name = _bazel_integration_test_name,
+    glob_workspace_files = _glob_workspace_files,
+    DEFAULT_BAZEL_CMDS = _DEFAULT_BAZEL_CMDS,
+    DEFAULT_INTEGRATION_TEST_TAGS = _DEFAULT_INTEGRATION_TEST_TAGS,
 )

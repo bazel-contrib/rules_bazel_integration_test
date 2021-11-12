@@ -1,0 +1,5 @@
+load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+
+bzlformat_pkg(name = "bzlformat")
+
+exports_files(["update_deleted_packages.sh"])

@@ -10,6 +10,9 @@ exports_files(["integration_test_runner.sh"])
 bzl_library(
     name = "integration_test_utils",
     srcs = ["integration_test_utils.bzl"],
+    deps = [
+        "@bazel_skylib//lib:paths",
+    ],
 )
 
 bzl_library(
