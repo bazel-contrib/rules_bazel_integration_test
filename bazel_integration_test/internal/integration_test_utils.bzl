@@ -41,7 +41,7 @@ def _bazel_integration_test_name(name, version):
     )
 
 def _bazel_integration_test_names(name, versions = []):
-    """Generates a `list` of integration test names based upon provided the base name and the versions.
+    """Generates a `list` of integration test names based upon the provided base name and versions.
 
     Args:
         name: The base name as a `string`.

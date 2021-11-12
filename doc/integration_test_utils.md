@@ -77,7 +77,7 @@ A `string` that is suitable as an integration test name.
 integration_test_utils.bazel_integration_test_names(<a href="#integration_test_utils.bazel_integration_test_names-name">name</a>, <a href="#integration_test_utils.bazel_integration_test_names-versions">versions</a>)
 </pre>
 
-Generates a `list` of integration test names based upon provided the base name and the versions.
+Generates a `list` of integration test names based upon the provided base name and versions.
 
 **PARAMETERS**
 
