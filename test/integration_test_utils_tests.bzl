@@ -1,9 +1,14 @@
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
+load(
+    "//bazel_integration_test/internal:integration_test_utils.bzl",
+    "integration_test_utils",
+)
 
 def _semantic_version_to_name_test(ctx):
     env = unittest.begin(ctx)
 
-    unittest.fail(env, "IMPLEMENT ME!")
+    asserts.equals(env, "4_2_1", integration_test_utils.semantic_version_to_name("4.2.1"))
+    asserts.equals(env, "5_0_0-pre_20211011_2", integration_test_utils.semantic_version_to_name("5.0.0-pre.20211011.2"))
 
     return unittest.end(env)
 
