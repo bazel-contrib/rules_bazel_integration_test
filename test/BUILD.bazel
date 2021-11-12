@@ -1,0 +1,6 @@
+load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+load(":integration_test_utils_tests.bzl", "integration_test_utils_test_suite")
+
+bzlformat_pkg(name = "bzlformat")
+
+integration_test_utils_test_suite()
