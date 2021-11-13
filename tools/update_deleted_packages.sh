@@ -6,62 +6,42 @@
 # For integration tests, we want to be able to glob() up the sources inside a nested package
 # See explanation in .bazelrc
 
-set -euo pipefail
+# --- begin runfiles.bash initialization v2 ---
+# Copy-pasted from the Bazel Bash runfiles library v2.
+set -uo pipefail; f=bazel_tools/tools/bash/runfiles/runfiles.bash
+source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "${RUNFILES_MANIFEST_FILE:-/dev/null}" | cut -f2- -d' ')" 2>/dev/null || \
+  source "$0.runfiles/$f" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "$0.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "$0.exe.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
+  # Do not fail if this logic does not succeed. We are supporting being run 
+  # outside of Bazel.
+  # { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
+  f=; set -e
+# --- end runfiles.bash initialization v2 ---
+
+# Do not use helper functions as they have not been loaded yet
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
+
+# If we are being run via `bazel run` the rlocation function will exist and we
+# will load the common functions using rlocation. Otherwise, we are being executed
+# directly.
+if [[ $(type -t rlocation) == function ]]; then
+  common_lib="$(rlocation cgrindel_rules_bazel_integration_test/tools/common.sh)"
+  find_pkgs_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
+else
+  common_lib="${script_dir}/common.sh"
+  find_pkgs_script="${script_dir}/find_child_workspace_packages.sh"
+fi
+source "${common_lib}"
 
 # MARK - Functions
-
-exit_on_error() {
-  local err_msg="${1:-}"
-  [[ -n "${err_msg}" ]] || err_msg="Unspecified error occurred."
-  echo >&2 "${err_msg}"
-  exit 1
-}
-
-normalize_path() {
-  local path="${1}"
-  if [[ -d "${path}" ]]; then
-    local dirname="${path}"
-  else
-    local dirname="$(dirname "${path}")"
-    local basename="$(basename "${path}")"
-  fi
-  dirname="$(cd "${dirname}" > /dev/null && pwd)"
-  if [[ -z "${basename:-}" ]]; then
-    echo "${dirname}"
-  else
-    echo "${dirname}/${basename}"
-  fi
-}
-
-# Lovingly inspired by https://unix.stackexchange.com/a/13474.
-upsearch() {
-  local target_file="${1}"
-  slashes=${PWD//[^\/]/}
-  directory="$PWD"
-  for (( n=${#slashes}; n>0; --n ))
-  do
-    local test_path="${directory}/${target_file}"
-    test -e "${test_path}" && echo "${test_path}" && return 
-    directory="${directory}/.."
-  done
-}
-
-find_bazel_pkgs() {
-  local path="${1}"
-  find "${path}" \( -name BUILD -or -name BUILD.bazel \) | xargs -n 1 dirname 
-}
 
 # Lovingly inspired by https://dev.to/meleu/how-to-join-array-elements-in-a-bash-script-303a
 join_by() {
   local IFS="$1"
   shift
   echo "$*"
-}
-
-sort_items() {
-  local IFS=$'\n'
-  shift
-  sort -u <<<"$*"
 }
 
 # MARK - Main
@@ -100,21 +80,8 @@ done
 [[ -z "${bazelrc_path:-}" ]] && bazelrc_path="${workspace_root}/.bazelrc"
 [[ -f "${bazelrc_path:-}" ]] || exit_on_error "The bazelrc was not found. ${bazelrc_path:-}"
 
-[[ ${#pkg_search_dirs[@]} == 0 ]] && \
-  examples_dir="${workspace_root}/examples" && \
-  [[ -d "${examples_dir}" ]] && \
-  pkg_search_dirs+=( $(find ${examples_dir}/* -maxdepth 1 -type directory) )
-
-[[ ${#pkg_search_dirs[@]} -gt 0 ]] || exit_on_error "No search directories were specified."
-
-absolute_path_pkgs=()
-for search_dir in "${pkg_search_dirs[@]}" ; do
-  absolute_path_pkgs+=( $(find_bazel_pkgs "${search_dir}") )
-done
-absolute_path_pkgs=( $(sort_items "${absolute_path_pkgs[@]}") )
-
-# Strip the workspace_root prefix from the paths
-pkgs=( "${absolute_path_pkgs[@]#"${workspace_root}/"}")
+# Find the child packages
+pkgs=( $(. "${find_pkgs_script}" --workspace "${workspace_root}") )
 
 # Update the .bazelrc file with the deleted packages flag.
 # The sed -i.bak pattern is compatible between macos and linux
