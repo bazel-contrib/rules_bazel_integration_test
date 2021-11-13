@@ -35,6 +35,11 @@ source "${common_lib}"
 
 # MARK - Functions
 
+find_workspace_dirs() {
+  local path="${1}"
+  find "${path}" -name "WORKSPACE" | xargs -n 1 dirname
+}
+
 find_bazel_pkgs() {
   local path="${1}"
   find "${path}" \( -name BUILD -or -name BUILD.bazel \) | xargs -n 1 dirname 
@@ -66,17 +71,15 @@ done
 [[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
 
-parent_workspace_file="${workspace_root}/WORKSPACE"
-all_workspace_files=( $(find "${workspace_root}" -name "WORKSPACE") )
-child_workspace_files=()
-for workspace_file in "${all_workspace_files[@]}" ; do
-  [[ "${workspace_file}" != "${parent_workspace_file}" ]] && \
-    child_workspace_files+=( "${workspace_file}" )
+all_workspace_dirs=( $(find_workspace_dirs "${workspace_root}") )
+child_workspace_dirs=()
+for workspace_dir in "${all_workspace_dirs[@]}" ; do
+  [[ "${workspace_dir}" != "${workspace_root}" ]] && \
+    child_workspace_dirs+=( "${workspace_dir}" )
 done
 
 absolute_path_pkgs=()
-for child_workspace_file in "${child_workspace_files[@]}" ; do
-  child_workspace_dir="$(dirname "${child_workspace_file}")"
+for child_workspace_dir in "${child_workspace_dirs[@]}" ; do
   absolute_path_pkgs+=( $(find_bazel_pkgs "${child_workspace_dir}") )
 done
 absolute_path_pkgs=( $(sort_items "${absolute_path_pkgs[@]}") )
