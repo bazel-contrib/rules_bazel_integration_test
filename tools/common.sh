@@ -38,7 +38,6 @@ upsearch() {
 
 sort_items() {
   local IFS=$'\n'
-  shift
   sort -u <<<"$*"
 }
 
