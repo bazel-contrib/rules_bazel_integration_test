@@ -21,6 +21,18 @@ Add the following to your `WORKSPACE` file to add this repository and its depend
 load("@cgrindel_rules_bazel_integration_test//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
 
 bazel_integration_test_rules_dependencies()
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
+load("@cgrindel_rules_bzlformat//bzlformat:deps.bzl", "bzlformat_rules_dependencies")
+
+bzlformat_rules_dependencies()
+
+load("@cgrindel_bazel_starlib//:deps.bzl", "bazel_starlib_dependencies")
+
+bazel_starlib_dependencies()
 ```
 
 ### 2. Create a `bazel_versions.bzl` in the root of your repository
@@ -114,7 +126,7 @@ Add the following to the `BUILD.bazel` file in the `examples` directory.
 ```python
 load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION", "OTHER_BAZEL_VERSIONS")
 load(
-    "//bazel_integration_test:bazel_integration_test.bzl",
+    "@cgrindel_rules_bazel_integration_test//bazel_integration_test:bazel_integration_test.bzl",
     "bazel_integration_test",
     "bazel_integration_tests",
     "integration_test_utils",
@@ -151,7 +163,6 @@ test_suite(
             ),
     visibility = ["//:__subpackages__"],
 )
-
 ```
 
 The above code defines three test targets: `//examples:simple_test`,
