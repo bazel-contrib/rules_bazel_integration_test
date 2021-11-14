@@ -1,2 +1,154 @@
-# rules_bazel_integration_test
-Rules and macros for executing integration tests that use Bazel. Supports running integration tests with multiple versions of Bazel.
+# Bazel Integration Rules
+
+[![Build](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/bazel.yml/badge.svg)](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/bazel.yml)
+
+This repository contains [Bazel](https://bazel.build/) macros that execute integration tests that
+use Bazel (e.g. execute tests in a child workspace).  They support running integration tests with
+multiple versions of Bazel.
+
+## Quickstart
+
+The following provides a quick introduction on how to use the rules in this repository. Also, check
+out [the documentation](/doc/) and [the examples](/examples/) for more information.
+
+### 1. Configure your workspace to use `rules_bazel_integration_test`
+
+Add the following to your `WORKSPACE` file to add this repository and its dependencies.
+
+```python
+# TODO: Add http_archive
+
+load("//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
+
+bazel_integration_test_rules_dependencies()
+```
+
+### 2. Create a `bazel_versions.bzl` in the root of your repository
+
+Add the following to a file called `bazel_versions.bzl` at the root of your repository. Replace the
+Bazel version values with the values that you would like to test against for your integration tests.
+
+```python
+CURRENT_BAZEL_VERSION = "4.2.1"
+
+OTHER_BAZEL_VERSIONS = [
+    "5.0.0-pre.20211011.2",
+    "6.0.0-pre.20211101.2",
+]
+
+SUPPORTED_BAZEL_VERSIONS = [
+    CURRENT_BAZEL_VERSION,
+] + OTHER_BAZEL_VERSIONS
+
+```
+
+NOTE: The above code designates a current version and other versions. This can be useful if you have
+a large number of integration tests where you want to execute all of them against the current
+version and execute a subset of them against the other Bazel versions.
+
+### 3. Declare the Bazel binaries in the `WORKSPACE` file
+
+Back in the `WORKSPACE` file, add the following to download and prepare the Bazel binaries for
+testing.
+
+```python
+load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
+load("@build_bazel_integration_testing//tools:repositories.bzl", "bazel_binaries")
+
+bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
+```
+
+### 4. Configure the deleted packages for the parent workspace
+
+If you have child workspaces under your parent workspace, you need to tell Bazel to ignore the child
+workspaces. This can be done in one of two ways:
+
+1. Add entries to the `.bazelignore` file in the parent workspace.
+2. Specify a list of deleted packages using the `--deleted_packages` flag.
+
+For `glob()` in the parent workspace to find files in the child workspaces, we need to use the
+deleted packages mechanism.
+
+Add the following to the `.bazelrc` in the parent workspace. Leave the values blank for now.
+
+```conf
+# To update these lines, execute 
+# `bazel run @cgrindel_rules_bazel_integration_test//tools:update_deleted_packages`
+build --deleted_packages=
+query --deleted_packages=
+```
+
+To populate the values, we will run a utility that looks for child workspaces (i.e., `WORKSPACE`
+files) and find all of the directories that have Bazel build files (i.e., `BUILD`, `BUILD.bazel`).
+Execute the following in a parent workspace directory.
+
+```sh
+# Populate the --deleted_packages flags in the .bazelrc
+$ bazel run @cgrindel_rules_bazel_integration_test//tools:update_deleted_packages
+```
+
+After running the utility, the `--deleted_packages` should have a comma-separated list of packages
+under the child workspaces. 
+
+### 5. Define integration test targets
+
+For the purposes of this example, lets assume that we have an `examples` directory which contains a
+subdirectory called `simple`. The `simple` directory contains another Bazel workspace (i.e. has its
+own `WORKSPACE` file) that does not have a dependency on the parent workspace. We want to 
+execute tests in the `simple` workspace using different versions of Bazel.
+
+Add the following to the `BUILD.bazel` file in the `examples` directory.
+
+```python
+load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION", "OTHER_BAZEL_VERSIONS")
+load(
+    "//bazel_integration_test:bazel_integration_test.bzl",
+    "bazel_integration_test",
+    "bazel_integration_tests",
+    "integration_test_utils",
+)
+
+# If you only want to execute against a single version of Bazel, use
+# bazel_integration_test.
+bazel_integration_test(
+    name = "simple_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+)
+
+# If you want to execute an integration test using multiple versions of Bazel,
+# use bazel_integration_tests. It will generate multiple integration test
+# targets with names derived from the base name and the bazel version.
+bazel_integration_tests(
+    name = "simple_test",
+    bazel_versions = OTHER_BAZEL_VERSIONS,
+)
+
+# By default, the integration test targets are tagged as `manual`. This
+# prevents the targets from being found from most target expansion (e.g.
+# `//...`, `:all`). To easily execute a group of integration tests, you may
+# want to define a test suite which includes the desired test targets.
+test_suite(
+    name = "all_integration_tests",
+    # If you don't apply the test tags to the test suite, the test suite will
+    # be found when `bazel test //...` is executed.
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
+    tests = [":simple_test"] +
+            integration_test_utils.bazel_integration_test_names(
+                "simple_test",
+                OTHER_BAZEL_VERSIONS,
+            ),
+    visibility = ["//:__subpackages__"],
+)
+
+```
+
+The above code defines three test targets: `//examples:simple_test`,
+`//examples:simple_test_bazel_5_0_0-pre_20211011_2`, and
+`//examples:simple_test_bazel_6_0_0-pre_20211101_2`. The `all_integration_tests` target is a test
+suite that executes all of the integration tests with a single command:
+
+```sh
+# Execute all of the integration tests
+$ bazel test //examples:all_integration_tests
+```
+
