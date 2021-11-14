@@ -3,8 +3,8 @@
 [![Build](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/bazel.yml/badge.svg)](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/bazel.yml)
 
 This repository contains [Bazel](https://bazel.build/) macros that execute integration tests that
-use Bazel (e.g. execute tests in a child workspace).  They support running integration tests with
-multiple versions of Bazel.
+use Bazel (e.g. execute tests in a child workspace).  The macros support running integration tests
+with multiple versions of Bazel.
 
 ## Quickstart
 
@@ -18,7 +18,7 @@ Add the following to your `WORKSPACE` file to add this repository and its depend
 ```python
 # TODO: Add http_archive
 
-load("//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
+load("@cgrindel_rules_bazel_integration_test//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
 
 bazel_integration_test_rules_dependencies()
 ```
@@ -45,6 +45,18 @@ SUPPORTED_BAZEL_VERSIONS = [
 NOTE: The above code designates a current version and other versions. This can be useful if you have
 a large number of integration tests where you want to execute all of them against the current
 version and execute a subset of them against the other Bazel versions.
+
+Add the following to the Bazel build file in the same package as the `bazel_versions.bzl` file.
+
+```python
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+bzl_library(
+    name = "bazel_versions",
+    srcs = ["bazel_versions.bzl"],
+    visibility = ["//:__subpackages__"],
+)
+```
 
 ### 3. Declare the Bazel binaries in the `WORKSPACE` file
 
