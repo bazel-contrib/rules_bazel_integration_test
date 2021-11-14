@@ -9,7 +9,9 @@ with multiple versions of Bazel.
 ## Quickstart
 
 The following provides a quick introduction on how to use the rules in this repository. Also, check
-out [the documentation](/doc/) and [the examples](/examples/) for more information.
+out [the documentation](/doc/) and [the
+bazel_integration_test_example](https://github.com/cgrindel/bazel_integration_test_example) for more
+information.
 
 ### 1. Configure your workspace to use `rules_bazel_integration_test`
 
@@ -56,7 +58,7 @@ SUPPORTED_BAZEL_VERSIONS = [
 
 NOTE: The above code designates a current version and other versions. This can be useful if you have
 a large number of integration tests where you want to execute all of them against the current
-version and execute a subset of them against the other Bazel versions.
+version and execute a subset of them against other Bazel versions.
 
 Add the following to the Bazel build file in the same package as the `bazel_versions.bzl` file.
 
@@ -111,8 +113,8 @@ Execute the following in a parent workspace directory.
 $ bazel run @cgrindel_rules_bazel_integration_test//tools:update_deleted_packages
 ```
 
-After running the utility, the `--deleted_packages` should have a comma-separated list of packages
-under the child workspaces. 
+After running the utility, the `--deleted_packages` entries in the `.bazelrc` should have a
+comma-separated list of packages under the child workspaces. 
 
 ### 5. Define integration test targets
 
@@ -174,4 +176,3 @@ suite that executes all of the integration tests with a single command:
 # Execute all of the integration tests
 $ bazel test //examples:all_integration_tests
 ```
-
