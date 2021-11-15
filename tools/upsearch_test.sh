@@ -28,5 +28,11 @@ target_file="file_to_find"
 touch "${target_file}"
 
 cd "${subdir}"
+
+# Find a file
 actual=$(upsearch "${target_file}")
 assert_equal "$starting_dir/${target_file}" "${actual}"
+
+# Do not find a file
+actual=$(upsearch "file_does_not_exist")
+assert_equal "" "${actual}"
