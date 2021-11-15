@@ -35,15 +35,6 @@ else
 fi
 source "${common_lib}"
 
-# MARK - Functions
-
-# Lovingly inspired by https://dev.to/meleu/how-to-join-array-elements-in-a-bash-script-303a
-join_by() {
-  local IFS="$1"
-  shift
-  echo "$*"
-}
-
 # MARK - Main
 
 script_dir="$(normalize_path "${BASH_SOURCE[0]}")"

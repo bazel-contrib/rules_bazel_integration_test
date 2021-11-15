@@ -49,3 +49,10 @@ print_by_line() {
   done
 }
 
+# Lovingly inspired by https://dev.to/meleu/how-to-join-array-elements-in-a-bash-script-303a
+join_by() {
+  local IFS="$1"
+  shift
+  echo "$*"
+}
+
