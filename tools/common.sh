@@ -44,7 +44,7 @@ sort_items() {
 }
 
 print_by_line() {
-  for item in "${@}" ; do
+  for item in "${@:-}" ; do
     echo "${item}"
   done
 }

@@ -65,3 +65,13 @@ sh_test(
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
+
+sh_test(
+    name = "print_by_line_test",
+    srcs = ["print_by_line_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
