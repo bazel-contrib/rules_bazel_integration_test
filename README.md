@@ -176,3 +176,87 @@ suite that executes all of the integration tests with a single command:
 # Execute all of the integration tests
 $ bazel test //examples:all_integration_tests
 ```
+
+## Integration Tests That Depend Upon The Parent Workspace
+
+In the quickstart example, the child workspace does not reference the parent workspace. In many
+cases, a child workspace will reference the parent workspace using a
+[local_repository](https://docs.bazel.build/versions/main/be/workspace.html#local_repository)
+declaration to demonstrate functionality from the parent workspace. 
+
+```python
+# Child WORKSPACE at examples/simple/WORKSPACE
+
+# Reference the parent workspace
+local_repository(
+    name = "my_parent_workspace",
+    path = "../..",
+)
+```
+
+This section explains how to use `rules_bazel_integration_test` in this situation. To review working
+examples, check out [rules_updatesrc](https://github.com/cgrindel/rules_updatesrc),
+[rules_bzlformat](https://github.com/cgrindel/rules_bzlformat), and
+[rules_spm](https://github.com/cgrindel/rules_spm).
+
+### 1. Declare a `filegroup` to represent the parent workspace files
+
+The child workspace needs to access parent workspace files. To easily reference the files, declare a
+`filegroup` at the root of the parent workspace to collect all of the files that the child workspace
+needs. The values listed in the `srcs` should include every file and/or package that the child
+workspaces require.
+
+```python
+# This target collects all of the parent workspace files needed by the child workspaces.
+filegroup(
+    name = "local_repository_files",
+    # Include every package that is required by the child workspaces.
+    srcs = [
+        "BUILD.bazel",
+        "WORKSPACE",
+        "//spm:all_files",
+        "//spm/internal:all_files",
+        "//spm/internal/modulemap_parser:all_files",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+```
+
+In every parent workspace package that is listed in the `srcs` above, create a filegroup globbing
+all of the files in the package.
+
+```python
+# Add to every package that is required by a child workspace.
+filegroup(
+    name = "all_files",
+    srcs = glob(["*"]),
+    visibility = ["//:__subpackages__"],
+)
+```
+
+### 2. Update the integration test targets to include the parent workspace files
+
+The `bazel_integration_test` and `bazel_integration_tests` declarations include a `workspace_files`
+attribute. If not specified, it defaults to a custom glob expression selecting files under the
+child workspace directory. To include the parent workspace files, add the attribute with an
+expression that globs the workspace files and the `//:local_repository_files` target.
+
+```python
+bazel_integration_test(
+    name = "simple_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    workspace_files = integration_test_utils.glob_workspace_files("simple") + [
+        "//:local_repository_files",
+    ],
+)
+```
+
+### 3. Execute the integration tests
+
+Execute the integration test.
+
+```sh
+# Execute the integration test called simple_test
+$ bazel test //examples:simple_test
+```
+
