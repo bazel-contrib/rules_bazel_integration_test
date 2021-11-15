@@ -76,6 +76,12 @@ sh_test(
     ],
 )
 
+sh_library(
+    name = "setup_test_workspace",
+    testonly = 1,
+    srcs = ["setup_test_workspace.sh"],
+)
+
 sh_test(
     name = "find_child_workspace_packages_test",
     srcs = ["find_child_workspace_packages_test.sh"],
@@ -84,6 +90,7 @@ sh_test(
     ],
     deps = [
         ":assertions",
+        ":setup_test_workspace",
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
@@ -96,6 +103,7 @@ sh_test(
     ],
     deps = [
         ":assertions",
+        ":setup_test_workspace",
         "@bazel_tools//tools/bash/runfiles",
     ],
 )

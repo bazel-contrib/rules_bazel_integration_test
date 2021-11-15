@@ -18,37 +18,9 @@ find_bin="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_child_wor
 
 starting_path="${PWD}"
 
-parent_dir="parent"
-examples_dir="${parent_dir}/examples"
-child_a_dir="${examples_dir}/child_a"
-child_b_dir="${parent_dir}/somewhere_else/child_b"
-child_a_pkg_dir="${child_a_dir}/foo"
-child_b_pkg_dir="${child_b_dir}/bar"
-
-directories=("${parent_dir}" "${examples_dir}" "${child_a_dir}" "${child_b_dir}")
-directories+=("${child_a_pkg_dir}" "${child_b_pkg_dir}")
-for dir in "${directories[@]}" ; do
-  mkdir -p "${dir}"
-done
-
-parent_workspace="${parent_dir}/WORKSPACE"
-child_a_workspace="${child_a_dir}/WORKSPACE"
-child_b_workspace="${child_b_dir}/WORKSPACE"
-workspaces=("${parent_workspace}" "${child_a_workspace}" "${child_b_workspace}")
-for workspace in "${workspaces[@]}" ; do
-  touch "${workspace}"
-done
-
-parent_build="${parent_dir}/BUILD.bazel"
-examples_build="${examples_dir}/BUILD.bazel"
-child_a_build="${child_a_dir}/BUILD"
-child_a_pkg_build="${child_a_pkg_dir}/BUILD"
-child_b_pkg_build="${child_b_pkg_dir}/BUILD.bazel"
-build_files=("${parent_build}" "${examples_build}" "${child_a_build}" "${child_a_pkg_build}") 
-build_files+=("${child_b_pkg_build}")
-for build_file in "${build_files[@]}" ; do
-  touch "${build_file}"
-done
+# Set up the parent workspace
+setup_workspace_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/setup_test_workspace.sh)"
+source "${setup_workspace_script}"
 
 expected=("examples/child_a" "examples/child_a/foo" "somewhere_else/child_b/bar")
 

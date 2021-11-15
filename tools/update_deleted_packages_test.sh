@@ -16,6 +16,25 @@ source "${assertions_lib}"
 
 update_bin="$(rlocation cgrindel_rules_bazel_integration_test/tools/update_deleted_packages.sh)"
 
-# DEBUG BEGIN
-fail "STOP"
-# DEBUG END
+starting_path="${PWD}"
+
+# Set up the parent workspace
+setup_workspace_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/setup_test_workspace.sh)"
+source "${setup_workspace_script}"
+
+# Execute specifying workspace flag
+. "${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
+
+expected_with_change="
+# BOF
+build --deleted_packages=examples/child_a,examples/child_a/foo,somewhere_else/child_b/bar
+query --deleted_packages=examples/child_a,examples/child_a/foo,somewhere_else/child_b/bar
+# EOF"
+
+actual=$(< "${parent_bazelrc}")
+assert_equal "${expected_with_change}" "${actual}"
+
+for child_bazelrc in "${child_bazelrcs[@]}" ; do
+  actual=$(< "${child_bazelrc}")
+  assert_equal "${bazelrc_template}" "${actual}"
+done
