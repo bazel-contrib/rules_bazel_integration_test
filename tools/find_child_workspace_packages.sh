@@ -71,7 +71,6 @@ done
 [[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
 
-
 all_workspace_dirs=( $(find_workspace_dirs "${workspace_root}") )
 child_workspace_dirs=()
 for workspace_dir in "${all_workspace_dirs[@]}" ; do
