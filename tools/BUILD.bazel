@@ -2,4 +2,122 @@ load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
 
 bzlformat_pkg(name = "bzlformat")
 
-exports_files(["update_deleted_packages.sh"])
+# MARK: - Binary Declarations
+
+sh_library(
+    name = "common",
+    srcs = ["common.sh"],
+)
+
+sh_binary(
+    name = "find_child_workspace_packages",
+    srcs = ["find_child_workspace_packages.sh"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_binary(
+    name = "update_deleted_packages",
+    srcs = ["update_deleted_packages.sh"],
+    data = [
+        ":find_child_workspace_packages",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+# MARK: - Test Declarations
+
+sh_library(
+    name = "assertions",
+    testonly = 1,
+    srcs = ["assertions.sh"],
+)
+
+sh_test(
+    name = "normalize_path_test",
+    srcs = ["normalize_path_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_test(
+    name = "upsearch_test",
+    srcs = ["upsearch_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_test(
+    name = "sort_items_test",
+    srcs = ["sort_items_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_test(
+    name = "print_by_line_test",
+    srcs = ["print_by_line_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_test(
+    name = "join_by_test",
+    srcs = ["join_by_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_library(
+    name = "setup_test_workspace",
+    testonly = 1,
+    srcs = ["setup_test_workspace.sh"],
+)
+
+sh_test(
+    name = "find_child_workspace_packages_test",
+    srcs = ["find_child_workspace_packages_test.sh"],
+    data = [
+        ":find_child_workspace_packages",
+    ],
+    deps = [
+        ":assertions",
+        ":setup_test_workspace",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_test(
+    name = "update_deleted_packages_test",
+    srcs = ["update_deleted_packages_test.sh"],
+    data = [
+        ":update_deleted_packages",
+    ],
+    deps = [
+        ":assertions",
+        ":setup_test_workspace",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)

@@ -3,16 +3,9 @@
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/update_deleted_packages.sh.
 
-# For integration tests, we want to be able to glob() up the sources for child workspaces. To do
-# this and not have the parent workspace "see" the child workspaces, we specify the packages for the
-# child worksapces as deleted packages in the parent workspace using the --deleted_packages flag.
-#
-# The .bazelrc for the parent workspace must contain the following lines:
-#   build --deleted_packages=
-#   query --deleted_packages=
-# This utility will find the child workspaces and identify all of the Bazel packages under the child
-# workspaces. It will then update the value for the --deleted_packages lines in the parent .bazelrc
-# with a comma-separated list of the child workspace packages.
+# This utility will find all of the child workspace directories (i.e., contains
+# WORKSPACE file) in a Bazel workspace. It is used in conjunction with
+# update_deleted_packages.sh.
 
 # --- begin runfiles.bash initialization v2 ---
 # Copy-pasted from the Bazel Bash runfiles library v2.
@@ -36,18 +29,26 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
 # directly.
 if [[ $(type -t rlocation) == function ]]; then
   common_lib="$(rlocation cgrindel_rules_bazel_integration_test/tools/common.sh)"
-  find_pkgs_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
 else
   common_lib="${script_dir}/common.sh"
-  find_pkgs_script="${script_dir}/find_child_workspace_packages.sh"
 fi
 source "${common_lib}"
 
+# MARK - Functions
+
+find_workspace_dirs() {
+  local path="${1}"
+  find "${path}" -name "WORKSPACE" | xargs -n 1 dirname
+}
+
+find_bazel_pkgs() {
+  local path="${1}"
+  find "${path}" \( -name BUILD -or -name BUILD.bazel \) | xargs -n 1 dirname 
+}
+
 # MARK - Main
 
-script_dir="$(normalize_path "${BASH_SOURCE[0]}")"
 starting_dir=$(pwd)
-pkg_search_dirs=()
 
 # Make sure that we end up back in the original directory.
 cleanup() {
@@ -62,12 +63,7 @@ while (("$#")); do
       workspace_root="${2}"
       shift 2
       ;;
-    "--bazelrc")
-      bazelrc_path="${2}"
-      shift 2
-      ;;
     *)
-      pkg_search_dirs+=( "${1}" )
       shift 1 ;;
   esac
 done
@@ -76,15 +72,20 @@ done
 [[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
 
-[[ -z "${bazelrc_path:-}" ]] && bazelrc_path="${workspace_root}/.bazelrc"
-[[ -f "${bazelrc_path:-}" ]] || exit_on_error "The bazelrc was not found. ${bazelrc_path:-}"
+all_workspace_dirs=( $(find_workspace_dirs "${workspace_root}") )
+child_workspace_dirs=()
+for workspace_dir in "${all_workspace_dirs[@]}" ; do
+  [[ "${workspace_dir}" != "${workspace_root}" ]] && \
+    child_workspace_dirs+=( "${workspace_dir}" )
+done
 
-# Find the child packages
-pkgs=( $(. "${find_pkgs_script}" --workspace "${workspace_root}") )
+absolute_path_pkgs=()
+for child_workspace_dir in "${child_workspace_dirs[@]}" ; do
+  absolute_path_pkgs+=( $(find_bazel_pkgs "${child_workspace_dir}") )
+done
+absolute_path_pkgs=( $(sort_items "${absolute_path_pkgs[@]}") )
 
-# Update the .bazelrc file with the deleted packages flag.
-# The sed -i.bak pattern is compatible between macos and linux
-sed -i.bak "/^[^#].*--deleted_packages/s#=.*#=$(\
-    join_by , "${pkgs[@]}"\
-)#" "${bazelrc_path}"
-rm -f "${bazelrc_path}.bak"
+# Strip the workspace_root prefix from the paths
+pkgs=( "${absolute_path_pkgs[@]#"${workspace_root}/"}")
+
+print_by_line "${pkgs[@]}"
