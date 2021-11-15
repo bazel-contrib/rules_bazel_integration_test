@@ -30,10 +30,17 @@ sh_binary(
     ],
 )
 
+sh_library(
+    name = "assertions",
+    testonly = 1,
+    srcs = ["assertions.sh"],
+)
+
 sh_test(
     name = "normalize_path_test",
     srcs = ["normalize_path_test.sh"],
     deps = [
+        ":assertions",
         ":common",
         "@bazel_tools//tools/bash/runfiles",
     ],

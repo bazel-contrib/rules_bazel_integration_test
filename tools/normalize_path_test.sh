@@ -11,26 +11,19 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
 
-fail() {
-  local err_msg="${1:-}"
-  [[ -n "${err_msg}" ]] || err_msg="Unspecified error occurred."
-  echo >&2 "${err_msg}"
-  exit 1
-}
-
-assert_equal() {
-  local expected="${1}"
-  local actual="${2}"
-  local err_msg="${3:-Expected to be equal. expected: ${expected}, actual: ${actual}}"
-  [[ "${expected}" == "${actual}" ]] || fail "${err_msg}"
-}
+assertions_lib="$(rlocation cgrindel_rules_bazel_integration_test/tools/assertions.sh)"
+source "${assertions_lib}"
 
 common_lib="$(rlocation cgrindel_rules_bazel_integration_test/tools/common.sh)"
 source "${common_lib}"
+
 
 target_dir="foo"
 target_file="${target_dir}/bar"
 
 # mkdir -p "${target_dir}"
 
-assert_equal 1 2
+
+# DEBUG BEGIN
+assert_equal "1" "2"
+# DEBUG END
