@@ -55,3 +55,13 @@ sh_test(
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
+
+sh_test(
+    name = "sort_items_test",
+    srcs = ["sort_items_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
