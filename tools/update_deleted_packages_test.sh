@@ -22,8 +22,34 @@ starting_path="${PWD}"
 setup_workspace_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/setup_test_workspace.sh)"
 source "${setup_workspace_script}"
 
+# MARK - Test Specifying Flags
+
 # Execute specifying workspace flag
 . "${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
+
+expected_with_change="
+# BOF
+build --deleted_packages=examples/child_a,examples/child_a/foo,somewhere_else/child_b/bar
+query --deleted_packages=examples/child_a,examples/child_a/foo,somewhere_else/child_b/bar
+# EOF"
+
+actual=$(< "${parent_bazelrc}")
+assert_equal "${expected_with_change}" "${actual}"
+
+for child_bazelrc in "${child_bazelrcs[@]}" ; do
+  actual=$(< "${child_bazelrc}")
+  assert_equal "${bazelrc_template}" "${actual}"
+done
+
+# MARK - Rest Bazelrcs
+
+reset_bazelrc_files
+
+# MARK - Test Specifying Flags
+
+# Execute inside the parent workspace; find the parent workspace root
+cd "${examples_dir}"
+. "${update_bin}" 
 
 expected_with_change="
 # BOF

@@ -2,7 +2,7 @@
 
 # This script is sourced by tests that need a parent workspace with child workspaces.
 
-parent_dir="parent"
+parent_dir="${PWD}/parent"
 examples_dir="${parent_dir}/examples"
 
 child_a_dir="${examples_dir}/child_a"
