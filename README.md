@@ -9,9 +9,9 @@ with multiple versions of Bazel.
 ## Quickstart
 
 The following provides a quick introduction on how to use the rules in this repository. Also, check
-out [the documentation](/doc/) and [the
-bazel_integration_test_example](https://github.com/cgrindel/bazel_integration_test_example) for more
-information.
+out [the documentation](/doc/), the [integration test defined in this repo](/examples/BUILD.bazel),
+and [the bazel_integration_test_example](https://github.com/cgrindel/bazel_integration_test_example)
+for more information.
 
 ### 1. Configure your workspace to use `rules_bazel_integration_test`
 
