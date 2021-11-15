@@ -75,3 +75,15 @@ sh_test(
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
+
+sh_test(
+    name = "find_child_workspace_packages_test",
+    srcs = ["find_child_workspace_packages_test.sh"],
+    data = [
+        ":find_child_workspace_packages",
+    ],
+    deps = [
+        ":assertions",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
