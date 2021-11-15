@@ -17,13 +17,14 @@ source "${assertions_lib}"
 common_lib="$(rlocation cgrindel_rules_bazel_integration_test/tools/common.sh)"
 source "${common_lib}"
 
-
 target_dir="foo"
 target_file="${target_dir}/bar"
 
-# mkdir -p "${target_dir}"
+mkdir -p "${target_dir}"
+touch "${target_file}"
 
+normalized_dir="$(normalize_path "${target_dir}")"
+assert_equal "${PWD}/${target_dir}" "${normalized_dir}"
 
-# DEBUG BEGIN
-assert_equal "1" "2"
-# DEBUG END
+normalized_file="$(normalize_path "${target_file}")"
+assert_equal "${PWD}/${target_file}" "${normalized_file}"
