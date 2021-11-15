@@ -9,11 +9,6 @@ exit_on_error() {
   exit 1
 }
 
-normalize_path() {
-  local path="${1}"
-  echo "$(cd "${path}" > /dev/null && pwd)"
-}
-
 bazel_cmds=()
 
 # Process args
