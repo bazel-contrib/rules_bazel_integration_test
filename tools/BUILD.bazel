@@ -87,3 +87,15 @@ sh_test(
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
+
+sh_test(
+    name = "update_deleted_packages_test",
+    srcs = ["update_deleted_packages_test.sh"],
+    data = [
+        ":update_deleted_packages",
+    ],
+    deps = [
+        ":assertions",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
