@@ -3,8 +3,9 @@
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/update_deleted_packages.sh.
 
-# For integration tests, we want to be able to glob() up the sources inside a nested package
-# See explanation in .bazelrc
+# This utility will find all of the child workspace directories (i.e., contains
+# WORKSPACE file) in a Bazel workspace. It is used in conjunction with
+# update_deleted_packages.sh.
 
 # --- begin runfiles.bash initialization v2 ---
 # Copy-pasted from the Bazel Bash runfiles library v2.

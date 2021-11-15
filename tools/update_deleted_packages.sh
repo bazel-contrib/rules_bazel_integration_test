@@ -3,8 +3,16 @@
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/update_deleted_packages.sh.
 
-# For integration tests, we want to be able to glob() up the sources inside a nested package
-# See explanation in .bazelrc
+# For integration tests, we want to be able to glob() up the sources for child workspaces. To do
+# this and not have the parent workspace "see" the child workspaces, we specify the packages for the
+# child worksapces as deleted packages in the parent workspace using the --deleted_packages flag.
+#
+# The .bazelrc for the parent workspace must contain the following lines:
+#   build --deleted_packages=
+#   query --deleted_packages=
+# This utility will find the child workspaces and identify all of the Bazel packages under the child
+# workspaces. It will then update the value for the --deleted_packages lines in the parent .bazelrc
+# with a comma-separated list of the child workspace packages.
 
 # --- begin runfiles.bash initialization v2 ---
 # Copy-pasted from the Bazel Bash runfiles library v2.
