@@ -2,6 +2,8 @@ load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
 
 bzlformat_pkg(name = "bzlformat")
 
+# MARK: - Binary Declarations
+
 sh_library(
     name = "common",
     srcs = ["common.sh"],
@@ -29,6 +31,8 @@ sh_binary(
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
+
+# MARK: - Test Declarations
 
 sh_library(
     name = "assertions",
@@ -69,6 +73,16 @@ sh_test(
 sh_test(
     name = "print_by_line_test",
     srcs = ["print_by_line_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+sh_test(
+    name = "join_by_test",
+    srcs = ["join_by_test.sh"],
     deps = [
         ":assertions",
         ":common",
