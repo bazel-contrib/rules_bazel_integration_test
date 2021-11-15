@@ -31,7 +31,9 @@ upsearch() {
   for (( n=${#slashes}; n>0; --n ))
   do
     local test_path="${directory}/${target_file}"
-    test -e "${test_path}" && echo "${test_path}" && return 
+    test -e "${test_path}" && \
+      normalize_path "${test_path}" && \
+      return 
     directory="${directory}/.."
   done
 }

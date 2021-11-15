@@ -45,3 +45,13 @@ sh_test(
         "@bazel_tools//tools/bash/runfiles",
     ],
 )
+
+sh_test(
+    name = "upsearch_test",
+    srcs = ["upsearch_test.sh"],
+    deps = [
+        ":assertions",
+        ":common",
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
