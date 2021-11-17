@@ -40,6 +40,10 @@ bzlformat_rules_dependencies()
 load("@cgrindel_bazel_starlib//:deps.bzl", "bazel_starlib_dependencies")
 
 bazel_starlib_dependencies()
+
+load("@cgrindel_bazel_shlib//:deps.bzl", "shlib_rules_dependencies")
+
+shlib_rules_dependencies()
 ```
 
 ### 2. Create a `bazel_versions.bzl` in the root of your repository
