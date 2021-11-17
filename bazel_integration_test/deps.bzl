@@ -44,3 +44,10 @@ def bazel_integration_test_rules_dependencies():
         strip_prefix = "bazel-integration-testing-3a6136e8f6287b04043217d94d97ba17edcb7feb",
         sha256 = "bfc43a94d42e08c89a26a4711ea396a0a594bd5d55394d76aae861b299628dca",
     )
+
+    # TODO: FIX ME
+    maybe(
+        native.local_repository,
+        name = "cgrindel_bazel_shlib",
+        path = "/Users/chuck/code/cgrindel/bazel_shlib",
+    )

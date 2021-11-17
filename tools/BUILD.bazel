@@ -4,18 +4,14 @@ bzlformat_pkg(name = "bzlformat")
 
 # MARK: - Binary Declarations
 
-sh_library(
-    name = "common",
-    srcs = ["common.sh"],
-)
-
 sh_binary(
     name = "find_child_workspace_packages",
     srcs = ["find_child_workspace_packages.sh"],
     visibility = ["//visibility:public"],
     deps = [
-        ":common",
         "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:arrays",
+        "@cgrindel_bazel_shlib//lib:files",
     ],
 )
 
@@ -27,68 +23,14 @@ sh_binary(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        ":common",
         "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:arrays",
+        "@cgrindel_bazel_shlib//lib:files",
+        "@cgrindel_bazel_shlib//lib:paths",
     ],
 )
 
 # MARK: - Test Declarations
-
-sh_library(
-    name = "assertions",
-    testonly = 1,
-    srcs = ["assertions.sh"],
-)
-
-sh_test(
-    name = "normalize_path_test",
-    srcs = ["normalize_path_test.sh"],
-    deps = [
-        ":assertions",
-        ":common",
-        "@bazel_tools//tools/bash/runfiles",
-    ],
-)
-
-sh_test(
-    name = "upsearch_test",
-    srcs = ["upsearch_test.sh"],
-    deps = [
-        ":assertions",
-        ":common",
-        "@bazel_tools//tools/bash/runfiles",
-    ],
-)
-
-sh_test(
-    name = "sort_items_test",
-    srcs = ["sort_items_test.sh"],
-    deps = [
-        ":assertions",
-        ":common",
-        "@bazel_tools//tools/bash/runfiles",
-    ],
-)
-
-sh_test(
-    name = "print_by_line_test",
-    srcs = ["print_by_line_test.sh"],
-    deps = [
-        ":assertions",
-        ":common",
-        "@bazel_tools//tools/bash/runfiles",
-    ],
-)
-
-sh_test(
-    name = "join_by_test",
-    srcs = ["join_by_test.sh"],
-    deps = [
-        ":assertions",
-        ":common",
-        "@bazel_tools//tools/bash/runfiles",
-    ],
-)
 
 sh_library(
     name = "setup_test_workspace",
@@ -103,9 +45,9 @@ sh_test(
         ":find_child_workspace_packages",
     ],
     deps = [
-        ":assertions",
         ":setup_test_workspace",
         "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:assertions",
     ],
 )
 
@@ -116,8 +58,8 @@ sh_test(
         ":update_deleted_packages",
     ],
     deps = [
-        ":assertions",
         ":setup_test_workspace",
         "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:assertions",
     ],
 )
