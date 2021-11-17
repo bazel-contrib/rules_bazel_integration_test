@@ -15,24 +15,14 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   source "$0.runfiles/$f" 2>/dev/null || \
   source "$(grep -sm1 "^$f " "$0.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
   source "$(grep -sm1 "^$f " "$0.exe.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
-  # Do not fail if this logic does not succeed. We are supporting being run 
-  # outside of Bazel.
-  # { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
-  f=; set -e
+  { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
 
-# Do not use helper functions as they have not been loaded yet
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
+arrays_lib="$(rlocation cgrindel_bazel_shlib/lib/arrays.sh)"
+source "${arrays_lib}"
 
-# If we are being run via `bazel run` the rlocation function will exist and we
-# will load the common functions using rlocation. Otherwise, we are being executed
-# directly.
-if [[ $(type -t rlocation) == function ]]; then
-  common_lib="$(rlocation cgrindel_rules_bazel_integration_test/tools/common.sh)"
-else
-  common_lib="${script_dir}/common.sh"
-fi
-source "${common_lib}"
+files_lib="$(rlocation cgrindel_bazel_shlib/lib/files.sh)"
+source "${files_lib}"
 
 # MARK - Functions
 
