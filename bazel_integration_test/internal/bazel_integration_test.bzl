@@ -19,6 +19,7 @@ def bazel_integration_test(
         workspace_files = None,
         bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
         test_runner_srcs = [DEFAULT_TEST_RUNNER],
+        sh_deps = [],
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
@@ -43,6 +44,7 @@ def bazel_integration_test(
                     Bazel.
         test_runner_srcs: A `list` of shell scripts that are used as the test
                           runner.
+        sh_deps: A `list` of shell library dependencies for the test runner.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -99,6 +101,7 @@ def bazel_integration_test(
             "--workspace",
             "$(location :%s)" % (bazel_wksp_file_name),
         ] + bazel_cmd_args,
+        deps = sh_deps,
         data = [
             bazel_binary,
             bazel_bin_name,
@@ -111,7 +114,10 @@ def bazel_integration_test(
             "@platforms//os:linux": {"CC": "clang"},
             "//conditions:default": {},
         }),
-        env_inherit = ["SUDO_ASKPASS"],
+        # Inherit the following environment variables
+        #   HOME: Avoid "could not get the user's cache directory: $HOME is not defined"
+        #   SUDO_ASKPASS: Support executing tests that require sudo for certain steps.
+        env_inherit = ["SUDO_ASKPASS", "HOME"],
         tags = tags,
         **kwargs
     )
@@ -123,6 +129,7 @@ def bazel_integration_tests(
         workspace_files = None,
         bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
         test_runner_srcs = [DEFAULT_TEST_RUNNER],
+        sh_deps = [],
         timeout = "long",
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
@@ -142,6 +149,7 @@ def bazel_integration_tests(
                     Bazel.
         test_runner_srcs: A `list` of shell scripts that are used as the test
                           runner.
+        sh_deps: A `list` of shell library dependencies for the test runner.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -166,5 +174,6 @@ def bazel_integration_tests(
             workspace_files = workspace_files,
             bazel_cmds = bazel_cmds,
             test_runner_srcs = test_runner_srcs,
+            sh_deps = sh_deps,
             timeout = timeout,
         )

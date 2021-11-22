@@ -14,6 +14,10 @@
 # workspaces. It will then update the value for the --deleted_packages lines in the parent .bazelrc
 # with a comma-separated list of the child workspace packages.
 
+# DEBUG BEGIN
+set -x
+# DEBUG END
+
 # --- begin runfiles.bash initialization v2 ---
 # Copy-pasted from the Bazel Bash runfiles library v2.
 set -uo pipefail; f=bazel_tools/tools/bash/runfiles/runfiles.bash
@@ -29,6 +33,10 @@ find_pkgs_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_c
 
 arrays_lib="$(rlocation cgrindel_bazel_shlib/lib/arrays.sh)"
 source "${arrays_lib}"
+
+# DEBUG BEGIN
+echo >&2 "*** CHUCK  RUNFILES_DIR: ${RUNFILES_DIR:-}" 
+# DEBUG END
 
 files_lib="$(rlocation cgrindel_bazel_shlib/lib/files.sh)"
 source "${files_lib}"
@@ -71,8 +79,20 @@ done
 [[ -z "${bazelrc_path:-}" ]] && bazelrc_path="${workspace_root}/.bazelrc"
 [[ -f "${bazelrc_path:-}" ]] || exit_on_error "The bazelrc was not found. ${bazelrc_path:-}"
 
+# DEBUG BEGIN
+echo >&2 "*** CHUCK  workspace_root: ${workspace_root}" 
+echo >&2 "*** CHUCK  bazelrc_path: ${bazelrc_path}" 
+# DEBUG END
+
 # Find the child packages
 pkgs=( $(. "${find_pkgs_script}" --workspace "${workspace_root}") )
+
+# DEBUG BEGIN
+echo >&2 "*** CHUCK  pkgs:"
+for (( i = 0; i < ${#pkgs[@]}; i++ )); do
+  echo >&2 "*** CHUCK   ${i}: ${pkgs[${i}]}"
+done
+# DEBUG END
 
 # Update the .bazelrc file with the deleted packages flag.
 # The sed -i.bak pattern is compatible between macos and linux
