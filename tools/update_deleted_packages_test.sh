@@ -48,7 +48,7 @@ for child_bazelrc in "${child_bazelrcs[@]}" ; do
   assert_equal "${bazelrc_template}" "${actual}"
 done
 
-# MARK - Rest Workspace
+# MARK - Reset Workspace
 
 reset_test_workspace
 
@@ -66,7 +66,7 @@ for child_bazelrc in "${child_bazelrcs[@]}" ; do
   assert_equal "${bazelrc_template}" "${actual}"
 done
 
-# MARK - Rest Workspace
+# MARK - Reset Workspace
 
 reset_test_workspace
 
