@@ -14,9 +14,6 @@
 # workspaces. It will then update the value for the --deleted_packages lines in the parent .bazelrc
 # with a comma-separated list of the child workspace packages.
 
-# DEBUG BEGIN
-set -x
-# DEBUG END
 
 # --- begin runfiles.bash initialization v2 ---
 # Copy-pasted from the Bazel Bash runfiles library v2.
@@ -31,12 +28,13 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 
 find_pkgs_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
 
+messages_sh_location=cgrindel_bazel_shlib/lib/messages.sh
+messages_sh="$(rlocation "${messages_sh_location}")" || \
+  (echo >&2 "Failed to locate ${messages_sh_location}" && exit 1)
+source "${messages_sh}"
+
 arrays_lib="$(rlocation cgrindel_bazel_shlib/lib/arrays.sh)"
 source "${arrays_lib}"
-
-# DEBUG BEGIN
-echo >&2 "*** CHUCK  RUNFILES_DIR: ${RUNFILES_DIR:-}" 
-# DEBUG END
 
 files_lib="$(rlocation cgrindel_bazel_shlib/lib/files.sh)"
 source "${files_lib}"
@@ -72,23 +70,36 @@ while (("$#")); do
   esac
 done
 
-[[ -z "${workspace_root:-}" ]] && [[ ! -z "${BUILD_WORKING_DIRECTORY:-}"  ]] && workspace_root="${BUILD_WORKING_DIRECTORY:-}"
-[[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
-[[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
+# DEBUG BEGIN
+echo >&2 "*** CHUCK update_deleted_packages workspace_root: ${workspace_root:-}" 
+echo >&2 "*** CHUCK update_deleted_packages bazelrc_path: ${bazelrc_path:-}" 
+echo >&2 "*** CHUCK  BUILD_WORKING_DIRECTORY: ${BUILD_WORKING_DIRECTORY:-}" 
+# DEBUG END
 
-[[ -z "${bazelrc_path:-}" ]] && bazelrc_path="${workspace_root}/.bazelrc"
-[[ -f "${bazelrc_path:-}" ]] || exit_on_error "The bazelrc was not found. ${bazelrc_path:-}"
+# Try to search for the workspace root
+if [[ -z "${workspace_root:-}" ]]; then
+  # If the BUILD_WORKING_DIRECTORY exists, it will be the directory from which the command was run
+  if [[ ! -z "${BUILD_WORKING_DIRECTORY:-}"  ]]; then 
+    search_start_dir="${BUILD_WORKING_DIRECTORY}"
+  else
+    search_start_dir="${PWD}"
+  fi
+  workspace_root="$(dirname "$(upsearch --start_dir "${search_start_dir}" WORKSPACE)")"
+fi
+[[ -d "${workspace_root:-}" ]] || exit_with_msg "The workspace root was not found. ${workspace_root:-}"
 
 # DEBUG BEGIN
-echo >&2 "*** CHUCK  workspace_root: ${workspace_root}" 
-echo >&2 "*** CHUCK  bazelrc_path: ${bazelrc_path}" 
+echo >&2 "*** CHUCK update_deleted_packages resolved workspace_root: ${workspace_root:-}" 
 # DEBUG END
+
+[[ -z "${bazelrc_path:-}" ]] && bazelrc_path="${workspace_root}/.bazelrc"
+[[ -f "${bazelrc_path:-}" ]] || exit_with_msg "The bazelrc was not found. ${bazelrc_path:-}"
 
 # Find the child packages
 pkgs=( $(. "${find_pkgs_script}" --workspace "${workspace_root}") )
 
 # DEBUG BEGIN
-echo >&2 "*** CHUCK  pkgs:"
+echo >&2 "*** CHUCK update_deleted_packages pkgs:"
 for (( i = 0; i < ${#pkgs[@]}; i++ )); do
   echo >&2 "*** CHUCK   ${i}: ${pkgs[${i}]}"
 done

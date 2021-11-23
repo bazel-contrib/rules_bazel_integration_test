@@ -26,6 +26,7 @@ sh_binary(
         "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_shlib//lib:arrays",
         "@cgrindel_bazel_shlib//lib:files",
+        "@cgrindel_bazel_shlib//lib:messages",
         "@cgrindel_bazel_shlib//lib:paths",
     ],
 )
