@@ -70,11 +70,6 @@ while (("$#")); do
   esac
 done
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK update_deleted_packages workspace_root: ${workspace_root:-}" 
-echo >&2 "*** CHUCK update_deleted_packages bazelrc_path: ${bazelrc_path:-}" 
-echo >&2 "*** CHUCK  BUILD_WORKING_DIRECTORY: ${BUILD_WORKING_DIRECTORY:-}" 
-# DEBUG END
 
 # Try to search for the workspace root
 if [[ -z "${workspace_root:-}" ]]; then
@@ -88,9 +83,6 @@ if [[ -z "${workspace_root:-}" ]]; then
 fi
 [[ -d "${workspace_root:-}" ]] || exit_with_msg "The workspace root was not found. ${workspace_root:-}"
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK update_deleted_packages resolved workspace_root: ${workspace_root:-}" 
-# DEBUG END
 
 [[ -z "${bazelrc_path:-}" ]] && bazelrc_path="${workspace_root}/.bazelrc"
 [[ -f "${bazelrc_path:-}" ]] || exit_with_msg "The bazelrc was not found. ${bazelrc_path:-}"
@@ -98,12 +90,6 @@ echo >&2 "*** CHUCK update_deleted_packages resolved workspace_root: ${workspace
 # Find the child packages
 pkgs=( $(. "${find_pkgs_script}" --workspace "${workspace_root}") )
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK update_deleted_packages pkgs:"
-for (( i = 0; i < ${#pkgs[@]}; i++ )); do
-  echo >&2 "*** CHUCK   ${i}: ${pkgs[${i}]}"
-done
-# DEBUG END
 
 # Update the .bazelrc file with the deleted packages flag.
 # The sed -i.bak pattern is compatible between macos and linux
