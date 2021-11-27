@@ -20,6 +20,7 @@ def bazel_integration_test(
         bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
         test_runner_srcs = [DEFAULT_TEST_RUNNER],
         sh_deps = [],
+        sh_data = [],
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
@@ -45,6 +46,7 @@ def bazel_integration_test(
         test_runner_srcs: A `list` of shell scripts that are used as the test
                           runner.
         sh_deps: A `list` of shell library dependencies for the test runner.
+        sh_data: A `list` of items to be added to the sh_test data attribute.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -102,7 +104,7 @@ def bazel_integration_test(
             "$(location :%s)" % (bazel_wksp_file_name),
         ] + bazel_cmd_args,
         deps = sh_deps,
-        data = [
+        data = sh_data + [
             bazel_binary,
             bazel_bin_name,
             workspace_files_name,
@@ -130,6 +132,7 @@ def bazel_integration_tests(
         bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
         test_runner_srcs = [DEFAULT_TEST_RUNNER],
         sh_deps = [],
+        sh_data = [],
         timeout = "long",
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
@@ -150,6 +153,7 @@ def bazel_integration_tests(
         test_runner_srcs: A `list` of shell scripts that are used as the test
                           runner.
         sh_deps: A `list` of shell library dependencies for the test runner.
+        sh_data: A `list` of items to be added to the sh_test data attribute.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -175,5 +179,6 @@ def bazel_integration_tests(
             bazel_cmds = bazel_cmds,
             test_runner_srcs = test_runner_srcs,
             sh_deps = sh_deps,
+            sh_data = sh_data,
             timeout = timeout,
         )
