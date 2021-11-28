@@ -31,6 +31,16 @@ sh_binary(
     ],
 )
 
+sh_binary(
+    name = "create_scratch_dir",
+    srcs = ["create_scratch_dir.sh"],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:messages",
+        "@cgrindel_bazel_shlib//lib:paths",
+    ],
+)
+
 # MARK: - Test Declarations
 
 sh_library(
@@ -60,6 +70,18 @@ sh_test(
     ],
     deps = [
         ":setup_test_workspace",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:assertions",
+    ],
+)
+
+sh_test(
+    name = "create_scratch_dir_test",
+    srcs = ["create_scratch_dir_test.sh"],
+    data = [
+        ":create_scratch_dir",
+    ],
+    deps = [
         "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_shlib//lib:assertions",
     ],
