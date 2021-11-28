@@ -24,3 +24,13 @@ bzl_library(
         "@bazel_skylib//rules:select_file",
     ],
 )
+
+sh_binary(
+    name = "create_scratch_dir",
+    srcs = ["create_scratch_dir.sh"],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:messages",
+        "@cgrindel_bazel_shlib//lib:paths",
+    ],
+)
