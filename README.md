@@ -268,4 +268,3 @@ Execute the integration test.
 # Execute the integration test called simple_test
 $ bazel test //examples:simple_test
 ```
-
