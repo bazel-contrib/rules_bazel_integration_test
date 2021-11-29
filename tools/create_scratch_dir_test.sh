@@ -18,6 +18,17 @@ create_scratch_dir_sh_location=cgrindel_rules_bazel_integration_test/tools/creat
 create_scratch_dir_sh="$(rlocation "${create_scratch_dir_sh_location}")" || \
   (echo >&2 "Failed to locate ${create_scratch_dir_sh_location}" && exit 1)
 
+# MARK - Functions
+
+assert_file() {
+  local assert_prefix="${1}"
+  local expected_path="${2}"
+  local expected_content="${3}"
+  [[ -f "${expected_path}" ]] || fail "${assert_prefix} Expected ${expected_path} file to exist."
+  actual_content="$(< "${expected_path}")"
+  assert_equal "${expected_content}" "${actual_content}" "${assert_prefix} Expected ${expected_path} content not found."
+}
+
 # MARK - Create a workspace directory
 
 starting_dir="${PWD}"
@@ -27,6 +38,8 @@ foo_path="${PWD}/foo"
 bar_path="${PWD}/.bar"
 echo "Foo File" > "${foo_path}"
 echo "Bar File" > "${bar_path}"
+foo_content="$(< "${foo_path}")"
+bar_content="$(< "${bar_path}")"
 
 # Create the workspace directory
 workspace_dir="${PWD}/workspace"
@@ -41,9 +54,15 @@ ln -s "${bar_path}" "${bar_workspace_path}"
 
 # MARK - Create the scratch dir from workspace dir
 
+assert_prefix="Create scratch from workspace dir."
+
 cd "${workspace_dir}"
 scratch_dir="$("${create_scratch_dir_sh}")"
 
-assert_equal "${starting_dir}/workspace.scratch" "${scratch_dir}"
+expected_scratch_dir="${starting_dir}/workspace.scratch"
+expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
+expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
+assert_file "${assert_prefix}" "${expected_foo_scratch_dir}" "${foo_content}"
+assert_file "${assert_prefix}" "${expected_bar_scratch_dir}" "${bar_content}"
 
 fail "IMPLEMENT ME!"
