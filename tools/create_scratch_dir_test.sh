@@ -55,16 +55,21 @@ ln -s "${bar_path}" "${bar_workspace_path}"
 # MARK - Create the scratch dir from workspace dir
 
 assert_prefix="Create scratch from workspace dir."
+expected_scratch_dir="${starting_dir}/workspace.scratch"
+expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
+expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
+
+# Add content to to expected scratch dir to confirm that it is removed.
+mkdir -p "${expected_scratch_dir}"
+should_not_exist_path="${expected_scratch_dir}/SHOULD_NOT_EXIST"
+echo "SHOULD NOT EXIST" > "${should_not_exist_path}"
 
 cd "${workspace_dir}"
 scratch_dir="$("${create_scratch_dir_sh}")"
 assert_equal "${workspace_dir}" "${PWD}"
-
-expected_scratch_dir="${starting_dir}/workspace.scratch"
-expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
-expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
 assert_file "${assert_prefix}" "${expected_foo_scratch_dir}" "${foo_content}"
 assert_file "${assert_prefix}" "${expected_bar_scratch_dir}" "${bar_content}"
+[[ ! -f "${should_not_exist_path}" ]] || fail "Pre-existing content was not removed."
 
 # Remove the scratch dir
 rm -rf "${expected_scratch_dir}"
@@ -72,19 +77,29 @@ rm -rf "${expected_scratch_dir}"
 # MARK - Create the scratch dir using workspace flag
 
 assert_prefix="Create scratch using workspace flag."
+expected_scratch_dir="${starting_dir}/workspace.scratch"
+expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
+expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
 
 cd "${starting_dir}"
 scratch_dir="$("${create_scratch_dir_sh}" --workspace "${workspace_dir}")"
 assert_equal "${starting_dir}" "${PWD}" "${assert_prefix}"
-
-expected_scratch_dir="${starting_dir}/workspace.scratch"
-expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
-expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
 assert_file "${assert_prefix}" "${expected_foo_scratch_dir}" "${foo_content}"
 assert_file "${assert_prefix}" "${expected_bar_scratch_dir}" "${bar_content}"
 
-rm -rf "${scratch_dir}"
+rm -rf "${expected_scratch_dir}"
 
-# DEBUG BEGIN
-fail "IMPLEMENT ME"
-# DEBUG END
+# MARK - Create the scratch dir using workspace flag and scratch flag
+
+assert_prefix="Create scratch using workspace flag."
+expected_scratch_dir="${starting_dir}/custom_scratch"
+expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
+expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
+
+cd "${starting_dir}"
+scratch_dir="$("${create_scratch_dir_sh}" --workspace "${workspace_dir}" --scratch "${expected_scratch_dir}")"
+assert_equal "${starting_dir}" "${PWD}" "${assert_prefix}"
+assert_file "${assert_prefix}" "${expected_foo_scratch_dir}" "${foo_content}"
+assert_file "${assert_prefix}" "${expected_bar_scratch_dir}" "${bar_content}"
+
+rm -rf "${expected_scratch_dir}"
