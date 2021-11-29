@@ -58,6 +58,7 @@ assert_prefix="Create scratch from workspace dir."
 
 cd "${workspace_dir}"
 scratch_dir="$("${create_scratch_dir_sh}")"
+assert_equal "${workspace_dir}" "${PWD}"
 
 expected_scratch_dir="${starting_dir}/workspace.scratch"
 expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
@@ -65,4 +66,25 @@ expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
 assert_file "${assert_prefix}" "${expected_foo_scratch_dir}" "${foo_content}"
 assert_file "${assert_prefix}" "${expected_bar_scratch_dir}" "${bar_content}"
 
-fail "IMPLEMENT ME!"
+# Remove the scratch dir
+rm -rf "${expected_scratch_dir}"
+
+# MARK - Create the scratch dir using workspace flag
+
+assert_prefix="Create scratch using workspace flag."
+
+cd "${starting_dir}"
+scratch_dir="$("${create_scratch_dir_sh}" --workspace "${workspace_dir}")"
+assert_equal "${starting_dir}" "${PWD}" "${assert_prefix}"
+
+expected_scratch_dir="${starting_dir}/workspace.scratch"
+expected_foo_scratch_dir="${expected_scratch_dir}/chicken/foo"
+expected_bar_scratch_dir="${expected_scratch_dir}/chicken/.bar"
+assert_file "${assert_prefix}" "${expected_foo_scratch_dir}" "${foo_content}"
+assert_file "${assert_prefix}" "${expected_bar_scratch_dir}" "${bar_content}"
+
+rm -rf "${scratch_dir}"
+
+# DEBUG BEGIN
+fail "IMPLEMENT ME"
+# DEBUG END
