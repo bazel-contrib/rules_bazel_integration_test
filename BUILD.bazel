@@ -1,4 +1,8 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load(
+    "@cgrindel_rules_bazel_integration_test//bazel_integration_test:bazel_integration_test.bzl",
+    "integration_test_utils",
+)
 load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
 load(
     "@cgrindel_rules_updatesrc//updatesrc:updatesrc.bzl",
@@ -17,5 +21,14 @@ bzlformat_pkg(name = "bzlformat")
 bzl_library(
     name = "bazel_versions",
     srcs = ["bazel_versions.bzl"],
+    visibility = ["//:__subpackages__"],
+)
+
+test_suite(
+    name = "all_integration_tests",
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
+    tests = [
+        "//examples:integration_tests",
+    ],
     visibility = ["//:__subpackages__"],
 )
