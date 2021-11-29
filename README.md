@@ -20,9 +20,9 @@ Add the following to your `WORKSPACE` file to add this repository and its depend
 ```python
 http_archive(
     name = "cgrindel_rules_bazel_integration_test",
-    sha256 = "105abb9480f825495eb3b4615b77a737b596029b8a7127f9ca176f2eb25e32f0",
-    strip_prefix = "rules_bazel_integration_test-0.1.1",
-    urls = ["https://github.com/cgrindel/rules_bazel_integration_test/archive/v0.1.1.tar.gz"],
+    sha256 = "5f79f07535cf819e0395f8bb9225b50523bff96f2903049a96c0b8da47f46e41",
+    strip_prefix = "rules_bazel_integration_test-0.2.0",
+    urls = ["https://github.com/cgrindel/rules_bazel_integration_test/archive/v0.2.0.tar.gz"],
 )
 
 load("@cgrindel_rules_bazel_integration_test//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
