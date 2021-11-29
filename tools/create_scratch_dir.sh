@@ -42,8 +42,8 @@ while (("$#")); do
   esac
 done
 
-[[ -z "${workspace_dir:-}" ]] || workspace_dir="${PWD}"
-[[ -z "${scratch_dir:-}" ]] || scratch_dir="${workspace_dir}/../$(basename "${workspace_dir}").scratch"
+[[ -z "${workspace_dir:-}" ]] && workspace_dir="${PWD}"
+[[ -z "${scratch_dir:-}" ]] && scratch_dir="${workspace_dir}/../$(basename "${workspace_dir}").scratch"
 scratch_dir="$(normalize_path "${scratch_dir}")"
 starting_dir="${PWD}"
 

@@ -18,6 +18,32 @@ create_scratch_dir_sh_location=cgrindel_rules_bazel_integration_test/tools/creat
 create_scratch_dir_sh="$(rlocation "${create_scratch_dir_sh_location}")" || \
   (echo >&2 "Failed to locate ${create_scratch_dir_sh_location}" && exit 1)
 
+# MARK - Create a workspace directory
 
+starting_dir="${PWD}"
+
+# Create a source file that will be symlinked
+foo_path="${PWD}/foo"
+bar_path="${PWD}/.bar"
+echo "Foo File" > "${foo_path}"
+echo "Bar File" > "${bar_path}"
+
+# Create the workspace directory
+workspace_dir="${PWD}/workspace"
+workspace_chicken_dir="${workspace_dir}/chicken"
+mkdir -p "${workspace_chicken_dir}"
+
+# Create symlinks
+foo_workspace_path="${workspace_chicken_dir}/foo"
+bar_workspace_path="${workspace_chicken_dir}/.bar"
+ln -s "${foo_path}" "${foo_workspace_path}"
+ln -s "${bar_path}" "${bar_workspace_path}"
+
+# MARK - Create the scratch dir from workspace dir
+
+cd "${workspace_dir}"
+scratch_dir="$("${create_scratch_dir_sh}")"
+
+assert_equal "${starting_dir}/workspace.scratch" "${scratch_dir}"
 
 fail "IMPLEMENT ME!"
