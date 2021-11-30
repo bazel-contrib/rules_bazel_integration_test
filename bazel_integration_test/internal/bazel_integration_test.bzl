@@ -81,22 +81,31 @@ def bazel_integration_test(
         subpath = paths.join(workspace_path, "WORKSPACE"),
     )
 
-    test_src_name = name + "_test_src"
-    native.genrule(
-        name = test_src_name,
-        srcs = [test_runner],
-        outs = [name + "_test_src.sh"],
-        executable = True,
-        cmd = """
-echo "$<" > $@
-""",
-        # echo "$(location test_runner)" > $@
-    )
+    #test_src_name = name + "_test_src"
+    #native.genrule(
+    #    name = test_src_name,
+    #    srcs = [test_runner],
+    #    outs = [name + "_test_src.sh"],
+    #    executable = True,
+    #    cmd = """
+    #echo "
+    ##!/usr/bin/env bash
+    #set -euo pipefail
+    #"$(basename $<
+    #" > $@
+    #""",
+    #    # echo "$<" > $@
+    #    # echo "$(location test_runner)" > $@
+    #)
 
     native.sh_test(
         name = name,
-        srcs = [test_src_name],
+        srcs = [
+            "@cgrindel_rules_bazel_integration_test//bazel_integration_test/internal:integration_test_wrapper.sh",
+        ],
         args = [
+            "--runner",
+            "$(location %s)" % (test_runner),
             "--bazel",
             "$(location :%s)" % (bazel_bin_name),
             "--workspace",
@@ -108,6 +117,10 @@ echo "$<" > $@
             bazel_bin_name,
             workspace_files_name,
             bazel_wksp_file_name,
+        ],
+        deps = [
+            "@bazel_tools//tools/bash/runfiles",
+            "@cgrindel_bazel_shlib//lib:messages",
         ],
         timeout = timeout,
         env = select({

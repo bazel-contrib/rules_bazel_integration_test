@@ -45,10 +45,18 @@ def bazel_integration_test_rules_dependencies():
         sha256 = "bfc43a94d42e08c89a26a4711ea396a0a594bd5d55394d76aae861b299628dca",
     )
 
+    # TODO: FIX ME
+
+    #     maybe(
+    #         http_archive,
+    #         name = "cgrindel_bazel_shlib",
+    #         sha256 = "d2f0a8dd3180463f00451449ad1f0bedfebb3d2bccc8178634ef5ad07ab55dac",
+    #         strip_prefix = "bazel_shlib-0.2.0",
+    #         urls = ["https://github.com/cgrindel/bazel_shlib/archive/v0.2.0.tar.gz"],
+    #     )
+
     maybe(
-        http_archive,
+        native.local_repository,
         name = "cgrindel_bazel_shlib",
-        sha256 = "d2f0a8dd3180463f00451449ad1f0bedfebb3d2bccc8178634ef5ad07ab55dac",
-        strip_prefix = "bazel_shlib-0.2.0",
-        urls = ["https://github.com/cgrindel/bazel_shlib/archive/v0.2.0.tar.gz"],
+        path = "/Users/chuck/code/cgrindel/bazel_shlib",
     )
