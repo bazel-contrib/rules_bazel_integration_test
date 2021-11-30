@@ -17,10 +17,7 @@ def bazel_integration_test(
         bazel_binary = None,
         workspace_path = None,
         workspace_files = None,
-        bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
-        test_runner_srcs = [DEFAULT_TEST_RUNNER],
-        sh_deps = [],
-        sh_data = [],
+        test_runner = None,
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
@@ -41,12 +38,7 @@ def bazel_integration_test(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
-        bazel_cmds: A `list` of `string` values that represent arguments for
-                    Bazel.
-        test_runner_srcs: A `list` of shell scripts that are used as the test
-                          runner.
-        sh_deps: A `list` of shell library dependencies for the test runner.
-        sh_data: A `list` of items to be added to the sh_test data attribute.
+        test_runner: A `Label` for a test runner binary.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -89,22 +81,29 @@ def bazel_integration_test(
         subpath = paths.join(workspace_path, "WORKSPACE"),
     )
 
-    # Prepare the Bazel commands
-    bazel_cmd_args = []
-    for cmd in bazel_cmds:
-        bazel_cmd_args.extend(["--bazel_cmd", "\"" + cmd + "\""])
+    test_src_name = name + "_test_src"
+    native.genrule(
+        name = test_src_name,
+        srcs = [test_runner],
+        outs = [name + "_test_src.sh"],
+        executable = True,
+        cmd = """
+echo "$<" > $@
+""",
+        # echo "$(location test_runner)" > $@
+    )
 
     native.sh_test(
         name = name,
-        srcs = test_runner_srcs,
+        srcs = [test_src_name],
         args = [
             "--bazel",
             "$(location :%s)" % (bazel_bin_name),
             "--workspace",
             "$(location :%s)" % (bazel_wksp_file_name),
-        ] + bazel_cmd_args,
-        deps = sh_deps,
-        data = sh_data + [
+        ],
+        data = [
+            test_runner,
             bazel_binary,
             bazel_bin_name,
             workspace_files_name,
@@ -129,10 +128,7 @@ def bazel_integration_tests(
         bazel_versions = [],
         workspace_path = None,
         workspace_files = None,
-        bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
-        test_runner_srcs = [DEFAULT_TEST_RUNNER],
-        sh_deps = [],
-        sh_data = [],
+        test_runner = None,
         timeout = "long",
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
@@ -148,12 +144,7 @@ def bazel_integration_tests(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
-        bazel_cmds: A `list` of `string` values that represent arguments for
-                    Bazel.
-        test_runner_srcs: A `list` of shell scripts that are used as the test
-                          runner.
-        sh_deps: A `list` of shell library dependencies for the test runner.
-        sh_data: A `list` of items to be added to the sh_test data attribute.
+        test_runner: A `Label` for a test runner binary.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -176,9 +167,6 @@ def bazel_integration_tests(
             bazel_version = bazel_version,
             workspace_path = workspace_path,
             workspace_files = workspace_files,
-            bazel_cmds = bazel_cmds,
-            test_runner_srcs = test_runner_srcs,
-            sh_deps = sh_deps,
-            sh_data = sh_data,
+            test_runner = test_runner,
             timeout = timeout,
         )

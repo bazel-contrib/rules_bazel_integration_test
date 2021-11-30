@@ -16,6 +16,15 @@ bzl_library(
 )
 
 bzl_library(
+    name = "default_test_runner",
+    srcs = ["default_test_runner.bzl"],
+    deps = [
+        ":integration_test_utils",
+        "@cgrindel_bazel_shlib//rules:execute_binary",
+    ],
+)
+
+bzl_library(
     name = "bazel_integration_test",
     srcs = ["bazel_integration_test.bzl"],
     deps = [
