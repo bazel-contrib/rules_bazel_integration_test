@@ -1,0 +1,49 @@
+load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+
+bzlformat_pkg(name = "bzlformat")
+
+# MARK: - Test Declarations
+
+sh_library(
+    name = "setup_test_workspace",
+    testonly = 1,
+    srcs = ["setup_test_workspace.sh"],
+)
+
+sh_test(
+    name = "find_child_workspace_packages_test",
+    srcs = ["find_child_workspace_packages_test.sh"],
+    data = [
+        "//tools:find_child_workspace_packages",
+    ],
+    deps = [
+        ":setup_test_workspace",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:assertions",
+    ],
+)
+
+sh_test(
+    name = "update_deleted_packages_test",
+    srcs = ["update_deleted_packages_test.sh"],
+    data = [
+        "//tools:update_deleted_packages",
+    ],
+    deps = [
+        ":setup_test_workspace",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:assertions",
+    ],
+)
+
+sh_test(
+    name = "create_scratch_dir_test",
+    srcs = ["create_scratch_dir_test.sh"],
+    data = [
+        "//tools:create_scratch_dir",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:assertions",
+    ],
+)

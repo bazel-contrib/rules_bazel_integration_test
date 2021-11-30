@@ -19,8 +19,11 @@ find_bin="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_child_wor
 starting_path="${PWD}"
 
 # Set up the parent workspace
-setup_workspace_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/setup_test_workspace.sh)"
-source "${setup_workspace_script}"
+setup_test_workspace_sh_location=cgrindel_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
+setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
+  (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
+source "${setup_test_workspace_sh}"
+
 
 expected=("examples/child_a" "examples/child_a/foo" "somewhere_else/child_b/bar")
 
