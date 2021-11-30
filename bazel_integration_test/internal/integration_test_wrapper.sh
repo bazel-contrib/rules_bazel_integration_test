@@ -32,9 +32,4 @@ done
 
 [[ -n "${test_runner:-}" ]] || exit_with_msg "Must specify a test runner."
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK wrapper args[@]:-: ${args[@]:-}" 
-set -x
-# DEBUG END
-
 "${test_runner}" "${args[@]:-}"

@@ -81,23 +81,6 @@ def bazel_integration_test(
         subpath = paths.join(workspace_path, "WORKSPACE"),
     )
 
-    #test_src_name = name + "_test_src"
-    #native.genrule(
-    #    name = test_src_name,
-    #    srcs = [test_runner],
-    #    outs = [name + "_test_src.sh"],
-    #    executable = True,
-    #    cmd = """
-    #echo "
-    ##!/usr/bin/env bash
-    #set -euo pipefail
-    #"$(basename $<
-    #" > $@
-    #""",
-    #    # echo "$<" > $@
-    #    # echo "$(location test_runner)" > $@
-    #)
-
     native.sh_test(
         name = name,
         srcs = [

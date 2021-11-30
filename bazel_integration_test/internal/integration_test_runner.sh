@@ -16,13 +16,6 @@ messages_sh="$(rlocation "${messages_sh_location}")" || \
   (echo >&2 "Failed to locate ${messages_sh_location}" && exit 1)
 source "${messages_sh}"
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK integration_test_runner arguments" 
-for (( i = 1; i <= ${#}; i++ )); do
-  echo >&2 "*** CHUCK   ${i}: ${!i}"
-done
-# DEBUG END
-
 bazel_cmds=()
 
 # Process args
@@ -46,11 +39,6 @@ while (("$#")); do
   esac
 done
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK  bazel_rel_path: ${bazel_rel_path}" 
-echo >&2 "*** CHUCK  workspace_path: ${workspace_path}" 
-echo >&2 "*** CHUCK  bazel_cmds[@]:-: ${bazel_cmds[@]:-}" 
-# DEBUG END
 
 [[ -n "${bazel_rel_path:-}" ]] || exit_with_msg "Must specify the location of the Bazel binary."
 [[ -n "${workspace_path:-}" ]] || exit_with_msg "Must specify the location of the workspace file."
