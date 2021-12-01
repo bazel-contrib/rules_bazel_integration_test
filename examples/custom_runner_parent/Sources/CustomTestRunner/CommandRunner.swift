@@ -1,3 +1,3 @@
 protocol CommandRunner {
-    func run(commandName: String, arguments: [String]) throws -> String
+    func run(command: String, arguments: [String], at path: String) throws -> String
 }

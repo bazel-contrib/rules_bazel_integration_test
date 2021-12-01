@@ -1,8 +1,8 @@
 import ShellOut
 
 struct Bash: CommandRunner {
-    func run(commandName: String, arguments: [String] = []) throws -> String {
-        return try shellOut(to: commandName, arguments: arguments)
+    func run(command: String, arguments: [String] = [], at path: String = ".") throws -> String {
+        return try shellOut(to: command, arguments: arguments, at: path)
     }
 }
 

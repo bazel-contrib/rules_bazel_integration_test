@@ -28,5 +28,8 @@ public struct CustomTestRunner: ParsableCommand {
         // This is where the custom test runner would implement its test-specific logic.
         // If the runner needs to report a failure, it should output a useful message to stderr and
         // terminate with a non-zero exit code.
+
+        let output = try commandRunner.run(command: "ls", arguments: [], at: workspace)
+        print(output)
     }
 }
