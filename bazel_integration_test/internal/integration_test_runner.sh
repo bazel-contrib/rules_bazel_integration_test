@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# This script is the default integration test runner. In addition to the 
+# --bazel and --workspace flags, it also expects one or more --bazel_cmd
+# flag-value pairs.
+
 # --- begin runfiles.bash initialization v2 ---
 # Copy-pasted from the Bazel Bash runfiles library v2.
 set -uo pipefail; f=bazel_tools/tools/bash/runfiles/runfiles.bash
