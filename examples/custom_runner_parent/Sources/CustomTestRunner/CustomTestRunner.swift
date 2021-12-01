@@ -29,7 +29,12 @@ public struct CustomTestRunner: ParsableCommand {
         // If the runner needs to report a failure, it should output a useful message to stderr and
         // terminate with a non-zero exit code.
 
-        let output = try commandRunner.run(command: "ls", arguments: [], at: workspace)
-        print(output)
+        let infoOutput = try commandRunner.run(command: bazel, arguments: ["info"], at: workspace)
+        print("Bazel Info:")
+        print(infoOutput)
+
+        let testOutput = try commandRunner.run(command: bazel, arguments: ["test", "//..."], at: workspace)
+        print("Test Output:")
+        print(testOutput)
     }
 }
