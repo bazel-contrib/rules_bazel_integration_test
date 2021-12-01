@@ -11,18 +11,29 @@ an integration test.
 
 def bazel_integration_test(
         name,
+        test_runner,
         bazel_version = None,
         bazel_binary = None,
         workspace_path = None,
         workspace_files = None,
-        test_runner = None,
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
+    This macro accepts an exectuable target as the test runner for the
+    integration test. A test runner must support two flag-value pairs:
+    `--bazel` and `--workspace`. The `--bazel` value specifies the
+    Bazel binary to use in the integration test. The `--workspace` value
+    specifies the path of the `WORKSPACE` file.
+
+    If your integration test only consists of executing Bazel commands,  a
+    default test runner is provided by the `default_test_runner` macro.
+
     Args:
         name: name of the resulting py_test
+        test_runner: A `Label` for a test runner binary. (see description for
+                     details)
         bazel_version: Optional. A `string` value representing the semantic
                        version of Bazel to use for the integration test. If a
                        version is not specified, then the `bazel_binary` must
@@ -36,7 +47,6 @@ def bazel_integration_test(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
-        test_runner: A `Label` for a test runner binary.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -119,16 +129,17 @@ def bazel_integration_test(
 
 def bazel_integration_tests(
         name,
+        test_runner,
         bazel_versions = [],
         workspace_path = None,
         workspace_files = None,
-        test_runner = None,
         timeout = "long",
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
 
     Args:
         name: name of the resulting py_test
+        test_runner: A `Label` for a test runner binary.
         workspace_path: A `string` specifying the path to the child
                         workspace. If not specified, then it is derived from
                         the name.
@@ -138,7 +149,6 @@ def bazel_integration_tests(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
-        test_runner: A `Label` for a test runner binary.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -158,9 +168,9 @@ def bazel_integration_tests(
                 name,
                 bazel_version,
             ),
+            test_runner = test_runner,
             bazel_version = bazel_version,
             workspace_path = workspace_path,
             workspace_files = workspace_files,
-            test_runner = test_runner,
             timeout = timeout,
         )
