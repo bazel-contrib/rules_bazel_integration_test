@@ -1,6 +1,7 @@
+@testable import CustomTestRunner
 import XCTest
 
-class MainTests: XCTestCase {
+class CustomTestRunnerTests: XCTestCase {
     func testSomething() {
         XCTFail("IMPLEMENT ME!")
     }

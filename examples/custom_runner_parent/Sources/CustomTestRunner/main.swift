@@ -1,3 +1,3 @@
-import ArgumentParser
+import CustomTestRunner
 
-Swift.print("MADE IT!")
+CustomTestRunner.main()
