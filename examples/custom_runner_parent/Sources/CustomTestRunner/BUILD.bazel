@@ -13,10 +13,10 @@ swift_library(
     ],
 )
 
-# swift_binary(
-#     name = "custom_test_runner",
-#     srcs = ["main.swift"],
-#     deps = [
-#         ":CustomTestRunner",
-#     ],
-# )
+swift_binary(
+    name = "custom_test_runner",
+    srcs = ["main.swift"],
+    deps = [
+        ":CustomTestRunner",
+    ],
+)
