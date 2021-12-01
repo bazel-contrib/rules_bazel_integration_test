@@ -6,7 +6,7 @@ package(default_visibility = ["//bazel_integration_test:__subpackages__"])
 bzlformat_pkg(name = "bzlformat")
 
 exports_files([
-    "integration_test_runner.sh",
+    "default_test_runner.sh",
     "integration_test_wrapper.sh",
 ])
 
