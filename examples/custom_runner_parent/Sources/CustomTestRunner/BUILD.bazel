@@ -1,0 +1,9 @@
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_binary")
+
+swift_binary(
+    name = "custom_test_runner",
+    srcs = ["main.swift"],
+    deps = [
+        "@swift_pkgs//swift-argument-parser:ArgumentParser",
+    ],
+)
