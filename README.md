@@ -140,7 +140,13 @@ load(
     "@cgrindel_rules_bazel_integration_test//bazel_integration_test:bazel_integration_test.bzl",
     "bazel_integration_test",
     "bazel_integration_tests",
+    "default_test_runner",
     "integration_test_utils",
+)
+
+# Declare a test runner to drive the integration tests.
+default_test_runner(
+    name = "simple_test_runner",
 )
 
 # If you only want to execute against a single version of Bazel, use
@@ -148,6 +154,7 @@ load(
 bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":simple_test_runner",
 )
 
 # If you want to execute an integration test using multiple versions of Bazel,
@@ -156,6 +163,7 @@ bazel_integration_test(
 bazel_integration_tests(
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
+    test_runner = ":simple_test_runner",
 )
 
 # By default, the integration test targets are tagged as `manual`. This
@@ -254,6 +262,7 @@ expression that globs the workspace files and the `//:local_repository_files` ta
 bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:local_repository_files",
     ],
