@@ -9,8 +9,6 @@ an integration test.
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/bazel_integration_test.bzl.
 
-DEFAULT_TEST_RUNNER = "@cgrindel_rules_bazel_integration_test//bazel_integration_test/internal:integration_test_runner.sh"
-
 def bazel_integration_test(
         name,
         bazel_version = None,
