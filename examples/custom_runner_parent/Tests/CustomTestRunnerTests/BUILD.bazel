@@ -1,9 +1,9 @@
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_test")
 
 swift_test(
-    name = "MyModuleTests",
+    name = "CustomTestRunnerTests",
     srcs = glob(["*.swift"]),
-    deps = [
-        "//Sources/MyModule",
+    data = [
+        "//Sources/CustomTestRunner",
     ],
 )
