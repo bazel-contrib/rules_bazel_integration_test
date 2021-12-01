@@ -11,10 +11,10 @@ public struct CustomTestRunner: ParsableCommand {
     @Option(help: "The WORKSPACE file.")
     var workspace: String
 
-    @Flag(help: "Specifies whether the runner should fail.")
-    var fail = false
+    // @Flag(help: "Specifies whether the runner should fail.")
+    // var fail = false
 
-    var commandRunner: CommandRunner = Bash()
+    // var commandRunner: CommandRunner = Bash()
 
     // The runner needs to be Decodable.
     enum CodingKeys: String, CodingKey {
@@ -31,9 +31,5 @@ public struct CustomTestRunner: ParsableCommand {
         // This is where the custom test runner would implement its test-specific logic.
         // If the runner needs to report a failure, it should output a useful message to stderr and
         // terminate with a non-zero exit code.
-
-        if fail {
-            throw CustomTestRunnerError.configuredToFail
-        }
     }
 }
