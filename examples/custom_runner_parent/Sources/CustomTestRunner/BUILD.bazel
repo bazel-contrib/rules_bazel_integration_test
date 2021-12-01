@@ -9,6 +9,7 @@ swift_library(
     module_name = "CustomTestRunner",
     visibility = ["//Tests/CustomTestRunnerTests:__subpackages__"],
     deps = [
+        "@swift_pkgs//ShellOut",
         "@swift_pkgs//swift-argument-parser:ArgumentParser",
     ],
 )
