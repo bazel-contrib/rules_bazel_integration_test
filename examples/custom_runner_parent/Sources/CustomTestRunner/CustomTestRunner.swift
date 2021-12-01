@@ -1,6 +1,5 @@
 import ArgumentParser
 
-// @main
 public struct CustomTestRunner: ParsableCommand {
     @Option(help: "The Bazel executable.")
     var bazel: String
