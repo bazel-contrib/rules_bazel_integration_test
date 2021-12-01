@@ -22,18 +22,20 @@ public struct CustomTestRunner: ParsableCommand {
     public init() {}
 
     public func run() throws {
-        Swift.print("bazel: \(String(reflecting: bazel))")
-        Swift.print("workspace: \(String(reflecting: workspace))")
-
         // This is where the custom test runner would implement its test-specific logic.
         // If the runner needs to report a failure, it should output a useful message to stderr and
         // terminate with a non-zero exit code.
+
+        Swift.print("bazel: \(String(reflecting: bazel))")
+        Swift.print("workspace: \(String(reflecting: workspace))")
 
         let infoOutput = try commandRunner.run(command: bazel, arguments: ["info"], at: workspace)
         print("Bazel Info:")
         print(infoOutput)
 
-        let testOutput = try commandRunner.run(command: bazel, arguments: ["test", "//..."], at: workspace)
+        let testOutput = try commandRunner.run(
+            command: bazel, arguments: ["test", "//..."], at: workspace
+        )
         print("Test Output:")
         print(testOutput)
     }
