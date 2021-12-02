@@ -48,10 +48,6 @@ done
 [[ -n "${workspace_path:-}" ]] || exit_with_msg "Must specify the location of the workspace file."
 [[ ${#bazel_cmds[@]} > 0 ]] || exit_with_msg "No Bazel commands were specified."
 
-# starting_path="$(pwd)"
-# starting_path="${starting_path%%*( )}"
-# bazel="${starting_path}/${bazel_rel_path}"
-
 workspace_dir="$(dirname "${workspace_path}")"
 cd "${workspace_dir}"
 
