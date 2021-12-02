@@ -21,6 +21,7 @@ _RULES_AND_MACROS_DOC_PROVIDER = doc_providers.create(
     symbols = [
         "bazel_integration_test",
         "bazel_integration_tests",
+        "default_test_runner",
     ],
     deps = ["//bazel_integration_test"],
 )

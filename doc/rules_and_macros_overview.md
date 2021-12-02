@@ -8,6 +8,7 @@ On this page:
 
   * [bazel_integration_test](#bazel_integration_test)
   * [bazel_integration_tests](#bazel_integration_tests)
+  * [default_test_runner](#default_test_runner)
 
 
 <a id="#bazel_integration_test"></a>
@@ -71,5 +72,25 @@ Macro that defines a set Bazel integration tests each executed with a different 
 | <a id="bazel_integration_tests-tags"></a>tags |  The Bazel tags to apply to the test declaration.   |  <code>["exclusive", "manual"]</code> |
 | <a id="bazel_integration_tests-timeout"></a>timeout |  A valid Bazel timeout value. https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner   |  <code>"long"</code> |
 | <a id="bazel_integration_tests-kwargs"></a>kwargs |  additional attributes like timeout and visibility   |  none |
+
+
+<a id="#default_test_runner"></a>
+
+## default_test_runner
+
+<pre>
+default_test_runner(<a href="#default_test_runner-name">name</a>, <a href="#default_test_runner-bazel_cmds">bazel_cmds</a>, <a href="#default_test_runner-kwargs">kwargs</a>)
+</pre>
+
+Macro that defines a test runner that executes a set of Bazel commands against a workspace.
+
+**PARAMETERS**
+
+
+| Name  | Description | Default Value |
+| :------------- | :------------- | :------------- |
+| <a id="default_test_runner-name"></a>name |  The name for the integration runner instance.   |  none |
+| <a id="default_test_runner-bazel_cmds"></a>bazel_cmds |  A <code>list</code> of <code>string</code> values that represent arguments for Bazel.   |  <code>["info", "test //..."]</code> |
+| <a id="default_test_runner-kwargs"></a>kwargs |  attributes that are passed to the <code>sh_binary</code> target.   |  none |
 
 
