@@ -47,6 +47,7 @@ def bazel_integration_test(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
+        tags: The Bazel tags to apply to the test declaration.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -112,7 +113,6 @@ def bazel_integration_test(
         deps = [
             "@bazel_tools//tools/bash/runfiles",
             "@cgrindel_bazel_shlib//lib:messages",
-            "@cgrindel_bazel_shlib//lib:paths",
         ],
         timeout = timeout,
         env = select({
@@ -134,6 +134,7 @@ def bazel_integration_tests(
         bazel_versions = [],
         workspace_path = None,
         workspace_files = None,
+        tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
@@ -150,6 +151,7 @@ def bazel_integration_tests(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
+        tags: The Bazel tags to apply to the test declaration.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -173,5 +175,6 @@ def bazel_integration_tests(
             bazel_version = bazel_version,
             workspace_path = workspace_path,
             workspace_files = workspace_files,
+            tags = tags,
             timeout = timeout,
         )
