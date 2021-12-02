@@ -46,11 +46,13 @@ default_test_runner(
     ],
 )
 
-# This integration executes
 bazel_integration_test(
     name = "custom_test_runner_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":custom_test_runner_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("custom_test_runner") + [
+        "//:local_repository_files",
+    ],
 )
 
 # MARK: - Test Suite
