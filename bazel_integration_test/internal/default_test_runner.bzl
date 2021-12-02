@@ -17,7 +17,7 @@ def default_test_runner(
     # Prepare the Bazel commands
     args = []
     for cmd in bazel_cmds:
-        args.extend(["--bazel_cmd", "\"" + cmd + "\""])
+        args.extend(["--bazel_cmd", cmd])
 
     # Define the shell binary
     binary_name = name + "_binary"
