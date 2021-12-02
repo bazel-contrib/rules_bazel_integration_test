@@ -66,10 +66,12 @@ test_suite(
     # If you don't apply the test tags to the test suite, the test suite will
     # be found when `bazel test //...` is executed.
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
-    tests = [":simple_test"] +
-            integration_test_utils.bazel_integration_test_names(
-                "simple_test",
-                OTHER_BAZEL_VERSIONS,
-            ),
+    tests = [
+        ":simple_test",
+        "custom_test_runner_test",
+    ] + integration_test_utils.bazel_integration_test_names(
+        "simple_test",
+        OTHER_BAZEL_VERSIONS,
+    ),
     visibility = ["//:__subpackages__"],
 )
