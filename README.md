@@ -6,6 +6,20 @@ This repository contains [Bazel](https://bazel.build/) macros that execute integ
 use Bazel (e.g. execute tests in a child workspace).  The macros support running integration tests
 with multiple versions of Bazel.
 
+## Table of Contents
+
+* [Quickstart](#quickstart)
+  * [1\. Configure your workspace to use rules\_bazel\_integration\_test](#1-configure-your-workspace-to-use-rules_bazel_integration_test)
+  * [2\. Create a bazel\_versions\.bzl in the root of your repository](#2-create-a-bazel_versionsbzl-in-the-root-of-your-repository)
+  * [3\. Declare the Bazel binaries in the WORKSPACE file](#3-declare-the-bazel-binaries-in-the-workspace-file)
+  * [4\. Configure the deleted packages for the parent workspace](#4-configure-the-deleted-packages-for-the-parent-workspace)
+  * [5\. Define integration test targets](#5-define-integration-test-targets)
+* [Integration Tests That Depend Upon The Parent Workspace](#integration-tests-that-depend-upon-the-parent-workspace)
+  * [1\. Declare a filegroup to represent the parent workspace files](#1-declare-a-filegroup-to-represent-the-parent-workspace-files)
+  * [2\. Update the integration test targets to include the parent workspace files](#2-update-the-integration-test-targets-to-include-the-parent-workspace-files)
+  * [3\. Execute the integration tests](#3-execute-the-integration-tests)
+* [Custom Test Runner](#custom-test-runner)
+
 ## Quickstart
 
 The following provides a quick introduction on how to use the rules in this repository. Also, check
