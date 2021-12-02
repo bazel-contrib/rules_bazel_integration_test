@@ -17,6 +17,7 @@ swift_library(
 swift_binary(
     name = "custom_test_runner",
     srcs = ["main.swift"],
+    visibility = ["//visibility:public"],
     deps = [
         ":CustomTestRunner",
     ],

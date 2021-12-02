@@ -36,12 +36,15 @@ public struct CustomTestRunner: ParsableCommand {
         Swift.print("bazel: \(String(reflecting: bazel))")
         Swift.print("workspace: \(String(reflecting: workspace))")
 
-        let infoOutput = try commandRunner.run(command: bazel, arguments: ["info"], at: workspace)
+        let workspaceDir = try commandRunner.run(command: "dirname", arguments: [workspace], at: ".")
+        Swift.print("workspaceDir: \(String(reflecting: workspaceDir))")
+
+        let infoOutput = try commandRunner.run(command: bazel, arguments: ["info"], at: workspaceDir)
         print("Bazel Info:")
         print(infoOutput)
 
         let testOutput = try commandRunner.run(
-            command: bazel, arguments: ["test", "//..."], at: workspace
+            command: bazel, arguments: ["test", "//..."], at: workspaceDir
         )
         print("Test Output:")
         print(testOutput)

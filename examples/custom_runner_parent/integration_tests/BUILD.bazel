@@ -8,7 +8,7 @@ load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION")
 # This Bazel integration test uses the custom test runner from this workspace and execute Bazel
 # commands in the 'simple' workspace.
 bazel_integration_test(
-    name = "simple_test",
+    name = "workspace_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = "//Sources/CustomTestRunner:custom_test_runner",
     visibility = ["//:__subpackages__"],

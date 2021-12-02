@@ -19,11 +19,24 @@ messages_sh="$(rlocation "${messages_sh_location}")" || \
   (echo >&2 "Failed to locate ${messages_sh_location}" && exit 1)
 source "${messages_sh}"
 
+paths_sh_location=cgrindel_bazel_shlib/lib/paths.sh
+paths_sh="$(rlocation "${paths_sh_location}")" || \
+  (echo >&2 "Failed to locate ${paths_sh_location}" && exit 1)
+source "${paths_sh}"
+
 args=()
 while (("$#")); do
   case "${1}" in
+    "--bazel")
+      bazel_rel_path="${2}"
+      shift 2
+      ;;
+    "--workspace")
+      workspace_path="${2}"
+      shift 2
+      ;;
     "--runner")
-      test_runner="${2}"
+      test_runner_path="${2}"
       shift 2
       ;;
     *)
@@ -33,6 +46,17 @@ while (("$#")); do
   esac
 done
 
-[[ -n "${test_runner:-}" ]] || exit_with_msg "Must specify a test runner."
+[[ -n "${bazel_rel_path:-}" ]] || exit_with_msg "Must specify the location of the Bazel binary."
+[[ -n "${workspace_path:-}" ]] || exit_with_msg "Must specify the location of the workspace file."
+[[ -n "${test_runner_path:-}" ]] || exit_with_msg "Must specify a test runner."
 
-"${test_runner}" "${args[@]:-}"
+bazel="$(normalize_path "${bazel_rel_path}")"
+workspace="$(normalize_path "${workspace_path}")"
+test_runner="$(normalize_path "${test_runner_path}")"
+
+if [[ ${#args[@]} > 0 ]]; then
+  "${test_runner}" --bazel "${bazel}" --workspace "${workspace}" "${args[@]:-}"
+else
+  "${test_runner}" --bazel "${bazel}" --workspace "${workspace}"
+fi
+
