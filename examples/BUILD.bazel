@@ -10,6 +10,8 @@ load(
 
 bzlformat_pkg(name = "bzlformat")
 
+# MARK: - Simple Tests
+
 default_test_runner(
     name = "simple_test_runner",
 )
@@ -30,6 +32,28 @@ bazel_integration_tests(
     bazel_versions = OTHER_BAZEL_VERSIONS,
     test_runner = ":simple_test_runner",
 )
+
+# MARK: - Custom Test Runner Tests
+
+# NOTE: The following is used to test that the custom_test_runner integration
+# tests work. It does not demonstrate how to use a custom test runner. See the
+# custom_test_runner workspace for how to use a custom test runner.
+
+default_test_runner(
+    name = "custom_test_runner_test_runner",
+    bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS + [
+        "test //:all_integration_tests",
+    ],
+)
+
+# This integration executes
+bazel_integration_test(
+    name = "custom_test_runner_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":custom_test_runner_test_runner",
+)
+
+# MARK: - Test Suite
 
 # By default, the integration test targets are tagged as `manual`. This
 # prevents the targets from being found from most target expansion (e.g.
