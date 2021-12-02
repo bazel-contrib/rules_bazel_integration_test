@@ -253,10 +253,12 @@ filegroup(
 
 ### 2. Update the integration test targets to include the parent workspace files
 
-The `bazel_integration_test` and `bazel_integration_tests` declarations include a `workspace_files`
-attribute. If not specified, it defaults to a custom glob expression selecting files under the
-child workspace directory. To include the parent workspace files, add the attribute with an
-expression that globs the workspace files and the `//:local_repository_files` target.
+The [`bazel_integration_test`](/doc/rules_and_macros_overview.md#bazel_integration_test) and
+[`bazel_integration_tests`](/doc/rules_and_macros_overview.md#bazel_integration_tests) declarations
+include a `workspace_files` attribute. If not specified, it defaults to a custom glob expression
+selecting files under the child workspace directory. To include the parent workspace files, add the
+attribute with an expression that globs the workspace files and the `//:local_repository_files`
+target.
 
 ```python
 bazel_integration_test(
@@ -280,4 +282,16 @@ $ bazel test //examples:simple_test
 
 ## Custom Test Runner
 
-TODO: IMPLEMENT ME
+The [`bazel_integration_test`](/doc/rules_and_macros_overview.md#bazel_integration_test) macro
+supports executing tests with a custom test runner. So, if your integration tests require custom
+setup code or if you would prefer to write the integration tests in a specific language, you can
+create an executable target and pass it to the
+[`test_runner`](/doc/rules_and_macros_overview.md#bazel_integration_test-test_runner) attribute. 
+
+A custom test runner must support two command-line flag-value pairs: `--bazel` and `--workspace`.
+The `--bazel` flag specifies the absolute path to the Bazel binary that should be used for the test.
+The `--workspace` flag specifies the absolute path to the `WORKSPACE` file for the child workspace
+under test. If the test runner exits with a non-zero exit code, it will be considered a failed test.
+
+Examples of custom test runners:
+* [A custom test runner written in Swift](/examples/custom_test_runner) 
