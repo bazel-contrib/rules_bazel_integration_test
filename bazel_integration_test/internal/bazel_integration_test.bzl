@@ -9,25 +9,31 @@ an integration test.
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/bazel_integration_test.bzl.
 
-DEFAULT_TEST_RUNNER = "@cgrindel_rules_bazel_integration_test//bazel_integration_test/internal:integration_test_runner.sh"
-
 def bazel_integration_test(
         name,
+        test_runner,
         bazel_version = None,
         bazel_binary = None,
         workspace_path = None,
         workspace_files = None,
-        bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
-        test_runner_srcs = [DEFAULT_TEST_RUNNER],
-        sh_deps = [],
-        sh_data = [],
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
+    This macro accepts an exectuable target as the test runner for the
+    integration test. A test runner must support two flag-value pairs:
+    `--bazel` and `--workspace`. The `--bazel` value specifies the
+    Bazel binary to use in the integration test. The `--workspace` value
+    specifies the path of the `WORKSPACE` file.
+
+    If your integration test only consists of executing Bazel commands,  a
+    default test runner is provided by the `default_test_runner` macro.
+
     Args:
         name: name of the resulting py_test
+        test_runner: A `Label` for a test runner binary. (see description for
+                     details)
         bazel_version: Optional. A `string` value representing the semantic
                        version of Bazel to use for the integration test. If a
                        version is not specified, then the `bazel_binary` must
@@ -41,12 +47,7 @@ def bazel_integration_test(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
-        bazel_cmds: A `list` of `string` values that represent arguments for
-                    Bazel.
-        test_runner_srcs: A `list` of shell scripts that are used as the test
-                          runner.
-        sh_deps: A `list` of shell library dependencies for the test runner.
-        sh_data: A `list` of items to be added to the sh_test data attribute.
+        tags: The Bazel tags to apply to the test declaration.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -89,26 +90,29 @@ def bazel_integration_test(
         subpath = paths.join(workspace_path, "WORKSPACE"),
     )
 
-    # Prepare the Bazel commands
-    bazel_cmd_args = []
-    for cmd in bazel_cmds:
-        bazel_cmd_args.extend(["--bazel_cmd", "\"" + cmd + "\""])
-
     native.sh_test(
         name = name,
-        srcs = test_runner_srcs,
+        srcs = [
+            "@cgrindel_rules_bazel_integration_test//bazel_integration_test/internal:integration_test_wrapper.sh",
+        ],
         args = [
+            "--runner",
+            "$(location %s)" % (test_runner),
             "--bazel",
             "$(location :%s)" % (bazel_bin_name),
             "--workspace",
             "$(location :%s)" % (bazel_wksp_file_name),
-        ] + bazel_cmd_args,
-        deps = sh_deps,
-        data = sh_data + [
+        ],
+        data = [
+            test_runner,
             bazel_binary,
             bazel_bin_name,
             workspace_files_name,
             bazel_wksp_file_name,
+        ],
+        deps = [
+            "@bazel_tools//tools/bash/runfiles",
+            "@cgrindel_bazel_shlib//lib:messages",
         ],
         timeout = timeout,
         env = select({
@@ -126,19 +130,18 @@ def bazel_integration_test(
 
 def bazel_integration_tests(
         name,
+        test_runner,
         bazel_versions = [],
         workspace_path = None,
         workspace_files = None,
-        bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS,
-        test_runner_srcs = [DEFAULT_TEST_RUNNER],
-        sh_deps = [],
-        sh_data = [],
+        tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
 
     Args:
         name: name of the resulting py_test
+        test_runner: A `Label` for a test runner binary.
         workspace_path: A `string` specifying the path to the child
                         workspace. If not specified, then it is derived from
                         the name.
@@ -148,12 +151,7 @@ def bazel_integration_tests(
         workspace_files: Optional. A `list` of files for the child workspace.
                          If not specified, then it is derived from the
                          `workspace_path`.
-        bazel_cmds: A `list` of `string` values that represent arguments for
-                    Bazel.
-        test_runner_srcs: A `list` of shell scripts that are used as the test
-                          runner.
-        sh_deps: A `list` of shell library dependencies for the test runner.
-        sh_data: A `list` of items to be added to the sh_test data attribute.
+        tags: The Bazel tags to apply to the test declaration.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
         **kwargs: additional attributes like timeout and visibility
@@ -173,12 +171,10 @@ def bazel_integration_tests(
                 name,
                 bazel_version,
             ),
+            test_runner = test_runner,
             bazel_version = bazel_version,
             workspace_path = workspace_path,
             workspace_files = workspace_files,
-            bazel_cmds = bazel_cmds,
-            test_runner_srcs = test_runner_srcs,
-            sh_deps = sh_deps,
-            sh_data = sh_data,
+            tags = tags,
             timeout = timeout,
         )

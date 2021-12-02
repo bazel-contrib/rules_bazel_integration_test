@@ -2,6 +2,12 @@ load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
 
 bzlformat_pkg(name = "bzlformat")
 
+filegroup(
+    name = "all_files",
+    srcs = glob(["*"]),
+    visibility = ["//:__subpackages__"],
+)
+
 # MARK: - Binary Declarations
 
 sh_binary(

@@ -1,0 +1,19 @@
+load(
+    "@cgrindel_rules_bazel_integration_test//bazel_integration_test:bazel_integration_test.bzl",
+    "bazel_integration_test",
+    "integration_test_utils",
+)
+load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION")
+
+# This Bazel integration test uses the custom test runner from this workspace to execute Bazel
+# commands in the `workspace` child workspace.
+bazel_integration_test(
+    # If the test is named XXX_test, the macro will assume that the child workspace is named XXX.
+    # One can specify a different location by using the workspace_path attribute.
+    name = "workspace_test",
+    # Specify the version of Bazel to use to execute the test.
+    bazel_version = CURRENT_BAZEL_VERSION,
+    # This is a reference to the custom test runner.
+    test_runner = "//Sources/CustomTestRunner:custom_test_runner",
+    visibility = ["//:__subpackages__"],
+)

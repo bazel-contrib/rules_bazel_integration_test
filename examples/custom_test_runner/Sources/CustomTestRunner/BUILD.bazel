@@ -1,0 +1,24 @@
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_binary", "swift_library")
+
+swift_library(
+    name = "CustomTestRunner",
+    srcs = glob(
+        ["*.swift"],
+        exclude = ["main.swift"],
+    ),
+    module_name = "CustomTestRunner",
+    visibility = ["//Tests/CustomTestRunnerTests:__subpackages__"],
+    deps = [
+        "@swift_pkgs//ShellOut",
+        "@swift_pkgs//swift-argument-parser:ArgumentParser",
+    ],
+)
+
+swift_binary(
+    name = "custom_test_runner",
+    srcs = ["main.swift"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":CustomTestRunner",
+    ],
+)

@@ -6,12 +6,25 @@ This repository contains [Bazel](https://bazel.build/) macros that execute integ
 use Bazel (e.g. execute tests in a child workspace).  The macros support running integration tests
 with multiple versions of Bazel.
 
+## Table of Contents
+
+* [Quickstart](#quickstart)
+  * [1\. Configure your workspace to use rules\_bazel\_integration\_test](#1-configure-your-workspace-to-use-rules_bazel_integration_test)
+  * [2\. Create a bazel\_versions\.bzl in the root of your repository](#2-create-a-bazel_versionsbzl-in-the-root-of-your-repository)
+  * [3\. Declare the Bazel binaries in the WORKSPACE file](#3-declare-the-bazel-binaries-in-the-workspace-file)
+  * [4\. Configure the deleted packages for the parent workspace](#4-configure-the-deleted-packages-for-the-parent-workspace)
+  * [5\. Define integration test targets](#5-define-integration-test-targets)
+* [Integration Tests That Depend Upon The Parent Workspace](#integration-tests-that-depend-upon-the-parent-workspace)
+  * [1\. Declare a filegroup to represent the parent workspace files](#1-declare-a-filegroup-to-represent-the-parent-workspace-files)
+  * [2\. Update the integration test targets to include the parent workspace files](#2-update-the-integration-test-targets-to-include-the-parent-workspace-files)
+  * [3\. Execute the integration tests](#3-execute-the-integration-tests)
+* [Custom Test Runner](#custom-test-runner)
+
 ## Quickstart
 
 The following provides a quick introduction on how to use the rules in this repository. Also, check
 out [the documentation](/doc/), the [integration test defined in this repo](/examples/BUILD.bazel),
-and [the bazel_integration_test_example](https://github.com/cgrindel/bazel_integration_test_example)
-for more information.
+and the [custom test runner example](/examples/custom_test_runner) for more information.
 
 ### 1. Configure your workspace to use `rules_bazel_integration_test`
 
@@ -140,7 +153,13 @@ load(
     "@cgrindel_rules_bazel_integration_test//bazel_integration_test:bazel_integration_test.bzl",
     "bazel_integration_test",
     "bazel_integration_tests",
+    "default_test_runner",
     "integration_test_utils",
+)
+
+# Declare a test runner to drive the integration tests.
+default_test_runner(
+    name = "simple_test_runner",
 )
 
 # If you only want to execute against a single version of Bazel, use
@@ -148,6 +167,7 @@ load(
 bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":simple_test_runner",
 )
 
 # If you want to execute an integration test using multiple versions of Bazel,
@@ -156,6 +176,7 @@ bazel_integration_test(
 bazel_integration_tests(
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
+    test_runner = ":simple_test_runner",
 )
 
 # By default, the integration test targets are tagged as `manual`. This
@@ -245,15 +266,18 @@ filegroup(
 
 ### 2. Update the integration test targets to include the parent workspace files
 
-The `bazel_integration_test` and `bazel_integration_tests` declarations include a `workspace_files`
-attribute. If not specified, it defaults to a custom glob expression selecting files under the
-child workspace directory. To include the parent workspace files, add the attribute with an
-expression that globs the workspace files and the `//:local_repository_files` target.
+The [`bazel_integration_test`](/doc/rules_and_macros_overview.md#bazel_integration_test) and
+[`bazel_integration_tests`](/doc/rules_and_macros_overview.md#bazel_integration_tests) declarations
+include a `workspace_files` attribute. If not specified, it defaults to a custom glob expression
+selecting files under the child workspace directory. To include the parent workspace files, add the
+attribute with an expression that globs the workspace files and the `//:local_repository_files`
+target.
 
 ```python
 bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:local_repository_files",
     ],
@@ -268,3 +292,19 @@ Execute the integration test.
 # Execute the integration test called simple_test
 $ bazel test //examples:simple_test
 ```
+
+## Custom Test Runner
+
+The [`bazel_integration_test`](/doc/rules_and_macros_overview.md#bazel_integration_test) macro
+supports executing tests with a custom test runner. So, if your integration tests require custom
+setup code or if you would prefer to write the integration tests in a specific language, you can
+create an executable target and pass it to the
+[`test_runner`](/doc/rules_and_macros_overview.md#bazel_integration_test-test_runner) attribute. 
+
+A custom test runner must support two command-line flag-value pairs: `--bazel` and `--workspace`.
+The `--bazel` flag specifies the absolute path to the Bazel binary that should be used for the test.
+The `--workspace` flag specifies the absolute path to the `WORKSPACE` file for the child workspace
+under test. If the test runner exits with a non-zero exit code, it will be considered a failed test.
+
+Examples of custom test runners:
+* [A custom test runner written in Swift](/examples/custom_test_runner) 

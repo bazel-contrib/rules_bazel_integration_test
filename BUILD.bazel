@@ -24,6 +24,22 @@ bzl_library(
     visibility = ["//:__subpackages__"],
 )
 
+# MARK: - Related to Integration Tests
+
+# This target collects all of the parent workspace files needed by the child workspaces.
+filegroup(
+    name = "local_repository_files",
+    # Include every package that is required by the child workspaces.
+    srcs = [
+        "BUILD.bazel",
+        "WORKSPACE",
+        "//bazel_integration_test:all_files",
+        "//bazel_integration_test/internal:all_files",
+        "//tools:all_files",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
 test_suite(
     name = "all_integration_tests",
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,

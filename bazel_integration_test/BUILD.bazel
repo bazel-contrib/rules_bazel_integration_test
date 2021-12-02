@@ -15,6 +15,13 @@ bzl_library(
     srcs = ["bazel_integration_test.bzl"],
     deps = [
         "//bazel_integration_test/internal:bazel_integration_test",
+        "//bazel_integration_test/internal:default_test_runner",
         "//bazel_integration_test/internal:integration_test_utils",
     ],
+)
+
+filegroup(
+    name = "all_files",
+    srcs = glob(["*"]),
+    visibility = ["//:__subpackages__"],
 )
