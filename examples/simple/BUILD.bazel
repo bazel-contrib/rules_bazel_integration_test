@@ -11,3 +11,11 @@ bzlformat_pkg()
 updatesrc_update_all(
     name = "update_all",
 )
+
+# This exists to ensure that the hidden file is copied by create_scratch_dir.sh
+genrule(
+    name = "copy_hidden_file",
+    srcs = [".hidden_file"],
+    outs = ["copy_of_hidden_file"],
+    cmd = "cat $(location .hidden_file) > $@",
+)

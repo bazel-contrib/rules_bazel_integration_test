@@ -55,6 +55,31 @@ bazel_integration_test(
     ],
 )
 
+# MARK: - Custom Test Runner That Uses create_scratch_dir Test
+
+sh_binary(
+    name = "use_create_scratch_dir_test_runner",
+    testonly = True,
+    srcs = ["use_create_scratch_dir_test.sh"],
+    data = [
+        "@cgrindel_rules_bazel_integration_test//tools:create_scratch_dir",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_shlib//lib:assertions",
+    ],
+)
+
+bazel_integration_test(
+    name = "use_create_scratch_dir_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":use_create_scratch_dir_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("simple") + [
+        "//:local_repository_files",
+    ],
+    workspace_path = "simple",
+)
+
 # MARK: - Test Suite
 
 # By default, the integration test targets are tagged as `manual`. This
@@ -68,7 +93,8 @@ test_suite(
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
     tests = [
         ":simple_test",
-        "custom_test_runner_test",
+        ":custom_test_runner_test",
+        ":use_create_scratch_dir_test",
     ] + integration_test_utils.bazel_integration_test_names(
         "simple_test",
         OTHER_BAZEL_VERSIONS,
