@@ -69,8 +69,7 @@ def _glob_workspace_files(workspace_path):
     """
     return native.glob(
         [paths.join(workspace_path, "**", "*")],
-        # exclude = [paths.join(workspace_path, "bazel-*", "**")],
-        exclude = [paths.join(workspace_path, "**", "bazel-*")],
+        exclude = [paths.join(workspace_path, "bazel-*", "**")],
     )
 
 # MARK: - Constants
