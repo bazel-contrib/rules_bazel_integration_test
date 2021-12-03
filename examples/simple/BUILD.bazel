@@ -11,3 +11,6 @@ bzlformat_pkg()
 updatesrc_update_all(
     name = "update_all",
 )
+
+# This exists to ensure that the hidden file is copied by create_scratch_dir.sh
+exports_files([".hidden_file"])

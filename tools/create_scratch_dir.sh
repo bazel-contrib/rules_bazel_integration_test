@@ -65,7 +65,7 @@ cd "${workspace_dir}"
 cp -R -L * "${scratch_dir}"
 
 # Copy the hidden files
-find . -type f -name ".*" -print0 | xargs -0 -I '{}' cp "{}" "${scratch_dir}/{}"
+find . \( -type f -or -type l \) -name ".*" -print0 | xargs -0 -I '{}' cp "{}" "${scratch_dir}/{}"
 
 # Output the scratch directory
 echo "${scratch_dir}"
