@@ -23,17 +23,17 @@ def bazel_integration_test_rules_dependencies():
     maybe(
         http_archive,
         name = "cgrindel_rules_bzlformat",
-        sha256 = "b45b392613092b42c4ee94051be104b990e3c8651dea17410dfd63b98957cd57",
-        strip_prefix = "rules_bzlformat-0.1.0",
-        urls = ["https://github.com/cgrindel/rules_bzlformat/archive/v0.1.0.tar.gz"],
+        sha256 = "df22d867e661de66a255a994caf814ff66426a43873194575bcaaaf9b9ad89ed",
+        strip_prefix = "rules_bzlformat-0.2.0",
+        urls = ["https://github.com/cgrindel/rules_bzlformat/archive/v0.2.0.tar.gz"],
     )
 
     maybe(
         http_archive,
         name = "cgrindel_bazel_doc",
-        sha256 = "bae4a0f41cc5cf89f26c779fc04379f09bb290b4910b2cf206c0372ad0c8aac7",
-        strip_prefix = "bazel-doc-0.1.0",
-        urls = ["https://github.com/cgrindel/bazel-doc/archive/v0.1.0.tar.gz"],
+        sha256 = "3ccc6d205a7f834c5e89adcb4bc5091a9a07a69376107807eb9aea731ce92854",
+        strip_prefix = "bazel-doc-0.1.2",
+        urls = ["https://github.com/cgrindel/bazel-doc/archive/v0.1.2.tar.gz"],
     )
 
     maybe(
