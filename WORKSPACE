@@ -20,10 +20,7 @@ stardoc_repositories()
 
 # MARK: - Update Source
 
-load(
-    "@cgrindel_rules_updatesrc//updatesrc:deps.bzl",
-    "updatesrc_rules_dependencies",
-)
+load("@cgrindel_rules_updatesrc//updatesrc:deps.bzl", "updatesrc_rules_dependencies")
 
 updatesrc_rules_dependencies()
 
