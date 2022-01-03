@@ -38,5 +38,5 @@ def default_test_runner(
     execute_binary(
         name = name,
         binary = binary_name,
-        args = args,
+        arguments = args,
     )
