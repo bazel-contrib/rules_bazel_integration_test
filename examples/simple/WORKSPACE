@@ -2,14 +2,20 @@ workspace(name = "simple_example")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# TODO: FIX ME!
+
 local_repository(
     name = "cgrindel_bazel_starlib",
-    path = "../../bazel-starlib",
+    path = "/Users/chuck/code/cgrindel/bazel-starlib",
 )
 
 load("@cgrindel_bazel_starlib//:deps.bzl", "bazel_starlib_dependencies")
 
 bazel_starlib_dependencies()
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
 
 # Buildifier Dependencies
 
