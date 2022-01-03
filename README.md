@@ -42,21 +42,13 @@ load("@cgrindel_rules_bazel_integration_test//bazel_integration_test:deps.bzl", 
 
 bazel_integration_test_rules_dependencies()
 
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
-
-bazel_skylib_workspace()
-
-load("@cgrindel_rules_bzlformat//bzlformat:deps.bzl", "bzlformat_rules_dependencies")
-
-bzlformat_rules_dependencies()
-
 load("@cgrindel_bazel_starlib//:deps.bzl", "bazel_starlib_dependencies")
 
 bazel_starlib_dependencies()
 
-load("@cgrindel_bazel_shlib//:deps.bzl", "shlib_rules_dependencies")
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
-shlib_rules_dependencies()
+bazel_skylib_workspace()
 ```
 
 ### 2. Create a `bazel_versions.bzl` in the root of your repository
@@ -225,8 +217,7 @@ local_repository(
 ```
 
 This section explains how to use `rules_bazel_integration_test` in this situation. To review working
-examples, check out [rules_updatesrc](https://github.com/cgrindel/rules_updatesrc),
-[rules_bzlformat](https://github.com/cgrindel/rules_bzlformat), and
+examples, check out [bazel-starlib](https://github.com/cgrindel/bazel-starlib) and
 [rules_spm](https://github.com/cgrindel/rules_spm).
 
 ### 1. Declare a `filegroup` to represent the parent workspace files

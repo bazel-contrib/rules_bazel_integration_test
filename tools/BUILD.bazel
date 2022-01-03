@@ -1,4 +1,4 @@
-load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 
 bzlformat_pkg(name = "bzlformat")
 
@@ -16,8 +16,8 @@ sh_binary(
     visibility = ["//visibility:public"],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
-        "@cgrindel_bazel_shlib//lib:arrays",
-        "@cgrindel_bazel_shlib//lib:files",
+        "@cgrindel_bazel_starlib//shlib/lib:arrays",
+        "@cgrindel_bazel_starlib//shlib/lib:files",
     ],
 )
 
@@ -30,10 +30,10 @@ sh_binary(
     visibility = ["//visibility:public"],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
-        "@cgrindel_bazel_shlib//lib:arrays",
-        "@cgrindel_bazel_shlib//lib:files",
-        "@cgrindel_bazel_shlib//lib:messages",
-        "@cgrindel_bazel_shlib//lib:paths",
+        "@cgrindel_bazel_starlib//shlib/lib:arrays",
+        "@cgrindel_bazel_starlib//shlib/lib:files",
+        "@cgrindel_bazel_starlib//shlib/lib:messages",
+        "@cgrindel_bazel_starlib//shlib/lib:paths",
     ],
 )
 
@@ -43,7 +43,7 @@ sh_binary(
     visibility = ["//visibility:public"],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
-        "@cgrindel_bazel_shlib//lib:messages",
-        "@cgrindel_bazel_shlib//lib:paths",
+        "@cgrindel_bazel_starlib//shlib/lib:messages",
+        "@cgrindel_bazel_starlib//shlib/lib:paths",
     ],
 )

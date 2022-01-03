@@ -4,7 +4,7 @@ load("//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependen
 
 bazel_integration_test_rules_dependencies()
 
-load("@cgrindel_bazel_starlib//deps.bzl", "bazel_starlib_dependencies")
+load("@cgrindel_bazel_starlib//:deps.bzl", "bazel_starlib_dependencies")
 
 bazel_starlib_dependencies()
 

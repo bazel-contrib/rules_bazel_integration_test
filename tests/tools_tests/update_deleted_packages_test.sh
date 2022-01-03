@@ -11,7 +11,7 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
 
-assertions_lib="$(rlocation cgrindel_bazel_shlib/lib/assertions.sh)"
+assertions_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/assertions.sh)"
 source "${assertions_lib}"
 
 update_bin="$(rlocation cgrindel_rules_bazel_integration_test/tools/update_deleted_packages.sh)"

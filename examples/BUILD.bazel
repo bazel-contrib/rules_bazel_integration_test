@@ -1,4 +1,4 @@
-load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION", "OTHER_BAZEL_VERSIONS")
 load(
     "//bazel_integration_test:bazel_integration_test.bzl",
@@ -66,7 +66,7 @@ sh_binary(
     ],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
-        "@cgrindel_bazel_shlib//lib:assertions",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
     ],
 )
 
