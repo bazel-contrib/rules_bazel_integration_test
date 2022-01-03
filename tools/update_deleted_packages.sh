@@ -28,18 +28,18 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 
 find_pkgs_script="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
 
-messages_sh_location=cgrindel_bazel_shlib/lib/messages.sh
+messages_sh_location=cgrindel_bazel_starlib/shlib/lib/messages.sh
 messages_sh="$(rlocation "${messages_sh_location}")" || \
   (echo >&2 "Failed to locate ${messages_sh_location}" && exit 1)
 source "${messages_sh}"
 
-arrays_lib="$(rlocation cgrindel_bazel_shlib/lib/arrays.sh)"
+arrays_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/arrays.sh)"
 source "${arrays_lib}"
 
-files_lib="$(rlocation cgrindel_bazel_shlib/lib/files.sh)"
+files_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/files.sh)"
 source "${files_lib}"
 
-paths_lib="$(rlocation cgrindel_bazel_shlib/lib/paths.sh)"
+paths_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/paths.sh)"
 source "${paths_lib}"
 
 # MARK - Main

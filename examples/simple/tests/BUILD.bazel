@@ -1,4 +1,4 @@
-load("@cgrindel_rules_bzlformat//bzlformat:bzlformat.bzl", "bzlformat_pkg")
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load(":mockascript_tests.bzl", "mockascript_test_suite")
 
 bzlformat_pkg(name = "bzlformat")

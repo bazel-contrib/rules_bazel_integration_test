@@ -112,7 +112,7 @@ def bazel_integration_test(
         ],
         deps = [
             "@bazel_tools//tools/bash/runfiles",
-            "@cgrindel_bazel_shlib//lib:messages",
+            "@cgrindel_bazel_starlib//shlib/lib:messages",
         ],
         timeout = timeout,
         env = select({

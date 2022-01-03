@@ -1,4 +1,4 @@
-load("@cgrindel_bazel_shlib//rules:execute_binary.bzl", "execute_binary")
+load("@cgrindel_bazel_starlib//shlib/rules:execute_binary.bzl", "execute_binary")
 load(":integration_test_utils.bzl", "integration_test_utils")
 
 def default_test_runner(
@@ -28,7 +28,7 @@ def default_test_runner(
         ],
         deps = [
             "@bazel_tools//tools/bash/runfiles",
-            "@cgrindel_bazel_shlib//lib:messages",
+            "@cgrindel_bazel_starlib//shlib/lib:messages",
         ],
         args = args,
         **kwargs
@@ -38,5 +38,5 @@ def default_test_runner(
     execute_binary(
         name = name,
         binary = binary_name,
-        args = args,
+        arguments = args,
     )
