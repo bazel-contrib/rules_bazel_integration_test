@@ -2,11 +2,13 @@ workspace(name = "simple_example")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# TODO: FIX ME!
-
-local_repository(
+http_archive(
     name = "cgrindel_bazel_starlib",
-    path = "/Users/chuck/code/cgrindel/bazel-starlib",
+    sha256 = "238c05abf31447b93bd15b616c7413c4c719ee7b5e81c1489ca20f02ce628489",
+    strip_prefix = "bazel-starlib-0.2.0",
+    urls = [
+        "http://github.com/cgrindel/bazel-starlib/archive/v0.2.0.tar.gz",
+    ],
 )
 
 load("@cgrindel_bazel_starlib//:deps.bzl", "bazel_starlib_dependencies")
