@@ -22,7 +22,11 @@ def bazel_integration_test_rules_dependencies():
     )
 
     maybe(
-        native.local_repository,
+        http_archive,
         name = "cgrindel_bazel_starlib",
-        path = "/Users/chuck/code/cgrindel/bazel-starlib",
+        sha256 = "238c05abf31447b93bd15b616c7413c4c719ee7b5e81c1489ca20f02ce628489",
+        strip_prefix = "bazel-starlib-0.2.0",
+        urls = [
+            "http://github.com/cgrindel/bazel-starlib/archive/v0.2.0.tar.gz",
+        ],
     )
