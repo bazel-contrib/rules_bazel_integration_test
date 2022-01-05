@@ -47,6 +47,7 @@ def _get_installer(rctx):
         enabled_packages.append(
             "https://github.com/{fork}/bazel/releases/download/{version}/{filename}",
         )
+
     urls = [
         url.format(
             # TODO: support other forks like bazelisk does
@@ -58,9 +59,6 @@ def _get_installer(rctx):
         for url in enabled_packages
     ]
     args = {"url": urls, "type": "zip"}
-
-    # if version in BAZEL_HASH_DICT and platform in BAZEL_HASH_DICT[version]:
-    #     args["sha256"] = BAZEL_HASH_DICT[version][platform]
 
     rctx.download_and_extract(**args)
 
