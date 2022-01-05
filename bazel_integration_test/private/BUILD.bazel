@@ -42,3 +42,8 @@ bzl_library(
         "@bazel_skylib//rules:select_file",
     ],
 )
+
+bzl_library(
+    name = "bazel_binaries",
+    srcs = ["bazel_binaries.bzl"],
+)
