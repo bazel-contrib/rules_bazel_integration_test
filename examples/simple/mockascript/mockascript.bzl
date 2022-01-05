@@ -1,5 +1,5 @@
 load(
-    "//mockascript/internal:mockascript_library",
+    "//mockascript/private:mockascript_library",
     _mockascript_library = "mockascript_library",
 )
 

@@ -93,7 +93,7 @@ def bazel_integration_test(
     native.sh_test(
         name = name,
         srcs = [
-            "@cgrindel_rules_bazel_integration_test//bazel_integration_test/internal:integration_test_wrapper.sh",
+            "@cgrindel_rules_bazel_integration_test//bazel_integration_test/private:integration_test_wrapper.sh",
         ],
         args = [
             "--runner",

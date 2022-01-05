@@ -10,7 +10,7 @@ bzl_library(
     name = "mockascript",
     srcs = ["mockascript.bzl"],
     deps = [
-        "//mockascript/internal:mockascript_library",
+        "//mockascript/private:mockascript_library",
     ],
 )
 

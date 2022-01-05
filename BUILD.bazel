@@ -43,7 +43,7 @@ filegroup(
         "BUILD.bazel",
         "WORKSPACE",
         "//bazel_integration_test:all_files",
-        "//bazel_integration_test/internal:all_files",
+        "//bazel_integration_test/private:all_files",
         "//tools:all_files",
     ],
     visibility = ["//:__subpackages__"],
