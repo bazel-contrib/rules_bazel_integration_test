@@ -1,6 +1,6 @@
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
 load(
-    "//bazel_integration_test/internal:integration_test_utils.bzl",
+    "//bazel_integration_test/private:integration_test_utils.bzl",
     "integration_test_utils",
 )
 

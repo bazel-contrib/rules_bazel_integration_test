@@ -1,6 +1,6 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load(
-    "@cgrindel_rules_bazel_integration_test//bazel_integration_test:bazel_integration_test.bzl",
+    "@cgrindel_rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "integration_test_utils",
 )
 load(
@@ -43,7 +43,7 @@ filegroup(
         "BUILD.bazel",
         "WORKSPACE",
         "//bazel_integration_test:all_files",
-        "//bazel_integration_test/internal:all_files",
+        "//bazel_integration_test/private:all_files",
         "//tools:all_files",
     ],
     visibility = ["//:__subpackages__"],
