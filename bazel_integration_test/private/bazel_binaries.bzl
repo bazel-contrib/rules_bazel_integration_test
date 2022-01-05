@@ -50,7 +50,6 @@ def _get_installer(rctx):
 
     urls = [
         url.format(
-            # TODO: support other forks like bazelisk does
             fork = "bazelbuild",
             version = version,
             kind = kind,
@@ -89,8 +88,7 @@ Limitation: only support Linux and macOS for now.\
 """,
 )
 
-# TODO: Consider having versions be dict with key=version and value=sha256.
-# TODO: Consider having versions be list of JSON. JSON would have version, sha256 and/or urls.
+# GH026: Consider having versions be list of JSON. JSON would have version, sha256 and/or urls.
 
 def bazel_binaries(versions):
     """Download all of the specified bazel binaries.
