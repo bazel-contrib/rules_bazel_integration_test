@@ -15,23 +15,27 @@ _API_SRCS = [
     "integration_test_utils",
 ]
 
+_STARDOC_INPUT = "//bazel_integration_test:defs.bzl"
+
+_DOC_DEPS = ["//bazel_integration_test:defs"]
+
 _RULES_AND_MACROS_DOC_PROVIDER = doc_providers.create(
     name = "rules_and_macros_overview",
-    stardoc_input = "//bazel_integration_test:bazel_integration_test.bzl",
+    stardoc_input = _STARDOC_INPUT,
     symbols = [
         "bazel_integration_test",
         "bazel_integration_tests",
         "default_test_runner",
     ],
-    deps = ["//bazel_integration_test"],
+    deps = _DOC_DEPS,
 )
 
 _API_DOC_PROVIDERS = [
     doc_providers.create(
         name = name,
-        stardoc_input = "//bazel_integration_test:bazel_integration_test.bzl",
+        stardoc_input = _STARDOC_INPUT,
         symbols = [name],
-        deps = ["//bazel_integration_test"],
+        deps = _DOC_DEPS,
     )
     for name in _API_SRCS
 ]
@@ -39,8 +43,8 @@ _API_DOC_PROVIDERS = [
 _API_OVERVIEW_DOC_PROVIDER = doc_providers.create(
     name = "api",
     is_stardoc = False,
-    stardoc_input = "//bazel_integration_test:bazel_integration_test.bzl",
-    deps = ["//bazel_integration_test"],
+    stardoc_input = _STARDOC_INPUT,
+    deps = _DOC_DEPS,
 )
 
 _ALL_DOC_PROVIDERS = [

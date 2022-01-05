@@ -11,8 +11,8 @@ bzl_library(
 )
 
 bzl_library(
-    name = "bazel_integration_test",
-    srcs = ["bazel_integration_test.bzl"],
+    name = "defs",
+    srcs = ["defs.bzl"],
     deps = [
         "//bazel_integration_test/private:bazel_integration_test",
         "//bazel_integration_test/private:default_test_runner",
