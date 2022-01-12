@@ -30,6 +30,7 @@ and the [custom test runner example](/examples/custom_test_runner) for more info
 
 Add the following to your `WORKSPACE` file to add this repository and its dependencies.
 
+<!-- BEGIN WORKSPACE SNIPPET -->
 ```python
 http_archive(
     name = "cgrindel_rules_bazel_integration_test",
@@ -50,6 +51,7 @@ load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
 ```
+<!-- END WORKSPACE SNIPPET -->
 
 ### 2. Create a `bazel_versions.bzl` in the root of your repository
 
