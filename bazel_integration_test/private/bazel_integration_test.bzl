@@ -59,13 +59,16 @@ def bazel_integration_test(
         bazel_binary = integration_test_utils.bazel_binary_label(bazel_version)
 
     if workspace_path == None:
-        if name.endswith("_test"):
-            workspace_path = name[:-len("_test")]
-        else:
-            workspace_path = name
+        fail("The `workspace_path` is required.")
+
+    # if workspace_path == None:
+    #     if name.endswith("_test"):
+    #         workspace_path = name[:-len("_test")]
+    #     else:
+    #         workspace_path = name
 
     # Collect the workspace files into a filegroup
-    if workspace_files == None:
+    if workspace_files == None and workspace_path != None:
         workspace_files = integration_test_utils.glob_workspace_files(workspace_path)
 
     workspace_files_name = name + "_sources"
@@ -160,10 +163,13 @@ def bazel_integration_tests(
         fail("One or more Bazel versions must be specified.")
 
     if workspace_path == None:
-        if name.endswith("_test"):
-            workspace_path = name[:-len("_test")]
-        else:
-            workspace_path = name
+        fail("The `workspace_path` is required.")
+
+    # if workspace_path == None:
+    #     if name.endswith("_test"):
+    #         workspace_path = name[:-len("_test")]
+    #     else:
+    #         workspace_path = name
 
     for bazel_version in bazel_versions:
         bazel_integration_test(
