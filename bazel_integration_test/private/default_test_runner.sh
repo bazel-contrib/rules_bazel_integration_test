@@ -30,7 +30,7 @@ while (("$#")); do
       shift 2
       ;;
     "--workspace")
-      workspace_path="${2}"
+      workspace_dir="${2}"
       shift 2
       ;;
     "--bazel_cmd")
@@ -45,10 +45,9 @@ done
 
 
 [[ -n "${bazel:-}" ]] || exit_with_msg "Must specify the location of the Bazel binary."
-[[ -n "${workspace_path:-}" ]] || exit_with_msg "Must specify the location of the workspace file."
+[[ -n "${workspace_dir:-}" ]] || exit_with_msg "Must specify the path of the workspace directory."
 [[ ${#bazel_cmds[@]} > 0 ]] || exit_with_msg "No Bazel commands were specified."
 
-workspace_dir="$(dirname "${workspace_path}")"
 cd "${workspace_dir}"
 
 for cmd in "${bazel_cmds[@]}" ; do

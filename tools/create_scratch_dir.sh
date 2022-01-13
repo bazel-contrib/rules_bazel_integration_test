@@ -11,12 +11,13 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
 
+
 # MARK - Source Libraries
 
-messages_sh_location=cgrindel_bazel_starlib/shlib/lib/messages.sh
-messages_sh="$(rlocation "${messages_sh_location}")" || \
-  (echo >&2 "Failed to locate ${messages_sh_location}" && exit 1)
-source "${messages_sh}"
+fail_sh_location=cgrindel_bazel_starlib/shlib/lib/fail.sh
+fail_sh="$(rlocation "${fail_sh_location}")" || \
+  (echo >&2 "Failed to locate ${fail_sh_location}" && exit 1)
+source "${fail_sh}"
 
 paths_sh_location=cgrindel_bazel_starlib/shlib/lib/paths.sh
 paths_sh="$(rlocation "${paths_sh_location}")" || \
@@ -43,6 +44,7 @@ while (("$#")); do
 done
 
 [[ -z "${workspace_dir:-}" ]] && workspace_dir="${PWD}"
+[[ -d "${workspace_dir}" ]] || fail "The workspace directory does not exist. ${workspace_dir}"
 [[ -z "${scratch_dir:-}" ]] && scratch_dir="${workspace_dir}/../$(basename "${workspace_dir}").scratch"
 scratch_dir="$(normalize_path "${scratch_dir}")"
 starting_dir="${PWD}"
@@ -51,6 +53,7 @@ cleanup() {
   cd "${starting_dir}"
 }
 trap cleanup EXIT
+
 
 # MARK - Create the scratch directory
 

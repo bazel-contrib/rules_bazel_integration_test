@@ -31,7 +31,7 @@ while (("$#")); do
       shift 2
       ;;
     "--workspace")
-      workspace_path="${2}"
+      workspace_dir="${2}"
       shift 2
       ;;
     *)
@@ -41,9 +41,7 @@ while (("$#")); do
 done
 
 [[ -n "${bazel:-}" ]] || exit_on_error "Must specify the location of the Bazel binary."
-[[ -n "${workspace_path:-}" ]] || exit_on_error "Must specify the location of the workspace file."
-
-workspace_dir="$(dirname "${workspace_path}")"
+[[ -n "${workspace_dir:-}" ]] || exit_on_error "Must specify the path of the workspace directory."
 
 # MARK - Create Scratch Directory
 

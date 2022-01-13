@@ -27,7 +27,7 @@ while (("$#")); do
       shift 2
       ;;
     "--workspace")
-      workspace_path="${2}"
+      workspace_file_path="${2}"
       shift 2
       ;;
     "--runner")
@@ -42,19 +42,23 @@ while (("$#")); do
 done
 
 [[ -n "${bazel_rel_path:-}" ]] || exit_with_msg "Must specify the location of the Bazel binary."
-[[ -n "${workspace_path:-}" ]] || exit_with_msg "Must specify the location of the workspace file."
 [[ -n "${test_runner_path:-}" ]] || exit_with_msg "Must specify a test runner."
 
 # Be sure to pass absoulte paths to the test runner.
 starting_path="${PWD%%*( )}"
 bazel="${starting_path}/${bazel_rel_path}"
-workspace="${starting_path}/${workspace_path}"
 test_runner="${starting_path}/${test_runner_path}"
 
-
-if [[ ${#args[@]} > 0 ]]; then
-  "${test_runner}" --bazel "${bazel}" --workspace "${workspace}" "${args[@]:-}"
+# Figure out the workspace directory path
+if [[ -n "${workspace_file_path:-}" ]]; then
+  full_workspace_path="${starting_path}/${workspace_file_path}"
+  workspace_dir_path="$(dirname "${full_workspace_path}")"
 else
-  "${test_runner}" --bazel "${bazel}" --workspace "${workspace}"
+  workspace_dir_path="${starting_path}/workspace"
+  mkdir -p "${workspace_dir_path}"
 fi
 
+# Execute the test runner
+test_runner_cmd=( "${test_runner}" --bazel "${bazel}" --workspace "${workspace_dir_path}" )
+[[ ${#args[@]} > 0 ]] && test_runner_cmd+=( "${args[@]}" )
+"${test_runner_cmd[@]}"
