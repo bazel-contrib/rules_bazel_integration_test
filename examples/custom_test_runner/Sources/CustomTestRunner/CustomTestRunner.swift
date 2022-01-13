@@ -8,7 +8,7 @@ public struct CustomTestRunner: ParsableCommand {
     @Option(help: "The Bazel executable.")
     var bazel: String
 
-    @Option(help: "The WORKSPACE file.")
+    @Option(help: "The path for the workspace directory.")
     var workspace: String
 
     var commandRunner: CommandRunner = Bash()
@@ -36,15 +36,12 @@ public struct CustomTestRunner: ParsableCommand {
         Swift.print("bazel: \(String(reflecting: bazel))")
         Swift.print("workspace: \(String(reflecting: workspace))")
 
-        let workspaceDir = try commandRunner.run(command: "dirname", arguments: [workspace], at: ".")
-        Swift.print("workspaceDir: \(String(reflecting: workspaceDir))")
-
-        let infoOutput = try commandRunner.run(command: bazel, arguments: ["info"], at: workspaceDir)
+        let infoOutput = try commandRunner.run(command: bazel, arguments: ["info"], at: workspace)
         print("Bazel Info:")
         print(infoOutput)
 
         let testOutput = try commandRunner.run(
-            command: bazel, arguments: ["test", "//..."], at: workspaceDir
+            command: bazel, arguments: ["test", "//..."], at: workspace
         )
         print("Test Output:")
         print(testOutput)

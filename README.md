@@ -61,11 +61,11 @@ Add the following to a file called `bazel_versions.bzl` at the root of your repo
 Bazel version values with the values that you would like to test against for your integration tests.
 
 ```python
-CURRENT_BAZEL_VERSION = "4.2.1"
+CURRENT_BAZEL_VERSION = "4.2.2"
 
 OTHER_BAZEL_VERSIONS = [
     "5.0.0-pre.20211011.2",
-    "6.0.0-pre.20211101.2",
+    "6.0.0-pre.20211220.1",
 ]
 
 SUPPORTED_BAZEL_VERSIONS = [
@@ -298,8 +298,8 @@ create an executable target and pass it to the
 
 A custom test runner must support two command-line flag-value pairs: `--bazel` and `--workspace`.
 The `--bazel` flag specifies the absolute path to the Bazel binary that should be used for the test.
-The `--workspace` flag specifies the absolute path to the `WORKSPACE` file for the child workspace
-under test. If the test runner exits with a non-zero exit code, it will be considered a failed test.
+The `--workspace` flag specifies the absolute path to the child workspace directory under test. If
+the test runner exits with a non-zero exit code, it will be considered a failed test.
 
 Examples of custom test runners:
 * [A custom test runner written in Swift](/examples/custom_test_runner) 

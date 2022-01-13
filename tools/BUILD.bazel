@@ -43,7 +43,7 @@ sh_binary(
     visibility = ["//visibility:public"],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
-        "@cgrindel_bazel_starlib//shlib/lib:messages",
+        "@cgrindel_bazel_starlib//shlib/lib:fail",
         "@cgrindel_bazel_starlib//shlib/lib:paths",
     ],
 )

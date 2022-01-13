@@ -58,22 +58,6 @@ def bazel_integration_test(
     if bazel_binary == None:
         bazel_binary = integration_test_utils.bazel_binary_label(bazel_version)
 
-    if workspace_path == None:
-        if name.endswith("_test"):
-            workspace_path = name[:-len("_test")]
-        else:
-            workspace_path = name
-
-    # Collect the workspace files into a filegroup
-    if workspace_files == None:
-        workspace_files = integration_test_utils.glob_workspace_files(workspace_path)
-
-    workspace_files_name = name + "_sources"
-    native.filegroup(
-        name = workspace_files_name,
-        srcs = workspace_files,
-    )
-
     # Find the Bazel binary
     bazel_bin_name = name + "_bazel_binary"
     select_file(
@@ -82,34 +66,53 @@ def bazel_integration_test(
         subpath = "bazel",
     )
 
-    # Find the Bazel WORKSPACE file for the target workspace
-    bazel_wksp_file_name = name + "_bazel_workspace_file"
-    select_file(
-        name = bazel_wksp_file_name,
-        srcs = workspace_files_name,
-        subpath = paths.join(workspace_path, "WORKSPACE"),
-    )
+    args = [
+        "--runner",
+        "$(location %s)" % (test_runner),
+        "--bazel",
+        "$(location :%s)" % (bazel_bin_name),
+    ]
+    data = [
+        test_runner,
+        bazel_binary,
+        bazel_bin_name,
+    ]
+
+    if workspace_files != None and workspace_path == None:
+        fail("You must specify the `workspace_path` when specifying `workspace_files`.")
+
+    if workspace_path != None:
+        # Collect the workspace files into a filegroup
+        if workspace_files == None:
+            workspace_files = integration_test_utils.glob_workspace_files(workspace_path)
+
+        # Define a filegroup for the workspace files.
+        workspace_files_name = name + "_sources"
+        native.filegroup(
+            name = workspace_files_name,
+            srcs = workspace_files,
+        )
+
+        # Find the Bazel WORKSPACE file for the target workspace. We need to
+        # convey the actual workspace directory to the rule. The location of
+        # the WORKSPACE file seems to be the best way to do this.
+        bazel_wksp_file_name = name + "_bazel_workspace_file"
+        select_file(
+            name = bazel_wksp_file_name,
+            srcs = workspace_files_name,
+            subpath = paths.join(workspace_path, "WORKSPACE"),
+        )
+
+        args.extend(["--workspace", "$(location :%s)" % (bazel_wksp_file_name)])
+        data.extend([workspace_files_name, bazel_wksp_file_name])
 
     native.sh_test(
         name = name,
         srcs = [
             "@cgrindel_rules_bazel_integration_test//bazel_integration_test/private:integration_test_wrapper.sh",
         ],
-        args = [
-            "--runner",
-            "$(location %s)" % (test_runner),
-            "--bazel",
-            "$(location :%s)" % (bazel_bin_name),
-            "--workspace",
-            "$(location :%s)" % (bazel_wksp_file_name),
-        ],
-        data = [
-            test_runner,
-            bazel_binary,
-            bazel_bin_name,
-            workspace_files_name,
-            bazel_wksp_file_name,
-        ],
+        args = args,
+        data = data,
         deps = [
             "@bazel_tools//tools/bash/runfiles",
             "@cgrindel_bazel_starlib//shlib/lib:messages",
@@ -158,12 +161,6 @@ def bazel_integration_tests(
     """
     if bazel_versions == []:
         fail("One or more Bazel versions must be specified.")
-
-    if workspace_path == None:
-        if name.endswith("_test"):
-            workspace_path = name[:-len("_test")]
-        else:
-            workspace_path = name
 
     for bazel_version in bazel_versions:
         bazel_integration_test(

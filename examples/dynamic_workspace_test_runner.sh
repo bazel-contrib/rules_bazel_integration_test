@@ -11,17 +11,16 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
 
+
+# MARK - Locate Deps
+
 assertions_sh_location=cgrindel_bazel_starlib/shlib/lib/assertions.sh
 assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
 source "${assertions_sh}"
 
-create_scratch_dir_sh_location=cgrindel_rules_bazel_integration_test/tools/create_scratch_dir.sh
-create_scratch_dir_sh="$(rlocation "${create_scratch_dir_sh_location}")" || \
-  (echo >&2 "Failed to locate ${create_scratch_dir_sh_location}" && exit 1)
 
-
-# MARK - Process Flags
+# MARK - Process Args
 
 # Process args
 while (("$#")); do
@@ -35,20 +34,22 @@ while (("$#")); do
       shift 2
       ;;
     *)
-      shift 1
+      fail "Unrecognized argument. ${@}"
       ;;
   esac
 done
 
-[[ -n "${bazel:-}" ]] || exit_on_error "Must specify the location of the Bazel binary."
-[[ -n "${workspace_dir:-}" ]] || exit_on_error "Must specify the path of the workspace directory."
+[[ -n "${bazel:-}" ]] || exit_with_msg "Must specify the location of the Bazel binary."
+[[ -n "${workspace_dir:-}" ]] || exit_with_msg "Must specify the path of the workspace directory."
 
-# MARK - Create Scratch Directory
 
-scratch_dir="$("${create_scratch_dir_sh}" --workspace "${workspace_dir}")"
-cd "${scratch_dir}"
+# MARK - Create a WORKSPACE
 
-# MARK - Make sure the workspace builds in the scratch directory
+cd "${workspace_dir}"
 
-# Should not fail
-"${bazel}" test //... || fail "Expected tests to succeed in the scratch directory."
+# Create a WORKSPACE file
+touch WORKSPACE
+
+# Run Bazel info
+info_out="$( "${bazel}" info release )"
+assert_match "release " "${info_out}" "Expected a release stanza."

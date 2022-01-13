@@ -16,4 +16,5 @@ bazel_integration_test(
     # This is a reference to the custom test runner.
     test_runner = "//Sources/CustomTestRunner:custom_test_runner",
     visibility = ["//:__subpackages__"],
+    workspace_path = "workspace",
 )
