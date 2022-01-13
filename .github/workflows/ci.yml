@@ -1,4 +1,4 @@
-name: Build
+name: CI for PR Merge
 
 on:
   pull_request:
@@ -12,17 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Write local.bazelrc File
-      shell: bash
-      run: |
-        cat >local.bazelrc <<EOF
-        common --config=ci
-        EOF
-
-    - name: Output the Bazel Info
-      shell: bash
-      run: |
-        bazelisk info
+    - uses: cgrindel/gha_set_up_bazel@v1
+      with:
+        repo_name: rules_bazel_integration_test
 
     - name: Execute Tests
       shell: bash
@@ -49,14 +41,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-
-    - name: Write local.bazelrc File
-      shell: bash
-      run: |
-        cat >local.bazelrc <<EOF
-        common --config=ci
-        EOF
-
     - name: Bazel Config for Linux
       shell: bash
       run: |
@@ -71,10 +55,9 @@ jobs:
         build --action_env=PATH=${new_path}
         EOF
 
-    - name: Output the Bazel Info
-      shell: bash
-      run: |
-        bazelisk info
+    - uses: cgrindel/gha_set_up_bazel@v1
+      with:
+        repo_name: rules_bazel_integration_test
 
     - name: Execute Tests
       shell: bash
