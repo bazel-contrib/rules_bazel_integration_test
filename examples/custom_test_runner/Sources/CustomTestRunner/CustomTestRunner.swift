@@ -23,7 +23,7 @@ public struct CustomTestRunner: ParsableCommand {
 
     public init(bazel: String, workspace: String) {
         self.bazel = bazel
-        workspace = workspace
+        self.workspace = workspace
     }
 
     public func run() throws {
