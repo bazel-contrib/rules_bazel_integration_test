@@ -86,21 +86,16 @@ def bazel_integration_test(
         if workspace_files == None:
             workspace_files = integration_test_utils.glob_workspace_files(workspace_path)
 
-        # # DEBUG BEGIN
-        # print("*** CHUCK name: ", name)
-        # print("*** CHUCK workspace_files: ")
-        # for idx, item in enumerate(workspace_files):
-        #     print("*** CHUCK", idx, ":", item)
-
-        # # DEBUG END
-
+        # Define a filegroup for the workspace files.
         workspace_files_name = name + "_sources"
         native.filegroup(
             name = workspace_files_name,
             srcs = workspace_files,
         )
 
-        # Find the Bazel WORKSPACE file for the target workspace
+        # Find the Bazel WORKSPACE file for the target workspace. We need to
+        # convey the actual workspace directory to the rule. The location of
+        # the WORKSPACE file seems to be the best way to do this.
         bazel_wksp_file_name = name + "_bazel_workspace_file"
         select_file(
             name = bazel_wksp_file_name,
