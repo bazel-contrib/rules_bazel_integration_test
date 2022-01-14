@@ -42,50 +42,18 @@ class EnvVarUndefinedError(Error):
 class TestBase(unittest.TestCase):
 
   _runfiles = None
-  # _temp = None
-  # _tests_root = None
-  # _test_cwd = None
+  _test_cwd = None
 
   def setUp(self):
     unittest.TestCase.setUp(self)
     if self._runfiles is None:
       self._runfiles = TestBase._LoadRunfiles()
-    # test_tmpdir = TestBase._CreateDirs(TestBase.GetEnv('TEST_TMPDIR'))
-    # self._tests_root = TestBase._CreateDirs(
-    #     os.path.join(test_tmpdir, 'tests_root'))
-    # self._temp = TestBase._CreateDirs(os.path.join(test_tmpdir, 'tmp'))
-    # self._output_user_root = TestBase._CreateDirs(
-    #     os.path.join(test_tmpdir, 'output_root'))
-    # self._test_cwd = tempfile.mkdtemp(dir = self._tests_root)
+
+    # TODO: Set the _test_cwd to the BIT_WORKSPACE_DIR
     # os.chdir(self._test_cwd)
 
     self.bazelVersion = None
-    # try:
-    #   from bazel_py_integration_test.generated import DEFAULT_BAZEL_VERSION
-    #   self.SetBazelVersion(DEFAULT_BAZEL_VERSION)
-    # except:
-    #   # Fallback to the location of bazel build from Bazel repository
-    #   self._bazel = None
-    #   if self._SetAndUnpackBazel('io_bazel/src/bazel'):
-    #     self.bazelVersion = "HEAD"
-
-  # def _SetAndUnpackBazel(self, bazel):
-  #   bazel = self.Rlocation(bazel)
-  #   if os.path.exists(bazel):
-  #     self._bazel = bazel
-  #     # Unpackag Bazel
-  #     self.RunBazel(["help"])
-  #     return True
-  #   return False
-
-  # def SetBazelVersion(self, version):
-  #   """Set the bazel version to use, e.g. 0.5.4."""
-  #   suffix = ".exe" if self.IsWindows() else ""
-  #   if self._SetAndUnpackBazel(
-  #       "build_bazel_bazel_%s/bazel%s" % (version.replace('.', '_'), suffix)):
-  #     self.bazelVersion = version
-  #   else:
-  #     self.fail("Cannot find bazel version " + version)
+    # TODO: Set bazelVersion
 
   def AssertExitCode(self, actual_exit_code, expected_exit_code, stderr_lines):
     """Assert that `actual_exit_code` == `expected_exit_code`."""
