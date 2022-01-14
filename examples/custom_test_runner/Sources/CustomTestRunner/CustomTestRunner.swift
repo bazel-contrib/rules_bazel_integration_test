@@ -1,5 +1,5 @@
 import ArgumentParser
-// import Foundation
+import Foundation
 
 public struct CustomTestRunner: ParsableCommand {
     enum CustomTestRunnerError: Error {
@@ -15,13 +15,20 @@ public struct CustomTestRunner: ParsableCommand {
 
     var commandRunner: CommandRunner = Bash()
 
-    // // The runner needs to be Decodable.
-    // enum CodingKeys: String, CodingKey {
-    //     case bazel
-    //     case workspace
-    // }
+    // The runner needs to be Decodable.
+    // enum CodingKeys: String, CodingKey {}
+    enum CodingKeys: CodingKey {}
 
     public init() {}
+
+    // public init() throws {
+    //     guard let bazel = ProcessInfo.processInfo.environment["BIT_BAZEL_BINARY"] else {
+    //         throw CustomTestRunnerError.missingEnvVariable("BIT_BAZEL_BINARY")
+    //     }
+    //     guard let workspace = ProcessInfo.processInfo.environment["BIT_WORKSPACE_DIR"] else {
+    //         throw CustomTestRunnerError.missingEnvVariable("BIT_WORKSPACE_DIR")
+    //     }
+    // }
 
     // public init(bazel: String, workspace: String) {
     //     self.bazel = bazel
