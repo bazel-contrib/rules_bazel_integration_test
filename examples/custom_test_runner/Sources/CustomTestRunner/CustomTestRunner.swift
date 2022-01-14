@@ -7,33 +7,12 @@ public struct CustomTestRunner: ParsableCommand {
         case missingEnvVariable(String)
     }
 
-    // @Option(help: "The Bazel executable.")
-    // var bazel: String
-
-    // @Option(help: "The path for the workspace directory.")
-    // var workspace: String
-
     var commandRunner: CommandRunner = Bash()
 
     // The runner needs to be Decodable.
-    // enum CodingKeys: String, CodingKey {}
     enum CodingKeys: CodingKey {}
 
     public init() {}
-
-    // public init() throws {
-    //     guard let bazel = ProcessInfo.processInfo.environment["BIT_BAZEL_BINARY"] else {
-    //         throw CustomTestRunnerError.missingEnvVariable("BIT_BAZEL_BINARY")
-    //     }
-    //     guard let workspace = ProcessInfo.processInfo.environment["BIT_WORKSPACE_DIR"] else {
-    //         throw CustomTestRunnerError.missingEnvVariable("BIT_WORKSPACE_DIR")
-    //     }
-    // }
-
-    // public init(bazel: String, workspace: String) {
-    //     self.bazel = bazel
-    //     self.workspace = workspace
-    // }
 
     public func run() throws {
         // This is where the custom test runner would implement its test-specific logic.
