@@ -1,8 +1,6 @@
 import os
 import unittest
-# from bazel_integration_test import test_base
-# from py import test_base
-import test_base
+from bazel_integration_test.py import test_base
 
 
 class TestBaseTest(test_base.TestBase):
