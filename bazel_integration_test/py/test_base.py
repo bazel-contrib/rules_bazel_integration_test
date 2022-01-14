@@ -43,17 +43,26 @@ class TestBase(unittest.TestCase):
 
   _runfiles = None
   _test_cwd = None
+  _bazel = None
+  _tests_root = None
+  _temp = None
 
   def setUp(self):
     unittest.TestCase.setUp(self)
     if self._runfiles is None:
       self._runfiles = TestBase._LoadRunfiles()
 
-    # TODO: Set the _test_cwd to the BIT_WORKSPACE_DIR
-    # os.chdir(self._test_cwd)
+    self._test_cwd = TestBase.GetEnv('BIT_WORKSPACE_DIR')
+    os.chdir(self._test_cwd)
+    self._bazel = TestBase.GetEnv('BIT_BAZEL_BINARY')
 
-    self.bazelVersion = None
-    # TODO: Set bazelVersion
+    test_tmpdir = TestBase._CreateDirs(TestBase.GetEnv('TEST_TMPDIR'))
+    self._tests_root = TestBase._CreateDirs(
+        os.path.join(test_tmpdir, 'tests_root'))
+    self._temp = TestBase._CreateDirs(os.path.join(test_tmpdir, 'tmp'))
+    self._output_user_root = TestBase._CreateDirs(
+        os.path.join(test_tmpdir, 'output_root'))
+
 
   def AssertExitCode(self, actual_exit_code, expected_exit_code, stderr_lines):
     """Assert that `actual_exit_code` == `expected_exit_code`."""
@@ -179,12 +188,12 @@ class TestBase(unittest.TestCase):
     return self.RunProgram(
         [
             self._bazel,
-            '--bazelrc=/dev/null',
-            '--nomaster_bazelrc',
-            # TODO(dmarting): these are the default for the Eclipse plugin but
-            # not for Bazel, we need to figure out what are the good default
-            '--output_user_root=' + self._output_user_root,
-            '--max_idle_secs=10'
+            # '--bazelrc=/dev/null',
+            # '--nomaster_bazelrc',
+            # # TODO(dmarting): these are the default for the Eclipse plugin but
+            # # not for Bazel, we need to figure out what are the good default
+            # '--output_user_root=' + self._output_user_root,
+            # '--max_idle_secs=10'
         ] + args,
         env_remove,
         env_add)
