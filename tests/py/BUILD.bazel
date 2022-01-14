@@ -1,0 +1,26 @@
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
+load("//bazel_integration_test:defs.bzl", "integration_test_utils")
+load("//bazel_integration_test/py:bazel_py_integration_tests.bzl", "bazel_py_integration_tests")
+
+bzlformat_pkg(name = "bzlformat")
+
+bazel_py_integration_tests(
+    name = "test_base_test",
+    srcs = ["test_base_test.py"],
+    bazel_versions = SUPPORTED_BAZEL_VERSIONS,
+)
+
+# MARK: - Test Suite
+
+test_suite(
+    name = "integration_tests",
+    # If you don't apply the test tags to the test suite, the test suite will
+    # be found when `bazel test //...` is executed.
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
+    tests = integration_test_utils.bazel_integration_test_names(
+        "test_base_test",
+        SUPPORTED_BAZEL_VERSIONS,
+    ),
+    visibility = ["//:__subpackages__"],
+)
