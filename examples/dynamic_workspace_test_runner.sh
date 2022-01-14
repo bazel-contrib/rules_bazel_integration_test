@@ -28,14 +28,6 @@ workspace_dir="${BIT_WORKSPACE_DIR:-}"
 # Process args
 while (("$#")); do
   case "${1}" in
-    # "--bazel")
-    #   bazel="${2}"
-    #   shift 2
-    #   ;;
-    # "--workspace")
-    #   workspace_dir="${2}"
-    #   shift 2
-    #   ;;
     *)
       fail "Unrecognized argument. ${@}"
       ;;

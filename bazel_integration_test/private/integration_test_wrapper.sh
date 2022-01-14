@@ -72,10 +72,6 @@ if [[ -z "${TEST_TMPDIR:-}" ]]; then
 fi
 
 # Execute the test runner
-# test_runner_cmd=( "${test_runner}" --bazel "${bazel}" --workspace "${workspace_dir_path}" )
-# [[ ${#args[@]} > 0 ]] && test_runner_cmd+=( "${args[@]}" )
-# "${test_runner_cmd[@]}"
-
 test_runner_cmd=( "${test_runner}" )
 [[ ${#args[@]} > 0 ]] && test_runner_cmd+=( "${args[@]}" )
 "${test_runner_cmd[@]}"
