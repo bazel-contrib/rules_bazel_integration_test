@@ -58,7 +58,20 @@ else
   mkdir -p "${workspace_dir_path}"
 fi
 
+# Export environment variables so that test runner does not need to parse args.
+export BIT_BAZEL_BINARY="${bazel}"
+export BIT_WORKSPACE_DIR="${workspace_dir_path}"
+
+# Make sure that we have a TEST_TMPDIR.
+if [[ -z "${TEST_TMPDIR:-}" ]]; then
+  export TEST_TMPDIR="$(mktemp -d)" 
+  cleanup() {
+    rm -rf "${TEST_TMPDIR}"
+  }
+  trap cleanup EXIT
+fi
+
 # Execute the test runner
-test_runner_cmd=( "${test_runner}" --bazel "${bazel}" --workspace "${workspace_dir_path}" )
+test_runner_cmd=( "${test_runner}" )
 [[ ${#args[@]} > 0 ]] && test_runner_cmd+=( "${args[@]}" )
 "${test_runner_cmd[@]}"

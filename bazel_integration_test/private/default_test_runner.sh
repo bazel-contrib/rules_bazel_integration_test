@@ -21,18 +21,12 @@ messages_sh="$(rlocation "${messages_sh_location}")" || \
 source "${messages_sh}"
 
 bazel_cmds=()
+bazel="${BIT_BAZEL_BINARY:-}"
+workspace_dir="${BIT_WORKSPACE_DIR:-}"
 
 # Process args
 while (("$#")); do
   case "${1}" in
-    "--bazel")
-      bazel="${2}"
-      shift 2
-      ;;
-    "--workspace")
-      workspace_dir="${2}"
-      shift 2
-      ;;
     "--bazel_cmd")
       bazel_cmds+=("${2}")
       shift 2

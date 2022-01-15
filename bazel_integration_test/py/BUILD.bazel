@@ -1,0 +1,10 @@
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+
+bzlformat_pkg(name = "bzlformat")
+
+py_library(
+    name = "test_base",
+    testonly = True,
+    srcs = ["test_base.py"],
+    visibility = ["//visibility:public"],
+)
