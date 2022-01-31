@@ -6,41 +6,34 @@ on:
 
 jobs:
   macos_build:
-
     runs-on: macos-11.0
-
     steps:
     - uses: actions/checkout@v2
-
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
+    - uses: ./.github/actions/build_and_test
+    # - name: Execute Tests
+    #   shell: bash
+    #   run: |
+    #     bazelisk test //... 
 
-    - name: Execute Tests
-      shell: bash
-      run: |
-        bazelisk test //... 
+    # - name: Build Anything Not Tested
+    #   shell: bash
+    #   run: |
+    #     bazelisk build //... 
 
-    - name: Build Anything Not Tested
-      shell: bash
-      run: |
-        bazelisk build //... 
-
-    - name: Execute Integration Tests
-      shell: bash
-      run: |
-        bazelisk test //:all_integration_tests
+    # - name: Execute Integration Tests
+    #   shell: bash
+    #   run: |
+    #     bazelisk test //:all_integration_tests
 
   ubuntu_build:
-
     runs-on: ubuntu-20.04
-
     env:
       CC: clang
-
     steps:
     - uses: actions/checkout@v2
-
     - name: Bazel Config for Linux
       shell: bash
       run: |
@@ -54,22 +47,22 @@ jobs:
         cat >>local.bazelrc <<EOF
         build --action_env=PATH=${new_path}
         EOF
-
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
+    - uses: ./.github/actions/build_and_test
 
-    - name: Execute Tests
-      shell: bash
-      run: |
-        bazelisk test //... 
+    # - name: Execute Tests
+    #   shell: bash
+    #   run: |
+    #     bazelisk test //... 
 
-    - name: Build Anything Not Tested
-      shell: bash
-      run: |
-        bazelisk build //... 
+    # - name: Build Anything Not Tested
+    #   shell: bash
+    #   run: |
+    #     bazelisk build //... 
 
-    - name: Execute Integration Tests
-      shell: bash
-      run: |
-        bazelisk test //:all_integration_tests
+    # - name: Execute Integration Tests
+    #   shell: bash
+    #   run: |
+    #     bazelisk test //:all_integration_tests
