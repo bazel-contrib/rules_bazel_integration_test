@@ -13,20 +13,6 @@ jobs:
       with:
         repo_name: rules_bazel_integration_test
     - uses: ./.github/actions/build_and_test
-    # - name: Execute Tests
-    #   shell: bash
-    #   run: |
-    #     bazelisk test //... 
-
-    # - name: Build Anything Not Tested
-    #   shell: bash
-    #   run: |
-    #     bazelisk build //... 
-
-    # - name: Execute Integration Tests
-    #   shell: bash
-    #   run: |
-    #     bazelisk test //:all_integration_tests
 
   ubuntu_build:
     runs-on: ubuntu-20.04
@@ -51,18 +37,3 @@ jobs:
       with:
         repo_name: rules_bazel_integration_test
     - uses: ./.github/actions/build_and_test
-
-    # - name: Execute Tests
-    #   shell: bash
-    #   run: |
-    #     bazelisk test //... 
-
-    # - name: Build Anything Not Tested
-    #   shell: bash
-    #   run: |
-    #     bazelisk build //... 
-
-    # - name: Execute Integration Tests
-    #   shell: bash
-    #   run: |
-    #     bazelisk test //:all_integration_tests
