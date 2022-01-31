@@ -1,4 +1,4 @@
-name: CI for PR Merge
+name: Continuous Integration
 
 on:
   pull_request:
