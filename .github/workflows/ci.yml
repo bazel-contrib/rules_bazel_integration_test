@@ -20,19 +20,7 @@ jobs:
       CC: clang
     steps:
     - uses: actions/checkout@v2
-    - name: Bazel Config for Linux
-      shell: bash
-      run: |
-        # Make sure that the Swift bin directory is first in the PATH. This addresses
-        # the `invalid linker name in argument '-fuse-ld=gold'` error when running
-        # SPM. In short, it allows SPM to find the correct linker.
-        swift_exec=$(which swift)
-        real_swift_exec=$(realpath $swift_exec)
-        real_swift_dir=$(dirname $real_swift_exec)
-        new_path="${real_swift_dir}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-        cat >>local.bazelrc <<EOF
-        build --action_env=PATH=${new_path}
-        EOF
+    - uses: ./.github/actions/configure_swift_for_linux
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
