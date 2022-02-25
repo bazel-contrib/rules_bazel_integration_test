@@ -1,3 +1,5 @@
+"""Manages the download of Bazel binaries."""
+
 # Lovingly inspired by https://github.com/bazelbuild/bazel-integration-testing/blob/master/tools/repositories.bzl.
 
 def _get_platform_name(rctx):
@@ -57,7 +59,7 @@ def _get_installer(rctx):
         )
         for url in enabled_packages
     ]
-    args = {"url": urls, "type": "zip"}
+    args = {"type": "zip", "url": urls}
 
     rctx.download_and_extract(**args)
 

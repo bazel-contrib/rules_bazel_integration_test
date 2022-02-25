@@ -1,3 +1,5 @@
+"""Defines the default test runner for integration tests."""
+
 load("@cgrindel_bazel_starlib//shlib/rules:execute_binary.bzl", "execute_binary")
 load(":integration_test_utils.bzl", "integration_test_utils")
 

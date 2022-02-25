@@ -1,4 +1,3 @@
-load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load(
     "@cgrindel_bazel_starlib//bazeldoc:defs.bzl",
     "doc_for_provs",
@@ -6,6 +5,7 @@ load(
     "write_header",
     doc_providers = "providers",
 )
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 
 bzlformat_pkg(name = "bzlformat")
 
