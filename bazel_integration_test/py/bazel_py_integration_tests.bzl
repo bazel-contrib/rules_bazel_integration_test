@@ -1,3 +1,5 @@
+"""Definition for a test runner implemented in Python."""
+
 load("@rules_python//python:defs.bzl", "py_binary")
 load("//bazel_integration_test:defs.bzl", "bazel_integration_tests")
 
