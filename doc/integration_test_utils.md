@@ -85,7 +85,7 @@ Generates a `list` of integration test names based upon the provided base name a
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
 | <a id="integration_test_utils.bazel_integration_test_names-name"></a>name |  The base name as a <code>string</code>.   |  none |
-| <a id="integration_test_utils.bazel_integration_test_names-versions"></a>versions |  <p align="center"> - </p>   |  <code>[]</code> |
+| <a id="integration_test_utils.bazel_integration_test_names-versions"></a>versions |  A <code>list</code> of semantic version <code>string</code> values.   |  <code>[]</code> |
 
 **RETURNS**
 

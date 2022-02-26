@@ -29,6 +29,7 @@ bazel_integration_test(
 # use bazel_integration_tests. It will generate multiple integration test
 # targets with names derived from the base name and the bazel version.
 bazel_integration_tests(
+    # buildifier: disable=duplicated-name
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
     test_runner = ":simple_test_runner",

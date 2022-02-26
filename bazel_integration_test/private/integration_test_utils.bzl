@@ -1,3 +1,5 @@
+"""Utilities for naming and defining Bazel integration tests."""
+
 load("@bazel_skylib//lib:paths.bzl", "paths")
 
 # MARK: - Name Functions
@@ -45,7 +47,7 @@ def _bazel_integration_test_names(name, versions = []):
 
     Args:
         name: The base name as a `string`.
-        version: A `list` of semantic version `string` values.
+        versions: A `list` of semantic version `string` values.
 
     Returns:
         A `list` of integration test names as `string` values.

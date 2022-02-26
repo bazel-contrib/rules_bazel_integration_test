@@ -1,8 +1,7 @@
+"""Tests for integration_test_utils."""
+
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
-load(
-    "//bazel_integration_test/private:integration_test_utils.bzl",
-    "integration_test_utils",
-)
+load("//bazel_integration_test:defs.bzl", "integration_test_utils")
 
 def _semantic_version_to_name_test(ctx):
     env = unittest.begin(ctx)

@@ -1,10 +1,10 @@
+"""Macros that define an sh_test target that is suitable for executing Bazel in \
+an integration test.\
+"""
+
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@bazel_skylib//rules:select_file.bzl", "select_file")
 load(":integration_test_utils.bzl", "integration_test_utils")
-
-"""Macros that define an sh_test target that is suitable for executing Bazel in \
-an integration test.
-"""
 
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/bazel_integration_test.bzl.
@@ -174,4 +174,5 @@ def bazel_integration_tests(
             workspace_files = workspace_files,
             tags = tags,
             timeout = timeout,
+            **kwargs
         )
