@@ -17,7 +17,7 @@ On this page:
 
 <pre>
 bazel_integration_test(<a href="#bazel_integration_test-name">name</a>, <a href="#bazel_integration_test-test_runner">test_runner</a>, <a href="#bazel_integration_test-bazel_version">bazel_version</a>, <a href="#bazel_integration_test-bazel_binary">bazel_binary</a>, <a href="#bazel_integration_test-workspace_path">workspace_path</a>,
-                       <a href="#bazel_integration_test-workspace_files">workspace_files</a>, <a href="#bazel_integration_test-tags">tags</a>, <a href="#bazel_integration_test-timeout">timeout</a>, <a href="#bazel_integration_test-kwargs">kwargs</a>)
+                       <a href="#bazel_integration_test-workspace_files">workspace_files</a>, <a href="#bazel_integration_test-tags">tags</a>, <a href="#bazel_integration_test-timeout">timeout</a>, <a href="#bazel_integration_test-env_inherit">env_inherit</a>, <a href="#bazel_integration_test-additional_env_inherit">additional_env_inherit</a>, <a href="#bazel_integration_test-kwargs">kwargs</a>)
 </pre>
 
 Macro that defines a set of targets for a single Bazel integration test.
@@ -45,6 +45,8 @@ default test runner is provided by the `default_test_runner` macro.
 | <a id="bazel_integration_test-workspace_files"></a>workspace_files |  Optional. A <code>list</code> of files for the child workspace. If not specified, then it is derived from the <code>workspace_path</code>.   |  <code>None</code> |
 | <a id="bazel_integration_test-tags"></a>tags |  The Bazel tags to apply to the test declaration.   |  <code>["exclusive", "manual"]</code> |
 | <a id="bazel_integration_test-timeout"></a>timeout |  A valid Bazel timeout value. https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner   |  <code>"long"</code> |
+| <a id="bazel_integration_test-env_inherit"></a>env_inherit |  Optional. Override the env_inherit values passed to the test. Only do this if you understand what needs to be passed along. Most folks will want to use <code>additional_env_inherit</code> to pass additional env_inherit values.   |  <code>["SUDO_ASKPASS", "HOME"]</code> |
+| <a id="bazel_integration_test-additional_env_inherit"></a>additional_env_inherit |  Optional. Specify additional <code>env_inherit</code> values that should be passed to the test.   |  <code>[]</code> |
 | <a id="bazel_integration_test-kwargs"></a>kwargs |  additional attributes like timeout and visibility   |  none |
 
 
@@ -54,7 +56,7 @@ default test runner is provided by the `default_test_runner` macro.
 
 <pre>
 bazel_integration_tests(<a href="#bazel_integration_tests-name">name</a>, <a href="#bazel_integration_tests-test_runner">test_runner</a>, <a href="#bazel_integration_tests-bazel_versions">bazel_versions</a>, <a href="#bazel_integration_tests-workspace_path">workspace_path</a>, <a href="#bazel_integration_tests-workspace_files">workspace_files</a>, <a href="#bazel_integration_tests-tags">tags</a>,
-                        <a href="#bazel_integration_tests-timeout">timeout</a>, <a href="#bazel_integration_tests-kwargs">kwargs</a>)
+                        <a href="#bazel_integration_tests-timeout">timeout</a>, <a href="#bazel_integration_tests-env_inherit">env_inherit</a>, <a href="#bazel_integration_tests-additional_env_inherit">additional_env_inherit</a>, <a href="#bazel_integration_tests-kwargs">kwargs</a>)
 </pre>
 
 Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
@@ -71,6 +73,8 @@ Macro that defines a set Bazel integration tests each executed with a different 
 | <a id="bazel_integration_tests-workspace_files"></a>workspace_files |  Optional. A <code>list</code> of files for the child workspace. If not specified, then it is derived from the <code>workspace_path</code>.   |  <code>None</code> |
 | <a id="bazel_integration_tests-tags"></a>tags |  The Bazel tags to apply to the test declaration.   |  <code>["exclusive", "manual"]</code> |
 | <a id="bazel_integration_tests-timeout"></a>timeout |  A valid Bazel timeout value. https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner   |  <code>"long"</code> |
+| <a id="bazel_integration_tests-env_inherit"></a>env_inherit |  Optional. Override the env_inherit values passed to the test. Only do this if you understand what needs to be passed along. Most folks will want to use <code>additional_env_inherit</code> to pass additional env_inherit values.   |  <code>["SUDO_ASKPASS", "HOME"]</code> |
+| <a id="bazel_integration_tests-additional_env_inherit"></a>additional_env_inherit |  Optional. Specify additional <code>env_inherit</code> values that should be passed to the test.   |  <code>[]</code> |
 | <a id="bazel_integration_tests-kwargs"></a>kwargs |  additional attributes like timeout and visibility   |  none |
 
 
