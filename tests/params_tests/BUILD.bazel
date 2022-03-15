@@ -24,11 +24,26 @@ bazel_integration_test(
 genquery(
     name = "default_env_inherit_query",
     testonly = True,
-    expression = """\
-//tests/params_tests:default_env_inherit_int_test\
-""",
+    expression = "//tests/params_tests:default_env_inherit_int_test",
+    # expression = """\
+    # attr("env_inherit", "\\[\\]", //tests/params_tests:default_env_inherit_int_test)\
+    # """,
     opts = ["--output=build"],
     scope = ["//tests/params_tests:default_env_inherit_int_test"],
+)
+
+sh_test(
+    name = "default_env_inherit_attr_test",
+    srcs = ["env_inherit_attr_test.sh"],
+    args = [
+        "$(location :default_env_inherit_query)",
+        "FOO",
+    ],
+    data = [":default_env_inherit_query"],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
 )
 
 # TODO: Add additional bazel integration test targets with env_inherit.
