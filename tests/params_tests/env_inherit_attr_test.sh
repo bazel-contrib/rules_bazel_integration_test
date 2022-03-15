@@ -33,8 +33,20 @@ done
 [[ ${#expected_env_inherit_values} == 0 ]] && fail "No expected values were provided."
 
 
+# MARK - Assertion Functions
+
+assert_env_inherit_value() {
+  local attr="${1}"
+  local xpath='//rule[@class="sh_test"]/list[@name="env_inherit"]/string[@value="'"${attr}"'"]'
+  if xmllint --xpath "${xpath}" "${query_output}" &>/dev/null; then 
+    return 0
+  else
+    fail "Did not find env_inherit value. expected: ${attr}"
+  fi
+}
+
 # MARK - Test
 
-
-
-fail "IMPLEMENT ME!"
+for value in "${expected_env_inherit_values[@]}" ; do
+  assert_env_inherit_value "${value}"
+done

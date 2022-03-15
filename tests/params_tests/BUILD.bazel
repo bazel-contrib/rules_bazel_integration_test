@@ -25,10 +25,11 @@ genquery(
     name = "default_env_inherit_query",
     testonly = True,
     expression = "//tests/params_tests:default_env_inherit_int_test",
-    # expression = """\
-    # attr("env_inherit", "\\[\\]", //tests/params_tests:default_env_inherit_int_test)\
-    # """,
-    opts = ["--output=build"],
+    # opts = ["--output=build"],
+    opts = [
+        "--output=xml",
+        "--xml:default_values",
+    ],
     scope = ["//tests/params_tests:default_env_inherit_int_test"],
 )
 
@@ -37,7 +38,8 @@ sh_test(
     srcs = ["env_inherit_attr_test.sh"],
     args = [
         "$(location :default_env_inherit_query)",
-        "FOO",
+        "HOME",
+        "SUDO_ASKPASS",
     ],
     data = [":default_env_inherit_query"],
     deps = [
