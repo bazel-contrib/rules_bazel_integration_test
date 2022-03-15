@@ -55,6 +55,7 @@ test_suite(
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
     tests = [
         "//examples:integration_tests",
+        "//tests/params_tests:integration_tests",
         "//tests/py_tests:integration_tests",
     ],
     visibility = ["//:__subpackages__"],
