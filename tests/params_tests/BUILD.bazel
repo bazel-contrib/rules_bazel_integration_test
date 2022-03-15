@@ -5,6 +5,7 @@ load(
     "bazel_integration_test",
     "default_test_runner",
 )
+load(":env_inherit_attr_test.bzl", "env_inherit_attr_test")
 
 bzlformat_pkg(name = "bzlformat")
 
@@ -21,32 +22,41 @@ bazel_integration_test(
     workspace_path = "workspace",
 )
 
-genquery(
-    name = "default_env_inherit_query",
-    testonly = True,
-    expression = "//tests/params_tests:default_env_inherit_int_test",
-    # opts = ["--output=build"],
-    opts = [
-        "--output=xml",
-        "--xml:default_values",
-    ],
-    scope = ["//tests/params_tests:default_env_inherit_int_test"],
-)
-
-sh_test(
-    name = "default_env_inherit_attr_test",
-    srcs = ["env_inherit_attr_test.sh"],
-    args = [
-        "$(location :default_env_inherit_query)",
+env_inherit_attr_test(
+    name = "default_env_inherit_values_test",
+    expected_values = [
         "HOME",
         "SUDO_ASKPASS",
     ],
-    data = [":default_env_inherit_query"],
-    deps = [
-        "@bazel_tools//tools/bash/runfiles",
-        "@cgrindel_bazel_starlib//shlib/lib:assertions",
-    ],
+    integration_test = "//tests/params_tests:default_env_inherit_int_test",
 )
+
+# genquery(
+#     name = "default_env_inherit_query",
+#     testonly = True,
+#     expression = "//tests/params_tests:default_env_inherit_int_test",
+#     # opts = ["--output=build"],
+#     opts = [
+#         "--output=xml",
+#         "--xml:default_values",
+#     ],
+#     scope = ["//tests/params_tests:default_env_inherit_int_test"],
+# )
+
+# sh_test(
+#     name = "default_env_inherit_attr_test",
+#     srcs = ["env_inherit_attr_test.sh"],
+#     args = [
+#         "$(location :default_env_inherit_query)",
+#         "HOME",
+#         "SUDO_ASKPASS",
+#     ],
+#     data = [":default_env_inherit_query"],
+#     deps = [
+#         "@bazel_tools//tools/bash/runfiles",
+#         "@cgrindel_bazel_starlib//shlib/lib:assertions",
+#     ],
+# )
 
 # TODO: Add additional bazel integration test targets with env_inherit.
 # bazel_integration_test(
