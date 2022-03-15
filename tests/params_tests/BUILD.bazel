@@ -12,14 +12,31 @@ default_test_runner(
     name = "test_runner",
 )
 
-# If you only want to execute against a single version of Bazel, use
-# bazel_integration_test.
+# MARK: - Default Env Inherit
+
 bazel_integration_test(
-    name = "no_additional_env_inherit_test",
+    name = "default_env_inherit_int_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":test_runner",
     workspace_path = "workspace",
 )
 
+genquery(
+    name = "default_env_inherit_query",
+    testonly = True,
+    expression = """\
+//tests/params_tests:default_env_inherit_int_test\
+""",
+    opts = ["--output=build"],
+    scope = ["//tests/params_tests:default_env_inherit_int_test"],
+)
+
 # TODO: Add additional bazel integration test targets with env_inherit.
+# bazel_integration_test(
+#     name = "override_env_inherit_test",
+#     bazel_version = CURRENT_BAZEL_VERSION,
+#     test_runner = ":test_runner",
+#     workspace_path = "workspace",
+# )
+
 # TODO: Add additional bazel integration test targets with additional_env_inherit.
