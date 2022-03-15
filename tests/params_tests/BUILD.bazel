@@ -20,3 +20,6 @@ bazel_integration_test(
     test_runner = ":test_runner",
     workspace_path = "workspace",
 )
+
+# TODO: Add additional bazel integration test targets with env_inherit.
+# TODO: Add additional bazel integration test targets with additional_env_inherit.
