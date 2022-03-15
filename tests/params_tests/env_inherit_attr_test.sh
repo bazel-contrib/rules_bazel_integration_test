@@ -18,6 +18,12 @@ assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
 source "${assertions_sh}"
 
+env_sh_location=cgrindel_bazel_starlib/shlib/lib/env.sh
+env_sh="$(rlocation "${env_sh_location}")" || \
+  (echo >&2 "Failed to locate ${env_sh_location}" && exit 1)
+source "${env_sh}"
+
+is_installed xmllint || fail "The env_inherit_attr_test requires xmllint to be installed."
 
 # MARK - Process Args
 

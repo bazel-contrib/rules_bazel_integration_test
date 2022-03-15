@@ -30,5 +30,6 @@ def env_inherit_attr_test(name, integration_test, expected_values):
         deps = [
             "@bazel_tools//tools/bash/runfiles",
             "@cgrindel_bazel_starlib//shlib/lib:assertions",
+            "@cgrindel_bazel_starlib//shlib/lib:env",
         ],
     )
