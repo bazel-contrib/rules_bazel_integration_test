@@ -1,0 +1,22 @@
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION")
+load(
+    "//bazel_integration_test:defs.bzl",
+    "bazel_integration_test",
+    "default_test_runner",
+)
+
+bzlformat_pkg(name = "bzlformat")
+
+default_test_runner(
+    name = "test_runner",
+)
+
+# If you only want to execute against a single version of Bazel, use
+# bazel_integration_test.
+bazel_integration_test(
+    name = "no_additional_env_inherit_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":test_runner",
+    workspace_path = "workspace",
+)
