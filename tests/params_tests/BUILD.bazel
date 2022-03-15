@@ -13,7 +13,7 @@ default_test_runner(
     name = "test_runner",
 )
 
-# MARK: - Default Env Inherit
+# MARK: - Default env_inherit
 
 bazel_integration_test(
     name = "default_env_inherit_int_test",
@@ -31,39 +31,48 @@ env_inherit_attr_test(
     integration_test = "//tests/params_tests:default_env_inherit_int_test",
 )
 
-# genquery(
-#     name = "default_env_inherit_query",
-#     testonly = True,
-#     expression = "//tests/params_tests:default_env_inherit_int_test",
-#     # opts = ["--output=build"],
-#     opts = [
-#         "--output=xml",
-#         "--xml:default_values",
-#     ],
-#     scope = ["//tests/params_tests:default_env_inherit_int_test"],
-# )
+# MARK: - Override env_inherit
 
-# sh_test(
-#     name = "default_env_inherit_attr_test",
-#     srcs = ["env_inherit_attr_test.sh"],
-#     args = [
-#         "$(location :default_env_inherit_query)",
-#         "HOME",
-#         "SUDO_ASKPASS",
-#     ],
-#     data = [":default_env_inherit_query"],
-#     deps = [
-#         "@bazel_tools//tools/bash/runfiles",
-#         "@cgrindel_bazel_starlib//shlib/lib:assertions",
-#     ],
-# )
+bazel_integration_test(
+    name = "override_env_inherit_int_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    env_inherit = [
+        "HOME",
+        "SUDO_ASKPASS",
+        "CHICKEN",
+    ],
+    test_runner = ":test_runner",
+    workspace_path = "workspace",
+)
 
-# TODO: Add additional bazel integration test targets with env_inherit.
-# bazel_integration_test(
-#     name = "override_env_inherit_test",
-#     bazel_version = CURRENT_BAZEL_VERSION,
-#     test_runner = ":test_runner",
-#     workspace_path = "workspace",
-# )
+env_inherit_attr_test(
+    name = "override_env_inherit_values_test",
+    expected_values = [
+        "HOME",
+        "SUDO_ASKPASS",
+        "CHICKEN",
+    ],
+    integration_test = "//tests/params_tests:override_env_inherit_int_test",
+)
 
-# TODO: Add additional bazel integration test targets with additional_env_inherit.
+# MARK: - Add env_inherit Values
+
+bazel_integration_test(
+    name = "additional_env_inherit_int_test",
+    additional_env_inherit = [
+        "CHICKEN",
+    ],
+    bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":test_runner",
+    workspace_path = "workspace",
+)
+
+env_inherit_attr_test(
+    name = "additional_env_inherit_values_test",
+    expected_values = [
+        "HOME",
+        "SUDO_ASKPASS",
+        "CHICKEN",
+    ],
+    integration_test = "//tests/params_tests:additional_env_inherit_int_test",
+)
