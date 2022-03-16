@@ -27,6 +27,9 @@ def env_inherit_attr_test(name, integration_test, expected_values):
             "$(location {query_name})".format(query_name = query_name),
         ] + expected_values,
         data = [query_name],
+        # GH044: Remove this when xmllint is built/downloaded as part of the
+        # Bazel build.
+        target_compatible_with = ["@platforms//os:macos"],
         deps = [
             "@bazel_tools//tools/bash/runfiles",
             "@cgrindel_bazel_starlib//shlib/lib:assertions",
