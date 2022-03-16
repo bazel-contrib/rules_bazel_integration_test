@@ -9,6 +9,11 @@ load(":integration_test_utils.bzl", "integration_test_utils")
 # This was lovingly inspired by
 # https://github.com/bazelbuild/rules_python/blob/main/tools/bazel_integration_test/bazel_integration_test.bzl.
 
+# By default, inherit the following environment variables
+#   HOME: Avoid "could not get the user's cache directory: $HOME is not defined"
+#   SUDO_ASKPASS: Support executing tests that require sudo for certain steps.
+_DEFAULT_ENV_INHERIT = ["SUDO_ASKPASS", "HOME"]
+
 def bazel_integration_test(
         name,
         test_runner,
@@ -18,6 +23,8 @@ def bazel_integration_test(
         workspace_files = None,
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
+        env_inherit = _DEFAULT_ENV_INHERIT,
+        additional_env_inherit = [],
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
@@ -50,6 +57,13 @@ def bazel_integration_test(
         tags: The Bazel tags to apply to the test declaration.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
+        env_inherit: Optional. Override the env_inherit values passed to the
+                     test. Only do this if you understand what needs to be
+                     passed along. Most folks will want to use
+                     `additional_env_inherit` to pass additional env_inherit
+                     values.
+        additional_env_inherit: Optional. Specify additional `env_inherit`
+                                values that should be passed to the test.
         **kwargs: additional attributes like timeout and visibility
     """
 
@@ -106,6 +120,8 @@ def bazel_integration_test(
         args.extend(["--workspace", "$(location :%s)" % (bazel_wksp_file_name)])
         data.extend([workspace_files_name, bazel_wksp_file_name])
 
+    env_inherit = env_inherit + additional_env_inherit
+
     native.sh_test(
         name = name,
         srcs = [
@@ -123,10 +139,7 @@ def bazel_integration_test(
             "@platforms//os:linux": {"CC": "clang"},
             "//conditions:default": {},
         }),
-        # Inherit the following environment variables
-        #   HOME: Avoid "could not get the user's cache directory: $HOME is not defined"
-        #   SUDO_ASKPASS: Support executing tests that require sudo for certain steps.
-        env_inherit = ["SUDO_ASKPASS", "HOME"],
+        env_inherit = env_inherit,
         tags = tags,
         **kwargs
     )
@@ -139,6 +152,8 @@ def bazel_integration_tests(
         workspace_files = None,
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
+        env_inherit = _DEFAULT_ENV_INHERIT,
+        additional_env_inherit = [],
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
 
@@ -157,6 +172,13 @@ def bazel_integration_tests(
         tags: The Bazel tags to apply to the test declaration.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
+        env_inherit: Optional. Override the env_inherit values passed to the
+                     test. Only do this if you understand what needs to be
+                     passed along. Most folks will want to use
+                     `additional_env_inherit` to pass additional env_inherit
+                     values.
+        additional_env_inherit: Optional. Specify additional `env_inherit`
+                                values that should be passed to the test.
         **kwargs: additional attributes like timeout and visibility
     """
     if bazel_versions == []:
@@ -174,5 +196,7 @@ def bazel_integration_tests(
             workspace_files = workspace_files,
             tags = tags,
             timeout = timeout,
+            env_inherit = env_inherit,
+            additional_env_inherit = additional_env_inherit,
             **kwargs
         )

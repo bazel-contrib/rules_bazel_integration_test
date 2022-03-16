@@ -1,0 +1,94 @@
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION")
+load(
+    "//bazel_integration_test:defs.bzl",
+    "bazel_integration_test",
+    "default_test_runner",
+    "integration_test_utils",
+)
+load(":env_inherit_attr_test.bzl", "env_inherit_attr_test")
+
+bzlformat_pkg(name = "bzlformat")
+
+default_test_runner(
+    name = "test_runner",
+)
+
+# MARK: - Default env_inherit
+
+bazel_integration_test(
+    name = "default_env_inherit_int_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":test_runner",
+    workspace_path = "workspace",
+)
+
+env_inherit_attr_test(
+    name = "default_env_inherit_values_test",
+    expected_values = [
+        "HOME",
+        "SUDO_ASKPASS",
+    ],
+    integration_test = "//tests/params_tests:default_env_inherit_int_test",
+)
+
+# MARK: - Override env_inherit
+
+bazel_integration_test(
+    name = "override_env_inherit_int_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    env_inherit = [
+        "HOME",
+        "SUDO_ASKPASS",
+        "CHICKEN",
+    ],
+    test_runner = ":test_runner",
+    workspace_path = "workspace",
+)
+
+env_inherit_attr_test(
+    name = "override_env_inherit_values_test",
+    expected_values = [
+        "HOME",
+        "SUDO_ASKPASS",
+        "CHICKEN",
+    ],
+    integration_test = "//tests/params_tests:override_env_inherit_int_test",
+)
+
+# MARK: - Add env_inherit Values
+
+bazel_integration_test(
+    name = "additional_env_inherit_int_test",
+    additional_env_inherit = [
+        "CHICKEN",
+    ],
+    bazel_version = CURRENT_BAZEL_VERSION,
+    test_runner = ":test_runner",
+    workspace_path = "workspace",
+)
+
+env_inherit_attr_test(
+    name = "additional_env_inherit_values_test",
+    expected_values = [
+        "HOME",
+        "SUDO_ASKPASS",
+        "CHICKEN",
+    ],
+    integration_test = "//tests/params_tests:additional_env_inherit_int_test",
+)
+
+# MARK: - Test Suite
+
+test_suite(
+    name = "integration_tests",
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
+    # These integration tests do not really test any functionality. Instead, we
+    # are testing the passthrough of certain attributes. So, to save some time
+    # and energy, we only execute one fo the tests, just to be sure that it is
+    # valid/works.
+    tests = [
+        ":default_env_inherit_int_test",
+    ],
+    visibility = ["//:__subpackages__"],
+)

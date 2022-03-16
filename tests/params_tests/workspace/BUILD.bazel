@@ -1,0 +1,4 @@
+sh_test(
+    name = "noop_test",
+    srcs = ["noop_test.sh"],
+)
