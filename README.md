@@ -1,6 +1,6 @@
 # Bazel Integration Rules
 
-[![Build](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/ci.yml/badge.svg?event=schedule)](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/ci.yml)
+[![Build](https://github.com/bazel-contrib/rules_bazel_integration_test/actions/workflows/ci.yml/badge.svg?event=schedule)](https://github.com/bazel-contrib/rules_bazel_integration_test/actions/workflows/ci.yml)
 
 This repository contains [Bazel](https://bazel.build/) macros that execute integration tests that
 use Bazel (e.g. execute tests in a child workspace).  The macros support running integration tests
@@ -33,15 +33,15 @@ Add the following to your `WORKSPACE` file to add this repository and its depend
 <!-- BEGIN WORKSPACE SNIPPET -->
 ```python
 http_archive(
-    name = "cgrindel_rules_bazel_integration_test",
+    name = "bazel_contrib_rules_bazel_integration_test",
     sha256 = "993dea93d67895c25a093b55102ae9005bc74eb5546031b71820a79b3788c190",
     strip_prefix = "rules_bazel_integration_test-0.6.0",
     urls = [
-        "http://github.com/cgrindel/rules_bazel_integration_test/archive/0.6.0.tar.gz",
+        "http://github.com/bazel-contrib/rules_bazel_integration_test/archive/0.6.0.tar.gz",
     ],
 )
 
-load("@cgrindel_rules_bazel_integration_test//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
+load("@bazel_contrib_rules_bazel_integration_test//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
 
 bazel_integration_test_rules_dependencies()
 
@@ -97,7 +97,7 @@ testing.
 
 ```python
 load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
-load("@cgrindel_rules_bazel_integration_test//bazel_integration_test:defs.bzl", "bazel_binaries")
+load("@bazel_contrib_rules_bazel_integration_test//bazel_integration_test:defs.bzl", "bazel_binaries")
 
 bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
 ```
@@ -117,7 +117,7 @@ Add the following to the `.bazelrc` in the parent workspace. Leave the values bl
 
 ```conf
 # To update these lines, execute 
-# `bazel run @cgrindel_rules_bazel_integration_test//tools:update_deleted_packages`
+# `bazel run @bazel_contrib_rules_bazel_integration_test//tools:update_deleted_packages`
 build --deleted_packages=
 query --deleted_packages=
 ```
@@ -128,7 +128,7 @@ Execute the following in a parent workspace directory.
 
 ```sh
 # Populate the --deleted_packages flags in the .bazelrc
-$ bazel run @cgrindel_rules_bazel_integration_test//tools:update_deleted_packages
+$ bazel run @bazel_contrib_rules_bazel_integration_test//tools:update_deleted_packages
 ```
 
 After running the utility, the `--deleted_packages` entries in the `.bazelrc` should have a
@@ -146,7 +146,7 @@ Add the following to the `BUILD.bazel` file in the `examples` directory.
 ```python
 load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION", "OTHER_BAZEL_VERSIONS")
 load(
-    "@cgrindel_rules_bazel_integration_test//bazel_integration_test:defs.bzl",
+    "@bazel_contrib_rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
     "bazel_integration_tests",
     "default_test_runner",
