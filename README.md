@@ -1,6 +1,6 @@
 # Bazel Integration Rules
 
-[![Build](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/ci.yml/badge.svg?event=schedule)](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/ci.yml)
+[![Build](https://github.com/bazel-contrib/rules_bazel_integration_test/actions/workflows/ci.yml/badge.svg?event=schedule)](https://github.com/cgrindel/rules_bazel_integration_test/actions/workflows/ci.yml)
 
 This repository contains [Bazel](https://bazel.build/) macros that execute integration tests that
 use Bazel (e.g. execute tests in a child workspace).  The macros support running integration tests
@@ -37,7 +37,7 @@ http_archive(
     sha256 = "993dea93d67895c25a093b55102ae9005bc74eb5546031b71820a79b3788c190",
     strip_prefix = "rules_bazel_integration_test-0.6.0",
     urls = [
-        "http://github.com/cgrindel/rules_bazel_integration_test/archive/0.6.0.tar.gz",
+        "http://github.com/bazel-contrib/rules_bazel_integration_test/archive/0.6.0.tar.gz",
     ],
 )
 
