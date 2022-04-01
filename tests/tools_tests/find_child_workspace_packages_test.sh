@@ -14,12 +14,12 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 assertions_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/assertions.sh)"
 source "${assertions_lib}"
 
-find_bin="$(rlocation cgrindel_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
+find_bin="$(rlocation bazel_contrib_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
 
 starting_path="${PWD}"
 
 # Set up the parent workspace
-setup_test_workspace_sh_location=cgrindel_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
+setup_test_workspace_sh_location=bazel_contrib_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
 setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
   (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
 source "${setup_test_workspace_sh}"

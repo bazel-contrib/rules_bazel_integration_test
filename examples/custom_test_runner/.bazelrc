@@ -1,4 +1,4 @@
 # To update these lines, execute 
-# `bazel run @cgrindel_rules_bazel_integration_test//tools:update_deleted_packages`
+# `bazel run @bazel_contrib_rules_bazel_integration_test//tools:update_deleted_packages`
 build --deleted_packages=integration_tests/workspace
 query --deleted_packages=integration_tests/workspace
