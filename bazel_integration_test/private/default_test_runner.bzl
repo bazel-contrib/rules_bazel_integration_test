@@ -26,7 +26,7 @@ def default_test_runner(
     native.sh_binary(
         name = binary_name,
         srcs = [
-            "@bazel_contrib_rules_bazel_integration_test//bazel_integration_test/private:default_test_runner.sh",
+            "@contrib_rules_bazel_integration_test//bazel_integration_test/private:default_test_runner.sh",
         ],
         deps = [
             "@bazel_tools//tools/bash/runfiles",

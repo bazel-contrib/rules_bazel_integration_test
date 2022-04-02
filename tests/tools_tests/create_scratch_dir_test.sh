@@ -14,7 +14,7 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 assertions_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/assertions.sh)"
 source "${assertions_lib}"
 
-create_scratch_dir_sh_location=bazel_contrib_rules_bazel_integration_test/tools/create_scratch_dir.sh
+create_scratch_dir_sh_location=contrib_rules_bazel_integration_test/tools/create_scratch_dir.sh
 create_scratch_dir_sh="$(rlocation "${create_scratch_dir_sh_location}")" || \
   (echo >&2 "Failed to locate ${create_scratch_dir_sh_location}" && exit 1)
 

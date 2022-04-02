@@ -33,7 +33,7 @@ Add the following to your `WORKSPACE` file to add this repository and its depend
 <!-- BEGIN WORKSPACE SNIPPET -->
 ```python
 http_archive(
-    name = "bazel_contrib_rules_bazel_integration_test",
+    name = "contrib_rules_bazel_integration_test",
     sha256 = "993dea93d67895c25a093b55102ae9005bc74eb5546031b71820a79b3788c190",
     strip_prefix = "rules_bazel_integration_test-0.6.0",
     urls = [
@@ -41,7 +41,7 @@ http_archive(
     ],
 )
 
-load("@bazel_contrib_rules_bazel_integration_test//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
+load("@contrib_rules_bazel_integration_test//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
 
 bazel_integration_test_rules_dependencies()
 
@@ -97,7 +97,7 @@ testing.
 
 ```python
 load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
-load("@bazel_contrib_rules_bazel_integration_test//bazel_integration_test:defs.bzl", "bazel_binaries")
+load("@contrib_rules_bazel_integration_test//bazel_integration_test:defs.bzl", "bazel_binaries")
 
 bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
 ```
@@ -117,7 +117,7 @@ Add the following to the `.bazelrc` in the parent workspace. Leave the values bl
 
 ```conf
 # To update these lines, execute 
-# `bazel run @bazel_contrib_rules_bazel_integration_test//tools:update_deleted_packages`
+# `bazel run @contrib_rules_bazel_integration_test//tools:update_deleted_packages`
 build --deleted_packages=
 query --deleted_packages=
 ```
@@ -128,7 +128,7 @@ Execute the following in a parent workspace directory.
 
 ```sh
 # Populate the --deleted_packages flags in the .bazelrc
-$ bazel run @bazel_contrib_rules_bazel_integration_test//tools:update_deleted_packages
+$ bazel run @contrib_rules_bazel_integration_test//tools:update_deleted_packages
 ```
 
 After running the utility, the `--deleted_packages` entries in the `.bazelrc` should have a
@@ -146,7 +146,7 @@ Add the following to the `BUILD.bazel` file in the `examples` directory.
 ```python
 load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION", "OTHER_BAZEL_VERSIONS")
 load(
-    "@bazel_contrib_rules_bazel_integration_test//bazel_integration_test:defs.bzl",
+    "@contrib_rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
     "bazel_integration_tests",
     "default_test_runner",
