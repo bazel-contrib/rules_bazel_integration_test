@@ -125,7 +125,7 @@ def bazel_integration_test(
     native.sh_test(
         name = name,
         srcs = [
-            "@bazel_contrib_rules_bazel_integration_test//bazel_integration_test/private:integration_test_wrapper.sh",
+            "@contrib_rules_bazel_integration_test//bazel_integration_test/private:integration_test_wrapper.sh",
         ],
         args = args,
         data = data,
