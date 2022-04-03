@@ -163,6 +163,7 @@ bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":simple_test_runner",
+    workspace_path = "simple",
 )
 
 # If you want to execute an integration test using multiple versions of Bazel,
@@ -172,6 +173,7 @@ bazel_integration_tests(
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
     test_runner = ":simple_test_runner",
+    workspace_path = "simple",
 )
 
 # By default, the integration test targets are tagged as `manual`. This
@@ -275,6 +277,7 @@ bazel_integration_test(
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:local_repository_files",
     ],
+    workspace_path = "simple",
 )
 ```
 
