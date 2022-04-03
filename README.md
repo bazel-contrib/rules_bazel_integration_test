@@ -289,22 +289,5 @@ $ bazel test //examples:simple_test
 
 ## Custom Test Runner
 
-The [`bazel_integration_test`](/doc/rules_and_macros_overview.md#bazel_integration_test) macro
-supports executing tests with a custom test runner. So, if your integration tests require custom
-setup code or if you would prefer to write the integration tests in a specific language, you can
-create an executable target and pass it to the
-[`test_runner`](/doc/rules_and_macros_overview.md#bazel_integration_test-test_runner) attribute. 
-
-A custom test runner needs two pieces of information that can be discovered via environment
-variables:
-
-1. Location of the Bazel binary (`BIT_BAZEL_BINARY`)
-2. Location of the workspace directory under test (`BIT_WORKSPACE_DIR`)
-
-The value for each environment variable is an absolute path.
-
-The Bazel integration test framework expects a test runner to signal success by exiting with a zero
-exit code. A test runner that exits with a non-zero exit code will be considered a failed test.
-
-Examples of custom test runners:
-* [A custom test runner written in Swift](/examples/custom_test_runner) 
+For information on implementing a custom test runner, please see [the
+documentation](/doc/custom_test_runners.md).
