@@ -61,17 +61,16 @@ Add the following to a file called `bazel_versions.bzl` at the root of your repo
 Bazel version values with the values that you would like to test against for your integration tests.
 
 ```python
-CURRENT_BAZEL_VERSION = "4.2.2"
+CURRENT_BAZEL_VERSION = "5.1.0"
 
 OTHER_BAZEL_VERSIONS = [
-    "5.0.0-pre.20211011.2",
-    "6.0.0-pre.20211220.1",
+    "4.2.2",
+    "6.0.0-pre.20220328.1",
 ]
 
 SUPPORTED_BAZEL_VERSIONS = [
     CURRENT_BAZEL_VERSION,
 ] + OTHER_BAZEL_VERSIONS
-
 ```
 
 NOTE: The above code designates a current version and other versions. This can be useful if you have
