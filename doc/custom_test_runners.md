@@ -6,6 +6,11 @@ setup code or if you would prefer to write the integration tests in a specific l
 create an executable target and pass it to the
 [`test_runner`](/doc/rules_and_macros_overview.md#bazel_integration_test-test_runner) attribute. 
 
+## Table of Contents
+
+* [Implementation of a Custom Test Runner](#implementation-of-a-custom-test-runner)
+* [Implementation of a Custom Test Runner that Modifies Source Files](#implementation-of-a-custom-test-runner-that-modifies-source-files)
+
 ## Implementation of a Custom Test Runner
 
 A custom test runner needs two pieces of information that can be discovered via environment
