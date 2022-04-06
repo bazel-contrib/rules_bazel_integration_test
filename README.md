@@ -163,6 +163,7 @@ bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":simple_test_runner",
+    workspace_path = "simple",
 )
 
 # If you want to execute an integration test using multiple versions of Bazel,
@@ -172,6 +173,7 @@ bazel_integration_tests(
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
     test_runner = ":simple_test_runner",
+    workspace_path = "simple",
 )
 
 # By default, the integration test targets are tagged as `manual`. This
@@ -275,6 +277,7 @@ bazel_integration_test(
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:local_repository_files",
     ],
+    workspace_path = "simple",
 )
 ```
 
@@ -289,16 +292,5 @@ $ bazel test //examples:simple_test
 
 ## Custom Test Runner
 
-The [`bazel_integration_test`](/doc/rules_and_macros_overview.md#bazel_integration_test) macro
-supports executing tests with a custom test runner. So, if your integration tests require custom
-setup code or if you would prefer to write the integration tests in a specific language, you can
-create an executable target and pass it to the
-[`test_runner`](/doc/rules_and_macros_overview.md#bazel_integration_test-test_runner) attribute. 
-
-A custom test runner must support two command-line flag-value pairs: `--bazel` and `--workspace`.
-The `--bazel` flag specifies the absolute path to the Bazel binary that should be used for the test.
-The `--workspace` flag specifies the absolute path to the child workspace directory under test. If
-the test runner exits with a non-zero exit code, it will be considered a failed test.
-
-Examples of custom test runners:
-* [A custom test runner written in Swift](/examples/custom_test_runner) 
+For information on implementing a custom test runner, please see [the
+documentation](/doc/custom_test_runners.md).
