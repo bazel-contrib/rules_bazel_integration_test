@@ -115,7 +115,8 @@ test_suite(
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
     tests = [
         ":simple_test",
-        ":custom_test_runner_test",
+        # GH050: Enable the test once it is working with Xcode 13.3.
+        # ":custom_test_runner_test",
         ":use_create_scratch_dir_test",
         ":dynamic_workspace_test",
     ] + integration_test_utils.bazel_integration_test_names(
