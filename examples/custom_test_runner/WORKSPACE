@@ -26,34 +26,7 @@ bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
 
 # MARK: - rules_swift and rules_spm
 
-# TODO: Update to latest rules_swift and rules_spm after https://github.com/bazelbuild/rules_swift/pull/793 is merged.
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-# http_archive(
-#     name = "build_bazel_rules_swift",
-#     sha256 = "a2fd565e527f83fb3f9eb07eb9737240e668c9242d3bc318712efa54a7deda97",
-#     url = "https://github.com/bazelbuild/rules_swift/releases/download/0.27.0/rules_swift.0.27.0.tar.gz",
-# )
-
-# http_archive(
-#     name = "cgrindel_rules_spm",
-#     sha256 = "b85d8d089c5f707b451f142718b32c647b22d0a72a5b7c1832af0f3e4d25be4f",
-#     strip_prefix = "rules_spm-0.9.0",
-#     urls = [
-#         "http://github.com/cgrindel/rules_spm/archive/v0.9.0.tar.gz",
-#     ],
-# )
-
-# local_repository(
-#     name = "build_bazel_rules_swift",
-#     path = "/Users/chuck/code/cgrindel/rules_swift/master",
-# )
-
-# local_repository(
-#     name = "cgrindel_rules_spm",
-#     path = "/Users/chuck/code/cgrindel/rules_spm",
-# )
 
 http_archive(
     name = "cgrindel_rules_spm",
