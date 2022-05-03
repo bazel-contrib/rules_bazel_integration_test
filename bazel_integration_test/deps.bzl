@@ -8,19 +8,19 @@ def bazel_integration_test_rules_dependencies():
         http_archive,
         name = "bazel_skylib",
         urls = [
-            "https://github.com/bazelbuild/bazel-skylib/releases/download/1.1.1/bazel-skylib-1.1.1.tar.gz",
-            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.1.1/bazel-skylib-1.1.1.tar.gz",
+            "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
+            "https://github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
         ],
-        sha256 = "c6966ec828da198c5d9adbaa94c05e3a1c7f21bd012a0b29ba8ddbccb2c93b0d",
+        sha256 = "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728",
     )
 
     maybe(
         http_archive,
         name = "cgrindel_bazel_starlib",
-        sha256 = "8ac3e45dc237121283d70506497ec39feb5092af9a57bfe34f7abf4a6bd2ebaa",
-        strip_prefix = "bazel-starlib-0.6.0",
+        sha256 = "f61c83d78754ce3abe562fbac54b3a055e4c80c209f5de7938f1773312fe2cfe",
+        strip_prefix = "bazel-starlib-0.7.0",
         urls = [
-            "http://github.com/cgrindel/bazel-starlib/archive/v0.6.0.tar.gz",
+            "http://github.com/cgrindel/bazel-starlib/archive/v0.7.0.tar.gz",
         ],
     )
 
