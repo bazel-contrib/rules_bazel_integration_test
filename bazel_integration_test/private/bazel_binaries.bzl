@@ -63,7 +63,7 @@ def _get_installer(rctx):
 
     rctx.download_and_extract(**args)
 
-def _bazel_repository_impl(rctx):
+def _bazel_binary_impl(rctx):
     _get_installer(rctx)
     rctx.file("WORKSPACE", "workspace(name='%s')" % rctx.attr.name)
     rctx.file("BUILD", """
@@ -82,7 +82,7 @@ bazel_binary = repository_rule(
             doc = "The Bazel version to download.",
         ),
     },
-    implementation = _bazel_repository_impl,
+    implementation = _bazel_binary_impl,
     doc = """\
 Download a bazel binary for integration test.
 
