@@ -2,8 +2,8 @@
 
 # Lovingly inspired by https://github.com/bazelbuild/bazel-integration-testing/blob/master/tools/repositories.bzl.
 
-def _get_platform_name(rctx):
-    os_name = rctx.os.name.lower()
+def _get_platform_name(repository_ctx):
+    os_name = repository_ctx.os.name.lower()
 
     if os_name.startswith("mac os"):
         return "darwin-x86_64"
@@ -13,14 +13,14 @@ def _get_platform_name(rctx):
     # We default on linux-x86_64 because we only support 3 platforms
     return "linux-x86_64"
 
-def _is_windows(rctx):
-    return _get_platform_name(rctx).startswith("windows")
+def _is_windows(repository_ctx):
+    return _get_platform_name(repository_ctx).startswith("windows")
 
-def _get_installer(rctx):
-    platform = _get_platform_name(rctx)
-    version = rctx.attr.version
+def _get_installer(repository_ctx):
+    platform = _get_platform_name(repository_ctx)
+    version = repository_ctx.attr.version
 
-    if _is_windows(rctx):
+    if _is_windows(repository_ctx):
         extension = "zip"
         installer = ""
     else:
@@ -61,12 +61,12 @@ def _get_installer(rctx):
     ]
     args = {"type": "zip", "url": urls}
 
-    rctx.download_and_extract(**args)
+    repository_ctx.download_and_extract(**args)
 
-def _bazel_binary_impl(rctx):
-    _get_installer(rctx)
-    rctx.file("WORKSPACE", "workspace(name='%s')" % rctx.attr.name)
-    rctx.file("BUILD", """
+def _bazel_binary_impl(repository_ctx):
+    _get_installer(repository_ctx)
+    repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
+    repository_ctx.file("BUILD", """
 filegroup(
   name = "bazel_binary",
   srcs = select({
