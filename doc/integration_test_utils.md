@@ -2,28 +2,6 @@
 # `integration_test_utils` API
 
 
-<a id="#integration_test_utils.semantic_version_to_name"></a>
-
-## integration_test_utils.semantic_version_to_name
-
-<pre>
-integration_test_utils.semantic_version_to_name(<a href="#integration_test_utils.semantic_version_to_name-version">version</a>)
-</pre>
-
-Converts a semantic version string (e.g. X.Y.Z) to a suitable name string (e.g. X_Y_Z).
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="integration_test_utils.semantic_version_to_name-version"></a>version |  A semantic version <code>string</code>.   |  none |
-
-**RETURNS**
-
-A `string` that is suitable for use in a label or filename.
-
-
 <a id="#integration_test_utils.bazel_binary_label"></a>
 
 ## integration_test_utils.bazel_binary_label
@@ -44,6 +22,24 @@ Returns a label for the specified Bazel version as provided by https://github.co
 **RETURNS**
 
 A `string` representing a label for a version of Bazel.
+
+
+<a id="#integration_test_utils.bazel_binary_repo_name"></a>
+
+## integration_test_utils.bazel_binary_repo_name
+
+<pre>
+integration_test_utils.bazel_binary_repo_name(<a href="#integration_test_utils.bazel_binary_repo_name-version">version</a>)
+</pre>
+
+
+
+**PARAMETERS**
+
+
+| Name  | Description | Default Value |
+| :------------- | :------------- | :------------- |
+| <a id="integration_test_utils.bazel_binary_repo_name-version"></a>version |  <p align="center"> - </p>   |  none |
 
 
 <a id="#integration_test_utils.bazel_integration_test_name"></a>
@@ -113,5 +109,63 @@ Recursively globs the Bazel workspace files at the specified path.
 
 A `list` of the files under the specified path ignoring certain Bazel
   artifacts (e.g. `bazel-*`).
+
+
+<a id="#integration_test_utils.is_version_file"></a>
+
+## integration_test_utils.is_version_file
+
+<pre>
+integration_test_utils.is_version_file(<a href="#integration_test_utils.is_version_file-version">version</a>)
+</pre>
+
+
+
+**PARAMETERS**
+
+
+| Name  | Description | Default Value |
+| :------------- | :------------- | :------------- |
+| <a id="integration_test_utils.is_version_file-version"></a>version |  <p align="center"> - </p>   |  none |
+
+
+<a id="#integration_test_utils.normalize_version"></a>
+
+## integration_test_utils.normalize_version
+
+<pre>
+integration_test_utils.normalize_version(<a href="#integration_test_utils.normalize_version-version">version</a>)
+</pre>
+
+
+
+**PARAMETERS**
+
+
+| Name  | Description | Default Value |
+| :------------- | :------------- | :------------- |
+| <a id="integration_test_utils.normalize_version-version"></a>version |  <p align="center"> - </p>   |  none |
+
+
+<a id="#integration_test_utils.semantic_version_to_name"></a>
+
+## integration_test_utils.semantic_version_to_name
+
+<pre>
+integration_test_utils.semantic_version_to_name(<a href="#integration_test_utils.semantic_version_to_name-version">version</a>)
+</pre>
+
+Converts a semantic version string (e.g. X.Y.Z) to a suitable name string (e.g. X_Y_Z).
+
+**PARAMETERS**
+
+
+| Name  | Description | Default Value |
+| :------------- | :------------- | :------------- |
+| <a id="integration_test_utils.semantic_version_to_name-version"></a>version |  A semantic version <code>string</code>.   |  none |
+
+**RETURNS**
+
+A `string` that is suitable for use in a label or filename.
 
 

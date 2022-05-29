@@ -31,15 +31,6 @@ def _normalize_version(version):
     return normalized_version
 
 def _bazel_binary_repo_name(version):
-    # if _is_version_file(version):
-    #     version_label = Label(version)
-    #     parts = []
-    #     if version_label.package != "":
-    #         parts.append(version_label.package)
-    #     parts.append(version_label.name)
-    #     normalized_version = "_".join(parts)
-    # else:
-    #     normalized_version = _semantic_version_to_name(version)
     normalized_version = _normalize_version(version)
     return "build_bazel_bazel_{version}".format(
         version = normalized_version,
@@ -121,6 +112,7 @@ integration_test_utils = struct(
     bazel_integration_test_names = _bazel_integration_test_names,
     glob_workspace_files = _glob_workspace_files,
     is_version_file = _is_version_file,
+    normalize_version = _normalize_version,
     semantic_version_to_name = _semantic_version_to_name,
     DEFAULT_BAZEL_CMDS = _DEFAULT_BAZEL_CMDS,
     DEFAULT_INTEGRATION_TEST_TAGS = _DEFAULT_INTEGRATION_TEST_TAGS,

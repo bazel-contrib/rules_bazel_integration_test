@@ -134,20 +134,3 @@ def bazel_binaries(versions):
             bazel_binary(name = name, version_file = version)
         else:
             bazel_binary(name = name, version = version)
-
-        # # If the version is ".bazelversion", we will load the
-        # bazel_binary_args = {}
-        # if version == BAZELVERSION_VERSION:
-        #     name = BAZELVERSION_REPO_NAME
-        #     bazel_binary_args = {
-        #         "name": name,
-        #         "version_file": version,
-        #     }
-        # else:
-        #     name = _REPO_NAME_PREFIX + version.replace(".", "_")
-        #     bazel_binary_args = {
-        #         "name": name,
-        #         "version": version,
-        #     }
-        # if not native.existing_rule(name):
-        #     bazel_binary(**bazel_binary_args)
