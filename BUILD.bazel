@@ -34,12 +34,6 @@ bzl_library(
     visibility = ["//:__subpackages__"],
 )
 
-# TODO: FIX ME!
-# alias(
-#     name = "bazel_binary_bazelversion",
-#     actual = "@build_bazel_bazel_5_1_1//:bazel_binary",
-# )
-
 # MARK: - Related to Integration Tests
 
 # This target collects all of the parent workspace files needed by the child workspaces.
