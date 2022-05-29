@@ -61,7 +61,10 @@ Add the following to a file called `bazel_versions.bzl` at the root of your repo
 Bazel version values with the values that you would like to test against for your integration tests.
 
 ```python
-CURRENT_BAZEL_VERSION = "5.1.0"
+# If you are using Bazelisk for your project, you can specify that the current 
+# Bazel version be retrieved from the `.bazelversion` file. Otherwise, specify
+# a valid semantic version.
+CURRENT_BAZEL_VERSION = "//:.bazelversion"
 
 OTHER_BAZEL_VERSIONS = [
     "4.2.2",
