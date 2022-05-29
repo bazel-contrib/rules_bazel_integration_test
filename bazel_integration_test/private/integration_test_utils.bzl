@@ -18,7 +18,7 @@ def _semantic_version_to_name(version):
 def _is_version_file(version):
     return version.find("//") > -1
 
-def _bazel_binary_repo_name(version):
+def _normalize_version(version):
     if _is_version_file(version):
         version_label = Label(version)
         parts = []
@@ -28,6 +28,19 @@ def _bazel_binary_repo_name(version):
         normalized_version = "_".join(parts)
     else:
         normalized_version = _semantic_version_to_name(version)
+    return normalized_version
+
+def _bazel_binary_repo_name(version):
+    # if _is_version_file(version):
+    #     version_label = Label(version)
+    #     parts = []
+    #     if version_label.package != "":
+    #         parts.append(version_label.package)
+    #     parts.append(version_label.name)
+    #     normalized_version = "_".join(parts)
+    # else:
+    #     normalized_version = _semantic_version_to_name(version)
+    normalized_version = _normalize_version(version)
     return "build_bazel_bazel_{version}".format(
         version = normalized_version,
     )
@@ -57,7 +70,7 @@ def _bazel_integration_test_name(name, version):
     """
     return "{name}_bazel_{version}".format(
         name = name,
-        version = _semantic_version_to_name(version),
+        version = _normalize_version(version),
     )
 
 def _bazel_integration_test_names(name, versions = []):

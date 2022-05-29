@@ -72,6 +72,10 @@ def bazel_integration_test(
     if bazel_binary == None:
         bazel_binary = integration_test_utils.bazel_binary_label(bazel_version)
 
+    # DEBUG BEGIN
+    print("*** CHUCK name: ", name)
+    # DEBUG END
+
     # Find the Bazel binary
     bazel_bin_name = name + "_bazel_binary"
     select_file(
