@@ -32,14 +32,18 @@ A `string` representing a label for a version of Bazel.
 integration_test_utils.bazel_binary_repo_name(<a href="#integration_test_utils.bazel_binary_repo_name-version">version</a>)
 </pre>
 
-
+Generates a Bazel binary repository name for the specified version.
 
 **PARAMETERS**
 
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="integration_test_utils.bazel_binary_repo_name-version"></a>version |  <p align="center"> - </p>   |  none |
+| <a id="integration_test_utils.bazel_binary_repo_name-version"></a>version |  A <code>string</code> that represents a Bazel version or a label.   |  none |
+
+**RETURNS**
+
+A `string` that is suitable for use as a repository name.
 
 
 <a id="#integration_test_utils.bazel_integration_test_name"></a>
@@ -119,32 +123,18 @@ A `list` of the files under the specified path ignoring certain Bazel
 integration_test_utils.is_version_file(<a href="#integration_test_utils.is_version_file-version">version</a>)
 </pre>
 
-
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="integration_test_utils.is_version_file-version"></a>version |  <p align="center"> - </p>   |  none |
-
-
-<a id="#integration_test_utils.normalize_version"></a>
-
-## integration_test_utils.normalize_version
-
-<pre>
-integration_test_utils.normalize_version(<a href="#integration_test_utils.normalize_version-version">version</a>)
-</pre>
-
-
+Determines if the version string is a reference to a version file.
 
 **PARAMETERS**
 
 
 | Name  | Description | Default Value |
 | :------------- | :------------- | :------------- |
-| <a id="integration_test_utils.normalize_version-version"></a>version |  <p align="center"> - </p>   |  none |
+| <a id="integration_test_utils.is_version_file-version"></a>version |  A <code>string</code> that represents a Bazel version or a label.   |  none |
+
+**RETURNS**
+
+A `bool` the specifies whether the string is a file reference.
 
 
 <a id="#integration_test_utils.semantic_version_to_name"></a>

@@ -16,9 +16,25 @@ def _semantic_version_to_name(version):
     return version.replace(".", "_")
 
 def _is_version_file(version):
+    """Determines if the version string is a reference to a version file.
+
+    Args:
+        version: A `string` that represents a Bazel version or a label.
+
+    Returns:
+        A `bool` the specifies whether the string is a file reference.
+    """
     return version.find("//") > -1
 
 def _normalize_version(version):
+    """Normalizes a version string such that it can be used as part of a label.
+
+    Args:
+        version: A `string` that represents a Bazel version or a label.
+
+    Returns:
+        A 'string' that is suitable for use as a repository name or label name.
+    """
     if _is_version_file(version):
         version_label = Label(version)
         parts = []
@@ -31,9 +47,16 @@ def _normalize_version(version):
     return normalized_version
 
 def _bazel_binary_repo_name(version):
-    normalized_version = _normalize_version(version)
+    """Generates a Bazel binary repository name for the specified version.
+
+    Args:
+        version: A `string` that represents a Bazel version or a label.
+
+    Returns:
+        A `string` that is suitable for use as a repository name.
+    """
     return "build_bazel_bazel_{version}".format(
-        version = normalized_version,
+        version = _normalize_version(version),
     )
 
 def _bazel_binary_label(version):
@@ -112,7 +135,6 @@ integration_test_utils = struct(
     bazel_integration_test_names = _bazel_integration_test_names,
     glob_workspace_files = _glob_workspace_files,
     is_version_file = _is_version_file,
-    normalize_version = _normalize_version,
     semantic_version_to_name = _semantic_version_to_name,
     DEFAULT_BAZEL_CMDS = _DEFAULT_BAZEL_CMDS,
     DEFAULT_INTEGRATION_TEST_TAGS = _DEFAULT_INTEGRATION_TEST_TAGS,

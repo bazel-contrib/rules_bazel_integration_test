@@ -24,7 +24,8 @@ semantic_version_to_name_test = unittest.make(_semantic_version_to_name_test)
 def _is_version_file_test(ctx):
     env = unittest.begin(ctx)
 
-    unittest.fail(env, "IMPLEMENT ME!")
+    asserts.true(env, integration_test_utils.is_version_file("//:.bazelversion"))
+    asserts.false(env, integration_test_utils.is_version_file("4.2.1"))
 
     return unittest.end(env)
 
@@ -33,7 +34,16 @@ is_version_file_test = unittest.make(_is_version_file_test)
 def _bazel_binary_repo_name_test(ctx):
     env = unittest.begin(ctx)
 
-    unittest.fail(env, "IMPLEMENT ME!")
+    asserts.equals(
+        env,
+        "build_bazel_bazel_4_2_1",
+        integration_test_utils.bazel_binary_repo_name("4.2.1"),
+    )
+    asserts.equals(
+        env,
+        "build_bazel_bazel_.bazelversion",
+        integration_test_utils.bazel_binary_repo_name("//:.bazelversion"),
+    )
 
     return unittest.end(env)
 
@@ -46,6 +56,11 @@ def _bazel_binary_label_test(ctx):
         env,
         "@build_bazel_bazel_4_2_1//:bazel_binary",
         integration_test_utils.bazel_binary_label("4.2.1"),
+    )
+    asserts.equals(
+        env,
+        "@build_bazel_bazel_.bazelversion//:bazel_binary",
+        integration_test_utils.bazel_binary_label("//:.bazelversion"),
     )
 
     return unittest.end(env)
