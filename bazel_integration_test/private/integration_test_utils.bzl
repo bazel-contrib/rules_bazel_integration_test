@@ -15,6 +15,22 @@ def _semantic_version_to_name(version):
     """
     return version.replace(".", "_")
 
+_BAZELVERSION_VERSION = ".bazelversion"
+# _REPO_NAME_PREFIX = "build_bazel_bazel_"
+# _BAZELVERSION_REPO_NAME = _REPO_NAME_PREFIX + "bazelversion"
+
+def _is_version_file(version):
+    return version == _BAZELVERSION_VERSION
+
+def _bazel_binary_repo_name(version):
+    if _is_version_file(version):
+        normalized_version = "bazelversion"
+    else:
+        normalized_version = _semantic_version_to_name(version)
+    return "build_bazel_bazel_{version}".format(
+        version = normalized_version,
+    )
+
 def _bazel_binary_label(version):
     """Returns a label for the specified Bazel version as provided by https://github.com/bazelbuild/bazel-integration-testing.
 
@@ -25,7 +41,8 @@ def _bazel_binary_label(version):
     Returns:
         A `string` representing a label for a version of Bazel.
     """
-    return "@build_bazel_bazel_%s//:bazel_binary" % _semantic_version_to_name(version)
+    repo_name = _bazel_binary_repo_name(version)
+    return "@{repo_name}//:bazel_binary".format(repo_name = repo_name)
 
 def _bazel_integration_test_name(name, version):
     """Generates a test name from the provided base name and the Bazel version.
@@ -84,11 +101,13 @@ _DEFAULT_INTEGRATION_TEST_TAGS = [
 ]
 
 integration_test_utils = struct(
-    semantic_version_to_name = _semantic_version_to_name,
     bazel_binary_label = _bazel_binary_label,
+    bazel_binary_repo_name = _bazel_binary_repo_name,
     bazel_integration_test_name = _bazel_integration_test_name,
     bazel_integration_test_names = _bazel_integration_test_names,
     glob_workspace_files = _glob_workspace_files,
+    is_version_file = _is_version_file,
+    semantic_version_to_name = _semantic_version_to_name,
     DEFAULT_BAZEL_CMDS = _DEFAULT_BAZEL_CMDS,
     DEFAULT_INTEGRATION_TEST_TAGS = _DEFAULT_INTEGRATION_TEST_TAGS,
 )
