@@ -21,7 +21,11 @@ def _is_version_file(version):
 def _bazel_binary_repo_name(version):
     if _is_version_file(version):
         version_label = Label(version)
-        normalized_version = version_label.name.replace(".", "_")
+        parts = []
+        if version_label.package != "":
+            parts.append(version_label.package)
+        parts.append(version_label.name)
+        normalized_version = "_".join(parts)
     else:
         normalized_version = _semantic_version_to_name(version)
     return "build_bazel_bazel_{version}".format(
