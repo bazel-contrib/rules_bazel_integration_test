@@ -44,6 +44,11 @@ def _bazel_binary_repo_name_test(ctx):
         "build_bazel_bazel_.bazelversion",
         integration_test_utils.bazel_binary_repo_name("//:.bazelversion"),
     )
+    asserts.equals(
+        env,
+        "build_bazel_bazel_path_to_bazel_version",
+        integration_test_utils.bazel_binary_repo_name("//path/to:bazel_version"),
+    )
 
     return unittest.end(env)
 

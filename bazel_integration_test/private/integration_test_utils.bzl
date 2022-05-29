@@ -39,7 +39,7 @@ def _normalize_version(version):
         version_label = Label(version)
         parts = []
         if version_label.package != "":
-            parts.append(version_label.package)
+            parts.append(version_label.package.replace("/", "_"))
         parts.append(version_label.name)
         normalized_version = "_".join(parts)
     else:
