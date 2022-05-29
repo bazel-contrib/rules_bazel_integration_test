@@ -101,24 +101,18 @@ The Bazel version to download as a valid Bazel semantic version string.\
         "version_file": attr.label(
             allow_single_file = True,
             doc = """\
-A file (e.g., `.bazelversion`) that contains valid Bazel semantic version string.\
+A file (e.g., `//:.bazelversion`) that contains a valid Bazel semantic version \
+string.\
 """,
         ),
     },
     implementation = _bazel_binary_impl,
     doc = """\
-Download a bazel binary for integration test.
-
-Limitation: only support Linux and macOS for now.\
+Download a bazel binary for integration test.\
 """,
 )
 
 # GH026: Consider having versions be list of JSON. JSON would have version, sha256 and/or urls.
-
-_REPO_NAME_PREFIX = "build_bazel_bazel_"
-
-BAZELVERSION_VERSION = ".bazelversion"
-BAZELVERSION_REPO_NAME = _REPO_NAME_PREFIX + "bazelversion"
 
 def bazel_binaries(versions):
     """Download all of the specified bazel binaries.
