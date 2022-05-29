@@ -15,16 +15,13 @@ def _semantic_version_to_name(version):
     """
     return version.replace(".", "_")
 
-_BAZELVERSION_VERSION = ".bazelversion"
-# _REPO_NAME_PREFIX = "build_bazel_bazel_"
-# _BAZELVERSION_REPO_NAME = _REPO_NAME_PREFIX + "bazelversion"
-
 def _is_version_file(version):
-    return version == _BAZELVERSION_VERSION
+    return version.find("//") > -1
 
 def _bazel_binary_repo_name(version):
     if _is_version_file(version):
-        normalized_version = "bazelversion"
+        version_label = Label(version)
+        normalized_version = version_label.name.replace(".", "_")
     else:
         normalized_version = _semantic_version_to_name(version)
     return "build_bazel_bazel_{version}".format(

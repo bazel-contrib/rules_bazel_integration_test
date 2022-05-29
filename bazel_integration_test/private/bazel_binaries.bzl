@@ -131,8 +131,7 @@ def bazel_binaries(versions):
         if native.existing_rule(name):
             continue
         if integration_test_utils.is_version_file(version):
-            # TODO: FIX ME!
-            bazel_binary(name = name, version_file = "//:.bazelversion")
+            bazel_binary(name = name, version_file = version)
         else:
             bazel_binary(name = name, version = version)
 

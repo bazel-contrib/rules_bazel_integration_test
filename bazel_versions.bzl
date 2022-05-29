@@ -1,7 +1,7 @@
 """Tested/Supported Bazel Versions"""
 
-CURRENT_BAZEL_VERSION = ".bazelversion"
-# CURRENT_BAZEL_VERSION = "//:.bazelversion"
+# CURRENT_BAZEL_VERSION = ".bazelversion"
+CURRENT_BAZEL_VERSION = "//:.bazelversion"
 # CURRENT_BAZEL_VERSION = "//:bazel_binary_bazelversion"
 
 OTHER_BAZEL_VERSIONS = [
