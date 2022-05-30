@@ -118,6 +118,7 @@ def bazel_integration_test(
         )
 
         args.extend(["--workspace", "$(location :%s)" % (bazel_wksp_file_name)])
+        args.extend(kwargs.pop("args", []))
         data.extend([workspace_files_name, bazel_wksp_file_name])
 
     env_inherit = env_inherit + additional_env_inherit
