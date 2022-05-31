@@ -19,6 +19,7 @@ with multiple versions of Bazel.
   * [2\. Update the integration test targets to include the parent workspace files](#2-update-the-integration-test-targets-to-include-the-parent-workspace-files)
   * [3\. Execute the integration tests](#3-execute-the-integration-tests)
 * [Custom Test Runner](#custom-test-runner)
+* [Bazelisk Bazel Version Formats](#bazelisk-bazel-version-formats)
 
 ## Quickstart
 
@@ -61,7 +62,10 @@ Add the following to a file called `bazel_versions.bzl` at the root of your repo
 Bazel version values with the values that you would like to test against for your integration tests.
 
 ```python
-CURRENT_BAZEL_VERSION = "5.1.0"
+# If you are using Bazelisk for your project, you can specify that the current 
+# Bazel version be retrieved from the `.bazelversion` file. Otherwise, specify
+# a valid semantic version. 
+CURRENT_BAZEL_VERSION = "//:.bazelversion"
 
 OTHER_BAZEL_VERSIONS = [
     "4.2.2",
@@ -76,6 +80,9 @@ SUPPORTED_BAZEL_VERSIONS = [
 NOTE: The above code designates a current version and other versions. This can be useful if you have
 a large number of integration tests where you want to execute all of them against the current
 version and execute a subset of them against other Bazel versions.
+
+NOTE: For more information on supported Bazelisk Bazel version formats, please see [Bazelisk Bazel
+Version Formats](#bazelisk-bazel-version-formats).
 
 Add the following to the Bazel build file in the same package as the `bazel_versions.bzl` file.
 
@@ -294,3 +301,20 @@ $ bazel test //examples:simple_test
 
 For information on implementing a custom test runner, please see [the
 documentation](/doc/custom_test_runners.md).
+
+## Bazelisk Bazel Version Formats
+
+Bazel integration tests require a Bazel version or a Bazel binary to use for the execution of an
+integration test. Bazel version values can be a Bazel semantic version or a reference to a file that
+contains a Bazel semantic version (e.g., `//:.bazelversion`). If you are using
+[Bazelisk](https://github.com/bazelbuild/bazelisk) to specify the version of Bazel for use in
+development and CI, then specifying `//:.bazelversion` as one of integration test versions may make
+sense. 
+
+Currently, `rules_bazel_integration_test` only supports Bazel semantic versions in the
+`.bazelversion` file. If you are interested in being able to use Bazelisk's `<FORK>/<VERSION>`,
+please upvote [this issue](https://github.com/bazel-contrib/rules_bazel_integration_test/issues/67).
+If you would like support for another format, please [file an
+issue](https://github.com/bazel-contrib/rules_bazel_integration_test/issues/new).
+
+
