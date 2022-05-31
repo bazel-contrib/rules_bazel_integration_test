@@ -35,10 +35,10 @@ Add the following to your `WORKSPACE` file to add this repository and its depend
 ```python
 http_archive(
     name = "contrib_rules_bazel_integration_test",
-    sha256 = "24e5e8f388bec2da0975cfda6073ed0174a4f62cb874b5dc8037c98faa6acdfd",
-    strip_prefix = "rules_bazel_integration_test-0.7.0",
+    sha256 = "0259d529d1a056025f19269aa911633e5c0e86ca9292d405fa513bb0ea4f1abc",
+    strip_prefix = "rules_bazel_integration_test-0.8.0",
     urls = [
-        "http://github.com/bazel-contrib/rules_bazel_integration_test/archive/v0.7.0.tar.gz",
+        "http://github.com/bazel-contrib/rules_bazel_integration_test/archive/v0.8.0.tar.gz",
     ],
 )
 
