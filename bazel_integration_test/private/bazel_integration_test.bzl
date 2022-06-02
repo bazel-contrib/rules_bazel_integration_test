@@ -17,6 +17,7 @@ _DEFAULT_ENV_INHERIT = ["SUDO_ASKPASS", "HOME"]
 def bazel_integration_test(
         name,
         test_runner,
+        test_runner_args = [],
         bazel_version = None,
         bazel_binary = None,
         workspace_path = None,
@@ -25,6 +26,7 @@ def bazel_integration_test(
         timeout = "long",
         env_inherit = _DEFAULT_ENV_INHERIT,
         additional_env_inherit = [],
+        data = [],
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
@@ -41,6 +43,7 @@ def bazel_integration_test(
         name: name of the resulting py_test
         test_runner: A `Label` for a test runner binary. (see description for
                      details)
+        test_runner_args: A 'List of labels' of arguments passed to test_runner.
         bazel_version: Optional. A `string` value representing the semantic
                        version of Bazel to use for the integration test. If a
                        version is not specified, then the `bazel_binary` must
@@ -64,6 +67,7 @@ def bazel_integration_test(
                      values.
         additional_env_inherit: Optional. Specify additional `env_inherit`
                                 values that should be passed to the test.
+        data: A 'List of labels' representing files needed by the test at runtime.
         **kwargs: additional attributes like timeout and visibility
     """
 
@@ -86,11 +90,11 @@ def bazel_integration_test(
         "--bazel",
         "$(location :%s)" % (bazel_bin_name),
     ]
-    data = [
+    data.extend([
         test_runner,
         bazel_binary,
         bazel_bin_name,
-    ]
+    ])
 
     if workspace_files != None and workspace_path == None:
         fail("You must specify the `workspace_path` when specifying `workspace_files`.")
@@ -118,7 +122,7 @@ def bazel_integration_test(
         )
 
         args.extend(["--workspace", "$(location :%s)" % (bazel_wksp_file_name)])
-        args.extend(kwargs.pop("args", []))
+        args.extend(test_runner_args)
         data.extend([workspace_files_name, bazel_wksp_file_name])
 
     env_inherit = env_inherit + additional_env_inherit

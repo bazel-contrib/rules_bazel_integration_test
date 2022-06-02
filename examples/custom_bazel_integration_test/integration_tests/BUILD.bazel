@@ -1,0 +1,15 @@
+load(
+    "//:custom_bazel_integration_test.bzl", "custom_bazel_integration_test",
+)
+
+sh_binary(
+    name = "workspace_test_runner",
+    srcs = ["workspace_test.sh"],
+)
+
+custom_bazel_integration_test(
+    name = "workspace_test",
+    test_runner = ":workspace_test_runner",
+    visibility = ["//:__subpackages__"],
+    workspace_path = "workspace",
+)
