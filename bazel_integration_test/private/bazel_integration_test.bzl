@@ -43,7 +43,7 @@ def bazel_integration_test(
         name: name of the resulting py_test
         test_runner: A `Label` for a test runner binary. (see description for
                      details)
-        test_runner_args: A 'List of labels' of arguments passed to test_runner.
+        test_runner_args: A 'List of strings' of arguments passed to test_runner.
         bazel_version: Optional. A `string` value representing the semantic
                        version of Bazel to use for the integration test. If a
                        version is not specified, then the `bazel_binary` must
