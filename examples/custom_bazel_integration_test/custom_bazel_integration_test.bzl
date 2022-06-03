@@ -3,8 +3,6 @@ load(
     "bazel_integration_test",
 )
 
-load("@cgrindel_bazel_starlib//shlib/rules:execute_binary.bzl", "execute_binary")
-
 load(
     "//:bazel_versions.bzl",
     "CURRENT_BAZEL_VERSION",
