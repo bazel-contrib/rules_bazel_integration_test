@@ -90,11 +90,11 @@ def bazel_integration_test(
         "--bazel",
         "$(location :%s)" % (bazel_bin_name),
     ]
-    data.extend([
+    data = data + [
         test_runner,
         bazel_binary,
         bazel_bin_name,
-    ])
+    ]
 
     if workspace_files != None and workspace_path == None:
         fail("You must specify the `workspace_path` when specifying `workspace_files`.")
