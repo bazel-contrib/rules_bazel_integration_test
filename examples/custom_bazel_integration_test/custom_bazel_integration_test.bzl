@@ -1,9 +1,6 @@
 load(
     "@contrib_rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
-    "bazel_integration_tests",
-    "default_test_runner",
-    "integration_test_utils",
 )
 
 load("@cgrindel_bazel_starlib//shlib/rules:execute_binary.bzl", "execute_binary")
@@ -24,7 +21,6 @@ def custom_bazel_integration_test(
         srcs = ["//:test_runner_wrapper.sh"],
         deps = [
             "@bazel_tools//tools/bash/runfiles",
-            "@cgrindel_bazel_starlib//shlib/lib:assertions",
         ],
         data = [
             "@contrib_rules_bazel_integration_test//tools:create_scratch_dir",
