@@ -13,6 +13,14 @@ create_scratch_dir_sh_location=contrib_rules_bazel_integration_test/tools/create
 create_scratch_dir_sh="$(rlocation "${create_scratch_dir_sh_location}")" || \
     (echo >&2 "Failed to locate ${create_scratch_dir_sh_location}" && exit 1)
 
+assertions_sh_location=cgrindel_bazel_starlib/shlib/lib/assertions.sh
+assertions_sh="$(rlocation "${assertions_sh_location}")" || \
+    (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
+source "${assertions_sh}"
+
+assert_equal "--test-runner" "${1}"
+test -f "${2}" || (echo >&2 "Failed to locate test runner: ${2}" && exit 1)
+
 while (("$#")); do
     case "${1}" in
         "--test-runner")

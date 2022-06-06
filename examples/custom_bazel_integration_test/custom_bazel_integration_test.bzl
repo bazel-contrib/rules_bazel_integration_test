@@ -22,6 +22,7 @@ def custom_bazel_integration_test(
         ],
         data = [
             "@contrib_rules_bazel_integration_test//tools:create_scratch_dir",
+            "@cgrindel_bazel_starlib//shlib/lib:assertions",
         ],
         testonly = True,
     )
