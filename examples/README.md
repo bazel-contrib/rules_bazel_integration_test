@@ -7,3 +7,4 @@
   [`bazel_integration_tests`](/doc/rules_and_macros_overview.md#bazel_integration_tests).
 * [Custom Test Runner](/examples/custom_test_runner) - This workspace implements Bazel integration
   tests with a custom test runner written in [Swift](https://www.swift.org/).
+* [Custom Test Rule](/examples/custom_bazel_integration_test) - This workspace implements custom macro on top of Bazel integration test which does specific setup procedure before executing test runner

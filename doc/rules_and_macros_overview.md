@@ -16,8 +16,9 @@ On this page:
 ## bazel_integration_test
 
 <pre>
-bazel_integration_test(<a href="#bazel_integration_test-name">name</a>, <a href="#bazel_integration_test-test_runner">test_runner</a>, <a href="#bazel_integration_test-bazel_version">bazel_version</a>, <a href="#bazel_integration_test-bazel_binary">bazel_binary</a>, <a href="#bazel_integration_test-workspace_path">workspace_path</a>,
-                       <a href="#bazel_integration_test-workspace_files">workspace_files</a>, <a href="#bazel_integration_test-tags">tags</a>, <a href="#bazel_integration_test-timeout">timeout</a>, <a href="#bazel_integration_test-env_inherit">env_inherit</a>, <a href="#bazel_integration_test-additional_env_inherit">additional_env_inherit</a>, <a href="#bazel_integration_test-kwargs">kwargs</a>)
+bazel_integration_test(<a href="#bazel_integration_test-name">name</a>, <a href="#bazel_integration_test-test_runner">test_runner</a>, <a href="#bazel_integration_test-test_runner_args">test_runner_args</a>, <a href="#bazel_integration_test-bazel_version">bazel_version</a>, <a href="#bazel_integration_test-bazel_binary">bazel_binary</a>,
+                       <a href="#bazel_integration_test-workspace_path">workspace_path</a>, <a href="#bazel_integration_test-workspace_files">workspace_files</a>, <a href="#bazel_integration_test-tags">tags</a>, <a href="#bazel_integration_test-timeout">timeout</a>, <a href="#bazel_integration_test-env_inherit">env_inherit</a>,
+                       <a href="#bazel_integration_test-additional_env_inherit">additional_env_inherit</a>, <a href="#bazel_integration_test-data">data</a>, <a href="#bazel_integration_test-kwargs">kwargs</a>)
 </pre>
 
 Macro that defines a set of targets for a single Bazel integration test.
@@ -39,6 +40,7 @@ default test runner is provided by the `default_test_runner` macro.
 | :------------- | :------------- | :------------- |
 | <a id="bazel_integration_test-name"></a>name |  name of the resulting py_test   |  none |
 | <a id="bazel_integration_test-test_runner"></a>test_runner |  A <code>Label</code> for a test runner binary. (see description for details)   |  none |
+| <a id="bazel_integration_test-test_runner_args"></a>test_runner_args |  A 'List of strings' of arguments passed to test_runner.   |  <code>[]</code> |
 | <a id="bazel_integration_test-bazel_version"></a>bazel_version |  Optional. A <code>string</code> value representing the semantic version of Bazel to use for the integration test. If a version is not specified, then the <code>bazel_binary</code> must be specified.   |  <code>None</code> |
 | <a id="bazel_integration_test-bazel_binary"></a>bazel_binary |  Optional. A <code>Label</code> for the Bazel binary to use for the execution of the integration test. Most users will not use this attribute. Use the <code>bazel_version</code> instead.   |  <code>None</code> |
 | <a id="bazel_integration_test-workspace_path"></a>workspace_path |  Optional. A <code>string</code> specifying the relative path to the child workspace. If not specified, then it is derived from the name.   |  <code>None</code> |
@@ -47,6 +49,7 @@ default test runner is provided by the `default_test_runner` macro.
 | <a id="bazel_integration_test-timeout"></a>timeout |  A valid Bazel timeout value. https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner   |  <code>"long"</code> |
 | <a id="bazel_integration_test-env_inherit"></a>env_inherit |  Optional. Override the env_inherit values passed to the test. Only do this if you understand what needs to be passed along. Most folks will want to use <code>additional_env_inherit</code> to pass additional env_inherit values.   |  <code>["SUDO_ASKPASS", "HOME"]</code> |
 | <a id="bazel_integration_test-additional_env_inherit"></a>additional_env_inherit |  Optional. Specify additional <code>env_inherit</code> values that should be passed to the test.   |  <code>[]</code> |
+| <a id="bazel_integration_test-data"></a>data |  A 'List of labels' representing files needed by the test at runtime.   |  <code>[]</code> |
 | <a id="bazel_integration_test-kwargs"></a>kwargs |  additional attributes like timeout and visibility   |  none |
 
 
