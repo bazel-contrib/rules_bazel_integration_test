@@ -23,6 +23,7 @@ def bazel_integration_test(
         workspace_files = None,
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
+        env = {},
         env_inherit = _DEFAULT_ENV_INHERIT,
         additional_env_inherit = [],
         **kwargs):
@@ -57,6 +58,8 @@ def bazel_integration_test(
         tags: The Bazel tags to apply to the test declaration.
         timeout: A valid Bazel timeout value.
                  https://docs.bazel.build/versions/main/test-encyclopedia.html#role-of-the-test-runner
+        env: Optional. A dictionary of `strings`. Specifies additional environment
+                variables to be passed to the test.
         env_inherit: Optional. Override the env_inherit values passed to the
                      test. Only do this if you understand what needs to be
                      passed along. Most folks will want to use
@@ -134,11 +137,7 @@ def bazel_integration_test(
             "@cgrindel_bazel_starlib//shlib/lib:messages",
         ],
         timeout = timeout,
-        env = select({
-            # Linux platforms require that CC be set to clang.
-            "@platforms//os:linux": {"CC": "clang"},
-            "//conditions:default": {},
-        }),
+        env = env,
         env_inherit = env_inherit,
         tags = tags,
         **kwargs
