@@ -22,6 +22,11 @@ bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":simple_test_runner",
+    env = select({
+    # Linux platforms require that CC be set to clang.
+        "@platforms//os:linux": {"CC": "clang"},
+        "//conditions:default": {},
+    }),
     workspace_path = "simple",
 )
 
@@ -33,6 +38,11 @@ bazel_integration_tests(
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
     test_runner = ":simple_test_runner",
+    env = select({
+    # Linux platforms require that CC be set to clang.
+        "@platforms//os:linux": {"CC": "clang"},
+        "//conditions:default": {},
+    }),
     workspace_path = "simple",
 )
 
@@ -53,6 +63,11 @@ bazel_integration_test(
     name = "custom_test_runner_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":custom_test_runner_test_runner",
+    env = select({
+        # Linux platforms require that CC be set to clang.
+        "@platforms//os:linux": {"CC": "clang"},
+        "//conditions:default": {},
+    }),
     workspace_files = integration_test_utils.glob_workspace_files("custom_test_runner") + [
         "//:local_repository_files",
     ],
@@ -78,6 +93,11 @@ bazel_integration_test(
     name = "use_create_scratch_dir_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":use_create_scratch_dir_test_runner",
+    env = select({
+    # Linux platforms require that CC be set to clang.
+        "@platforms//os:linux": {"CC": "clang"},
+        "//conditions:default": {},
+    }),
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:local_repository_files",
     ],
@@ -100,6 +120,11 @@ bazel_integration_test(
     name = "dynamic_workspace_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":dynamic_workspace_test_runner",
+    env = select({
+    # Linux platforms require that CC be set to clang.
+        "@platforms//os:linux": {"CC": "clang"},
+        "//conditions:default": {},
+    }),
 )
 
 # MARK: - Test Suite
