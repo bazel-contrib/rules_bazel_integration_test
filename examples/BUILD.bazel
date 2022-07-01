@@ -21,11 +21,6 @@ default_test_runner(
 bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     test_runner = ":simple_test_runner",
     workspace_path = "simple",
 )
@@ -37,11 +32,6 @@ bazel_integration_tests(
     # buildifier: disable=duplicated-name
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     test_runner = ":simple_test_runner",
     workspace_path = "simple",
 )
@@ -62,11 +52,6 @@ default_test_runner(
 bazel_integration_test(
     name = "custom_test_runner_test",
     bazel_version = CURRENT_BAZEL_VERSION,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     test_runner = ":custom_test_runner_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("custom_test_runner") + [
         "//:local_repository_files",
@@ -92,11 +77,6 @@ sh_binary(
 bazel_integration_test(
     name = "use_create_scratch_dir_test",
     bazel_version = CURRENT_BAZEL_VERSION,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     test_runner = ":use_create_scratch_dir_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:local_repository_files",
@@ -119,11 +99,6 @@ sh_binary(
 bazel_integration_test(
     name = "dynamic_workspace_test",
     bazel_version = CURRENT_BAZEL_VERSION,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     test_runner = ":dynamic_workspace_test_runner",
 )
 

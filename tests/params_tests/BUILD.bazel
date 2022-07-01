@@ -19,11 +19,6 @@ default_test_runner(
 bazel_integration_test(
     name = "default_env_inherit_int_test",
     bazel_version = CURRENT_BAZEL_VERSION,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     test_runner = ":test_runner",
     workspace_path = "workspace",
 )
@@ -42,14 +37,10 @@ env_inherit_attr_test(
 bazel_integration_test(
     name = "override_env_inherit_int_test",
     bazel_version = CURRENT_BAZEL_VERSION,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     env_inherit = [
         "HOME",
         "SUDO_ASKPASS",
+        "CC",
         "CHICKEN",
     ],
     test_runner = ":test_runner",
@@ -74,11 +65,6 @@ bazel_integration_test(
         "CHICKEN",
     ],
     bazel_version = CURRENT_BAZEL_VERSION,
-    env = select({
-        # Linux platforms require that CC be set to clang.
-        "@platforms//os:linux": {"CC": "clang"},
-        "//conditions:default": {},
-    }),
     test_runner = ":test_runner",
     workspace_path = "workspace",
 )
