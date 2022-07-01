@@ -12,7 +12,8 @@ load(":integration_test_utils.bzl", "integration_test_utils")
 # By default, inherit the following environment variables
 #   HOME: Avoid "could not get the user's cache directory: $HOME is not defined"
 #   SUDO_ASKPASS: Support executing tests that require sudo for certain steps.
-_DEFAULT_ENV_INHERIT = ["SUDO_ASKPASS", "HOME"]
+#   CC: if Bazel use specific C-compiler it should be inherited by default
+_DEFAULT_ENV_INHERIT = ["SUDO_ASKPASS", "HOME", "CC"]
 
 def bazel_integration_test(
         name,
