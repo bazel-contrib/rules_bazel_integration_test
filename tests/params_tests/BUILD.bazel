@@ -40,6 +40,7 @@ bazel_integration_test(
     env_inherit = [
         "HOME",
         "SUDO_ASKPASS",
+        "CC",
         "CHICKEN",
     ],
     test_runner = ":test_runner",
