@@ -3,8 +3,8 @@
 CURRENT_BAZEL_VERSION = "//:.bazelversion"
 
 OTHER_BAZEL_VERSIONS = [
-    "4.2.2",
-    "6.0.0-pre.20220405.2",
+    "6.0.0-pre.20221020.1",
+    "7.0.0-pre.20221026.2",
 ]
 
 SUPPORTED_BAZEL_VERSIONS = [
