@@ -11,7 +11,7 @@ jobs:
   macos_build:
     runs-on: macos-11.0
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
@@ -22,7 +22,7 @@ jobs:
     env:
       CC: clang
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ./.github/actions/configure_swift_for_linux
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
