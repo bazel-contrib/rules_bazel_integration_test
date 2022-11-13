@@ -63,6 +63,8 @@ done
 [[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
 
 all_workspace_dirs=( $(find_workspace_dirs "${workspace_root}") )
+[[ ${#all_workspace_dirs[@]} -gt 0 ]] || exit 0
+
 child_workspace_dirs=()
 for workspace_dir in "${all_workspace_dirs[@]}" ; do
   [[ "${workspace_dir}" != "${workspace_root}" ]] && \
@@ -73,6 +75,9 @@ absolute_path_pkgs=()
 for child_workspace_dir in "${child_workspace_dirs[@]}" ; do
   absolute_path_pkgs+=( $(find_bazel_pkgs "${child_workspace_dir}") )
 done
+
+# If no packages, then exit gracefully
+[[ ${#absolute_path_pkgs[@]} -gt 0 ]] || exit 0
 absolute_path_pkgs=( $(sort_items "${absolute_path_pkgs[@]}") )
 
 # Strip the workspace_root prefix from the paths

@@ -90,6 +90,9 @@ fi
 # Find the child packages
 pkgs=( $(. "${find_pkgs_script}" --workspace "${workspace_root}") )
 
+# If no pkgs, then exit gracefully
+[[ ${#pkgs[@]} -gt 0 ]] || exit 0
+
 
 # Update the .bazelrc file with the deleted packages flag.
 # The sed -i.bak pattern is compatible between macos and linux

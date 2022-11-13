@@ -16,14 +16,29 @@ source "${assertions_lib}"
 
 find_bin="$(rlocation contrib_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
 
-starting_path="${PWD}"
+# MARK - Execute without a workspace
+
+"${find_bin}" --workspace "${PWD}" \
+  || fail "Expected no failure with no child workspace."
+
+# MARK - Execute with empty workspace
+
+empty_example_workspace_dir="${PWD}/examples/empty"
+mkdir -p "${empty_example_workspace_dir}"
+touch "${empty_example_workspace_dir}/WORKSPACE"
+
+"${find_bin}" --workspace "${PWD}" \
+  || fail "Expected no failure with empty child workspace."
+
+rm -rf "${empty_example_workspace_dir}"
+
+# MARK - Execute with a workspace
 
 # Set up the parent workspace
 setup_test_workspace_sh_location=contrib_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
 setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
   (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
 source "${setup_test_workspace_sh}"
-
 
 expected=("examples/child_a" "examples/child_a/foo" "somewhere_else/child_b/bar")
 
