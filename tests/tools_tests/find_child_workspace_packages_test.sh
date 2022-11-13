@@ -43,7 +43,10 @@ source "${setup_test_workspace_sh}"
 expected=("examples/child_a" "examples/child_a/foo" "somewhere_else/child_b/bar")
 
 # Execute specifying workspace flag
-actual=( $(. "${find_bin}" --workspace "${parent_dir}") )
+actual=()
+while IFS=$'\n' read -r line; do actual+=("$line"); done < <(
+  "${find_bin}" --workspace "${parent_dir}"
+)
 assert_equal "${#expected[@]}" "${#actual[@]}"
 for (( i = 0; i < ${#expected[@]}; i++ )); do
   assert_equal "${expected[i]}" "${actual[i]}"
@@ -51,8 +54,12 @@ done
 
 
 # Execute inside the parent workspace; find the parent workspace root
+# shellcheck disable=SC2154
 cd "${examples_dir}"
-actual=( $(. "${find_bin}") )
+actual=()
+while IFS=$'\n' read -r line; do actual+=("$line"); done < <(
+  "${find_bin}"
+)
 assert_equal "${#expected[@]}" "${#actual[@]}"
 for (( i = 0; i < ${#expected[@]}; i++ )); do
   assert_equal "${expected[i]}" "${actual[i]}"
