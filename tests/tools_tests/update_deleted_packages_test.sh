@@ -18,10 +18,12 @@ update_bin="$(rlocation contrib_rules_bazel_integration_test/tools/update_delete
 
 starting_path="${PWD}"
 
+
 # Set up the parent workspace
 setup_test_workspace_sh_location=contrib_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
 setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
   (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
+# shellcheck source=SCRIPTDIR/setup_test_workspace.sh
 source "${setup_test_workspace_sh}"
 
 # MARK - Variables
@@ -40,7 +42,7 @@ reset_test_workspace() {
 # MARK - Test Specifying Flags
 
 # Execute specifying workspace flag
-. "${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
+"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
 
 actual=$(< "${parent_bazelrc}")
 assert_equal "${expected_with_change}" "${actual}"
@@ -58,7 +60,7 @@ reset_test_workspace
 
 # Execute inside the parent workspace; find the parent workspace root
 cd "${examples_dir}"
-. "${update_bin}" 
+"${update_bin}" 
 
 actual=$(< "${parent_bazelrc}")
 assert_equal "${expected_with_change}" "${actual}"
@@ -83,7 +85,7 @@ cd "${fake_bazel_output_dir}"
 export BUILD_WORKING_DIRECTORY="${examples_dir}"
 
 # Execute the update
-. "${update_bin}" 
+"${update_bin}" 
 
 actual=$(< "${parent_bazelrc}")
 assert_equal "${expected_with_change}" "${actual}"
