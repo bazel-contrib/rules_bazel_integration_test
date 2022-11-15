@@ -47,3 +47,15 @@ sh_test(
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
     ],
 )
+
+sh_test(
+    name = "remove_bazel_symlinks_test",
+    srcs = ["remove_bazel_symlinks_test.sh"],
+    data = [
+        "//tools:remove_bazel_symlinks",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)

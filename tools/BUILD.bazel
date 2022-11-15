@@ -8,6 +8,11 @@ filegroup(
     visibility = ["//:__subpackages__"],
 )
 
+sh_library(
+    name = "shared_fns",
+    srcs = ["shared_fns.sh"],
+)
+
 # MARK: - Binary Declarations
 
 sh_binary(
@@ -15,6 +20,7 @@ sh_binary(
     srcs = ["find_child_workspace_packages.sh"],
     visibility = ["//visibility:public"],
     deps = [
+        ":shared_fns",
         "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:arrays",
         "@cgrindel_bazel_starlib//shlib/lib:files",
@@ -45,5 +51,16 @@ sh_binary(
         "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:fail",
         "@cgrindel_bazel_starlib//shlib/lib:paths",
+    ],
+)
+
+sh_binary(
+    name = "remove_bazel_symlinks",
+    srcs = ["remove_bazel_symlinks.sh"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":shared_fns",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:fail",
     ],
 )
