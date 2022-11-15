@@ -58,15 +58,11 @@ while (("$#")); do
   esac
 done
 
-[[ -z "${workspace_root:-}" ]] && [[ -n "${BUILD_WORKING_DIRECTORY:-}"  ]] && workspace_root="${BUILD_WORKING_DIRECTORY:-}"
+[[ -z "${workspace_root:-}" ]] && [[ ! -z "${BUILD_WORKING_DIRECTORY:-}"  ]] && workspace_root="${BUILD_WORKING_DIRECTORY:-}"
 [[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
 
-all_workspace_dirs=()
-while IFS=$'\n' read -r line; do all_workspace_dirs+=("$line"); done \
-  < <(find_workspace_dirs "${workspace_root}")
-[[ ${#all_workspace_dirs[@]} -gt 0 ]] || exit 0
-
+all_workspace_dirs=( $(find_workspace_dirs "${workspace_root}") )
 child_workspace_dirs=()
 for workspace_dir in "${all_workspace_dirs[@]}" ; do
   [[ "${workspace_dir}" != "${workspace_root}" ]] && \
@@ -75,19 +71,11 @@ done
 
 absolute_path_pkgs=()
 for child_workspace_dir in "${child_workspace_dirs[@]}" ; do
-  while IFS=$'\n' read -r line; do absolute_path_pkgs+=("$line"); done < <(
-    find_bazel_pkgs "${child_workspace_dir}"
-  )
+  absolute_path_pkgs+=( $(find_bazel_pkgs "${child_workspace_dir}") )
 done
-
-# If no packages, then exit gracefully
-[[ ${#absolute_path_pkgs[@]} -gt 0 ]] || exit 0
-sorted_abs_path_pkgs=()
-while IFS=$'\n' read -r line; do sorted_abs_path_pkgs+=("$line"); done < <(
-  sort_items "${absolute_path_pkgs[@]}"
-)
+absolute_path_pkgs=( $(sort_items "${absolute_path_pkgs[@]}") )
 
 # Strip the workspace_root prefix from the paths
-pkgs=( "${sorted_abs_path_pkgs[@]#"${workspace_root}/"}")
+pkgs=( "${absolute_path_pkgs[@]#"${workspace_root}/"}")
 
 print_by_line "${pkgs[@]}"
