@@ -47,6 +47,7 @@ done
 [[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || fail "The workspace root was not found. ${workspace_root:-}"
 
+
 workspace_dirs=()
 while IFS=$'\n' read -r line; do workspace_dirs+=("$line"); done < <(
   find_workspace_dirs "${workspace_root}"
