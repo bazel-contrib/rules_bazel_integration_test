@@ -19,9 +19,9 @@ assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
 source "${assertions_sh}"
 
-remove_bazel_symlinks_sh_location=contrib_rules_bazel_integration_test/tools/remove_bazel_symlinks.sh
-remove_bazel_symlinks_sh="$(rlocation "${remove_bazel_symlinks_sh_location}")" || \
-  (echo >&2 "Failed to locate ${remove_bazel_symlinks_sh_location}" && exit 1)
+remove_child_wksp_bazel_symlinks_sh_location=contrib_rules_bazel_integration_test/tools/remove_child_wksp_bazel_symlinks.sh
+remove_child_wksp_bazel_symlinks_sh="$(rlocation "${remove_child_wksp_bazel_symlinks_sh_location}")" || \
+  (echo >&2 "Failed to locate ${remove_child_wksp_bazel_symlinks_sh_location}" && exit 1)
 
 # Set up the parent workspace
 setup_test_workspace_sh_location=contrib_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
@@ -52,7 +52,7 @@ rogue_symlink="${examples_dir}/bazel-rogue"
 ln -s "${bazel_out}" "${rogue_symlink}"
 
 # Remove 
-"${remove_bazel_symlinks_sh}" --workspace "${parent_dir}"
+"${remove_child_wksp_bazel_symlinks_sh}" --workspace "${parent_dir}"
 
 [[ -e "${parent_symlink}" ]] || fail "Expected parent symlink to exist. ${parent_symlink}"
 [[ ! -e "${child_a_symlink}" ]] || fail "Expected child_a symlink not to exist. ${child_a_symlink}"

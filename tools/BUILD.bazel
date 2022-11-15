@@ -55,8 +55,8 @@ sh_binary(
 )
 
 sh_binary(
-    name = "remove_bazel_symlinks",
-    srcs = ["remove_bazel_symlinks.sh"],
+    name = "remove_child_wksp_bazel_symlinks",
+    srcs = ["remove_child_wksp_bazel_symlinks.sh"],
     visibility = ["//visibility:public"],
     deps = [
         ":shared_fns",

@@ -27,13 +27,8 @@ source "${shared_fns_sh}"
 
 remove_bazel_symlinks() {
   local workspace_dir="${1}"
-  # DEBUG BEGIN
-  echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") workspace_dir: ${workspace_dir}" 
-  find "${workspace_dir}"  -maxdepth 1 -type l -name "bazel-*" >&2
-  # DEBUG END
   find "${workspace_dir}" -maxdepth 1 -type l -name "bazel-*" -print0 | xargs -0 rm
 }
-
 
 # MARK - Process Args
 
