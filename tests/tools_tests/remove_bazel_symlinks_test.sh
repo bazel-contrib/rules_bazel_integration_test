@@ -19,6 +19,42 @@ assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
 source "${assertions_sh}"
 
+remove_bazel_symlinks_sh_location=contrib_rules_bazel_integration_test/tools/remove_bazel_symlinks.sh
+remove_bazel_symlinks_sh="$(rlocation "${remove_bazel_symlinks_sh_location}")" || \
+  (echo >&2 "Failed to locate ${remove_bazel_symlinks_sh_location}" && exit 1)
+
+# Set up the parent workspace
+setup_test_workspace_sh_location=contrib_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
+setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
+  (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
+# shellcheck source=SCRIPTDIR/setup_test_workspace.sh
+source "${setup_test_workspace_sh}"
+
 # MARK - Test
 
-fail "IMPLEMENT ME!"
+bazel_out="${PWD}/bazel_out"
+parent_bazel_out="${bazel_out}/parent"
+child_a_bazel_out="${bazel_out}/child_a"
+child_b_bazel_out="${bazel_out}/child_b"
+mkdir -p "${bazel_out}" "${child_a_bazel_out}" "${child_b_bazel_out}" "${parent_bazel_out}"
+
+# Add bazel symlinks
+parent_symlink="${parent_dir}/bazel-parent"
+child_a_symlink="${child_a_dir}/bazel-child_a"
+child_b_symlink="${child_b_dir}/bazel-child_b"
+ln -s "${parent_bazel_out}" "${parent_symlink}"
+ln -s "${child_a_bazel_out}" "${child_a_symlink}"
+ln -s "${child_b_bazel_out}" "${child_b_symlink}"
+
+# Add a rogue symlink; looks like something that a bazel- symlink but is not in
+# a workspace directory.
+rogue_symlink="${examples_dir}/bazel-rogue"
+ln -s "${bazel_out}" "${rogue_symlink}"
+
+# Remove 
+"${remove_bazel_symlinks_sh}" --workspace "${parent_dir}"
+
+[[ -e "${parent_symlink}" ]] || fail "Expected parent symlink to exist. ${parent_symlink}"
+[[ ! -e "${child_a_symlink}" ]] || fail "Expected child_a symlink not to exist. ${child_a_symlink}"
+[[ ! -e "${child_b_symlink}" ]] || fail "Expected child_b symlink not to exist. ${child_b_symlink}"
+[[ -e "${rogue_symlink}" ]] || fail "Expected rogue symlink to exist. ${rogue_symlink}"

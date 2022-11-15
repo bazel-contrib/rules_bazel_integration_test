@@ -55,6 +55,7 @@ sh_test(
         "//tools:remove_bazel_symlinks",
     ],
     deps = [
+        ":setup_test_workspace",
         "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
     ],

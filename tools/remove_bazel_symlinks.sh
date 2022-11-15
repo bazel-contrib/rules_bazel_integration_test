@@ -26,7 +26,12 @@ source "${shared_fns_sh}"
 # MARK - Functions
 
 remove_bazel_symlinks() {
-  # TODO(chuck): IMPLEMENT ME!
+  local workspace_dir="${1}"
+  # DEBUG BEGIN
+  echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") workspace_dir: ${workspace_dir}" 
+  find "${workspace_dir}"  -maxdepth 1 -type l -name "bazel-*" >&2
+  # DEBUG END
+  find "${workspace_dir}" -maxdepth 1 -type l -name "bazel-*" -print0 | xargs -0 rm
 }
 
 
@@ -47,10 +52,12 @@ done
 [[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 [[ -d "${workspace_root:-}" ]] || fail "The workspace root was not found. ${workspace_root:-}"
 
-workspace_dirs
+workspace_dirs=()
 while IFS=$'\n' read -r line; do workspace_dirs+=("$line"); done < <(
   find_workspace_dirs "${workspace_root}"
 )
+
+[[ ${#workspace_dirs[@]} -gt 0 ]] || (warn "No workspace directories were found."; exit 0)
 
 for workspace_dir in "${workspace_dirs[@]}" ; do
   if [[ "${workspace_dir}" == "${workspace_root}" ]]; then
