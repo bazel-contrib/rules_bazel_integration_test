@@ -11,7 +11,7 @@ On this page:
   * [default_test_runner](#default_test_runner)
 
 
-<a id="#bazel_integration_test"></a>
+<a id="bazel_integration_test"></a>
 
 ## bazel_integration_test
 
@@ -52,7 +52,7 @@ default test runner is provided by the `default_test_runner` macro.
 | <a id="bazel_integration_test-kwargs"></a>kwargs |  additional attributes like timeout and visibility   |  none |
 
 
-<a id="#bazel_integration_tests"></a>
+<a id="bazel_integration_tests"></a>
 
 ## bazel_integration_tests
 
@@ -80,7 +80,7 @@ Macro that defines a set Bazel integration tests each executed with a different 
 | <a id="bazel_integration_tests-kwargs"></a>kwargs |  additional attributes like timeout and visibility   |  none |
 
 
-<a id="#default_test_runner"></a>
+<a id="default_test_runner"></a>
 
 ## default_test_runner
 
