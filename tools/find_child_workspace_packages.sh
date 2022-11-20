@@ -24,16 +24,24 @@ source "${arrays_lib}"
 files_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/files.sh)"
 source "${files_lib}"
 
-# MARK - Functions
+fail_sh_location=cgrindel_bazel_starlib/shlib/lib/fail.sh
+fail_sh="$(rlocation "${fail_sh_location}")" || \
+  (echo >&2 "Failed to locate ${fail_sh_location}" && exit 1)
+source "${fail_sh}"
 
-find_workspace_dirs() {
-  local path="${1}"
-  find "${path}" -name "WORKSPACE" | xargs -n 1 dirname
-}
+shared_fns_sh_location=contrib_rules_bazel_integration_test/tools/shared_fns.sh
+shared_fns_sh="$(rlocation "${shared_fns_sh_location}")" || \
+  (echo >&2 "Failed to locate ${shared_fns_sh_location}" && exit 1)
+# shellcheck source=SCRIPTDIR/shared_fns.sh
+source "${shared_fns_sh}"
+
+# MARK - Functions
 
 find_bazel_pkgs() {
   local path="${1}"
-  find "${path}" \( -name BUILD -or -name BUILD.bazel \) | xargs -n 1 dirname 
+  # Make sure that the -print0 is the last primary for find. Otherwise, you
+  # will get undesirable results.
+  find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 | xargs -0 -n 1 dirname 
 }
 
 # MARK - Main
@@ -58,31 +66,44 @@ while (("$#")); do
   esac
 done
 
-[[ -z "${workspace_root:-}" ]] && [[ -n "${BUILD_WORKING_DIRECTORY:-}"  ]] && workspace_root="${BUILD_WORKING_DIRECTORY:-}"
-[[ -z "${workspace_root:-}" ]] && workspace_root="$(dirname "$(upsearch WORKSPACE)")"
-[[ -d "${workspace_root:-}" ]] || exit_on_error "The workspace root was not found. ${workspace_root:-}"
+if [[ -z "${workspace_root:-}" ]] && [[ -n "${BUILD_WORKING_DIRECTORY:-}"  ]]; then
+  workspace_root="${BUILD_WORKING_DIRECTORY:-}"
+fi
+if [[ -z "${workspace_root:-}" ]]; then
+  workspace_root="$(dirname "$(upsearch WORKSPACE)")"
+fi
+if [[ ! -d "${workspace_root:-}" ]]; then
+  fail "The workspace root was not found. ${workspace_root:-}"
+fi
 
-# all_workspace_dirs=( $(find_workspace_dirs "${workspace_root}") )
 all_workspace_dirs=()
-while IFS=$'\n' read -r line; do all_workspace_dirs+=("$line"); done \
-  < <(find_workspace_dirs "${workspace_root}")
-[[ ${#all_workspace_dirs[@]} -gt 0 ]] || exit 0
+while IFS=$'\n' read -r line; do all_workspace_dirs+=("$line"); done < <(
+  find_workspace_dirs "${workspace_root}"
+)
+if [[ ${#all_workspace_dirs[@]} -eq 0 ]]; then
+  exit 0
+fi
 
 child_workspace_dirs=()
 for workspace_dir in "${all_workspace_dirs[@]}" ; do
-  [[ "${workspace_dir}" != "${workspace_root}" ]] && \
+  if [[ "${workspace_dir}" != "${workspace_root}" ]]; then
     child_workspace_dirs+=( "${workspace_dir}" )
+  fi
 done
+if [[ ${#child_workspace_dirs[@]} -eq 0 ]]; then
+  exit 0
+fi
 
 absolute_path_pkgs=()
 for child_workspace_dir in "${child_workspace_dirs[@]}" ; do
   while IFS=$'\n' read -r line; do absolute_path_pkgs+=("$line"); done < <(
-    find_bazel_pkgs "${child_workspace_dir}"
+    find_bazel_pkgs "${child_workspace_dir}" 
   )
 done
+if [[ ${#absolute_path_pkgs[@]} -eq 0 ]]; then
+  exit 0
+fi
 
-# If no packages, then exit gracefully
-[[ ${#absolute_path_pkgs[@]} -gt 0 ]] || exit 0
 sorted_abs_path_pkgs=()
 while IFS=$'\n' read -r line; do sorted_abs_path_pkgs+=("$line"); done < <(
   sort_items "${absolute_path_pkgs[@]}"
