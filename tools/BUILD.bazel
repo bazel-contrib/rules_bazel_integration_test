@@ -54,3 +54,15 @@ sh_binary(
         "@cgrindel_bazel_starlib//shlib/lib:paths",
     ],
 )
+
+sh_binary(
+    name = "remove_child_wksp_bazel_symlinks",
+    srcs = ["remove_child_wksp_bazel_symlinks.sh"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":shared_fns",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:fail",
+        "@cgrindel_bazel_starlib//shlib/lib:files",
+    ],
+)
