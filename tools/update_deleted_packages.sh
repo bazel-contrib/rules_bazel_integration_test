@@ -74,29 +74,38 @@ done
 # Try to search for the workspace root
 if [[ -z "${workspace_root:-}" ]]; then
   # If the BUILD_WORKING_DIRECTORY exists, it will be the directory from which the command was run
-  if [[ ! -z "${BUILD_WORKING_DIRECTORY:-}"  ]]; then 
+  if [[ -n "${BUILD_WORKING_DIRECTORY:-}"  ]]; then 
     search_start_dir="${BUILD_WORKING_DIRECTORY}"
   else
     search_start_dir="${PWD}"
   fi
   workspace_root="$(dirname "$(upsearch --start_dir "${search_start_dir}" WORKSPACE)")"
 fi
-[[ -d "${workspace_root:-}" ]] || exit_with_msg "The workspace root was not found. ${workspace_root:-}"
+if [[ ! -d "${workspace_root:-}" ]]; then
+  exit_with_msg "The workspace root was not found. ${workspace_root:-}"
+fi
 
-
-[[ -z "${bazelrc_path:-}" ]] && bazelrc_path="${workspace_root}/.bazelrc"
-[[ -f "${bazelrc_path:-}" ]] || exit_with_msg "The bazelrc was not found. ${bazelrc_path:-}"
+if [[ -z "${bazelrc_path:-}" ]]; then
+  bazelrc_path="${workspace_root}/.bazelrc"
+fi
+if [[ ! -f "${bazelrc_path:-}" ]]; then
+  exit_with_msg "The bazelrc was not found. ${bazelrc_path:-}"
+fi
 
 # Find the child packages
-pkgs=( $(. "${find_pkgs_script}" --workspace "${workspace_root}") )
+pkgs=()
+while IFS=$'\n' read -r line; do pkgs+=("$line"); done < <(
+  "${find_pkgs_script}" --workspace "${workspace_root}"
+)
 
 # If no pkgs, then exit gracefully
-[[ ${#pkgs[@]} -gt 0 ]] || exit 0
-
+if [[ ${#pkgs[@]} -eq 0 ]]; then
+  exit 0
+fi
 
 # Update the .bazelrc file with the deleted packages flag.
 # The sed -i.bak pattern is compatible between macos and linux
-sed -i.bak "/^[^#].*--deleted_packages/s#=.*#=$(\
-    join_by , "${pkgs[@]}"\
+sed -i.bak "/^[^#].*--deleted_packages/s#=.*#=$( \
+    join_by , "${pkgs[@]}" \
 )#" "${bazelrc_path}"
 rm -f "${bazelrc_path}.bak"
