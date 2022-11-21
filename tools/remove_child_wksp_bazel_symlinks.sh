@@ -49,10 +49,11 @@ while (("$#")); do
   esac
 done
 
+
 if [[ -z "${workspace_root:-}" ]] && [[ -n "${BUILD_WORKING_DIRECTORY:-}" ]]; then
   workspace_root="${BUILD_WORKING_DIRECTORY:-}" 
 fi
-if [[ -n "${workspace_root:-}" ]]; then
+if [[ -z "${workspace_root:-}" ]]; then
   workspace_root="$(dirname "$(upsearch WORKSPACE)")"
 fi
 if [[ ! -d "${workspace_root:-}" ]]; then

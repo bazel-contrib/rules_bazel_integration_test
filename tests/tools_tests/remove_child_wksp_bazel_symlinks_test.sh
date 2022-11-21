@@ -54,7 +54,15 @@ ln -s "${bazel_out}" "${rogue_symlink}"
 # Remove 
 "${remove_child_wksp_bazel_symlinks_sh}" --workspace "${parent_dir}"
 
-[[ -e "${parent_symlink}" ]] || fail "Expected parent symlink to exist. ${parent_symlink}"
-[[ ! -e "${child_a_symlink}" ]] || fail "Expected child_a symlink not to exist. ${child_a_symlink}"
-[[ ! -e "${child_b_symlink}" ]] || fail "Expected child_b symlink not to exist. ${child_b_symlink}"
-[[ -e "${rogue_symlink}" ]] || fail "Expected rogue symlink to exist. ${rogue_symlink}"
+if [[ ! -e "${parent_symlink}" ]]; then
+  fail "Expected parent symlink to exist. ${parent_symlink}"
+fi
+if [[ -e "${child_a_symlink}" ]]; then
+  fail "Expected child_a symlink not to exist. ${child_a_symlink}"
+fi
+if [[ -e "${child_b_symlink}" ]]; then
+  fail "Expected child_b symlink not to exist. ${child_b_symlink}"
+fi
+if [[ ! -e "${rogue_symlink}" ]]; then
+  fail "Expected rogue symlink to exist. ${rogue_symlink}"
+fi
