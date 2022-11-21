@@ -2,7 +2,7 @@
 # `integration_test_utils` API
 
 
-<a id="#integration_test_utils.bazel_binary_label"></a>
+<a id="integration_test_utils.bazel_binary_label"></a>
 
 ## integration_test_utils.bazel_binary_label
 
@@ -24,7 +24,7 @@ Returns a label for the specified Bazel version as provided by https://github.co
 A `string` representing a label for a version of Bazel.
 
 
-<a id="#integration_test_utils.bazel_binary_repo_name"></a>
+<a id="integration_test_utils.bazel_binary_repo_name"></a>
 
 ## integration_test_utils.bazel_binary_repo_name
 
@@ -46,7 +46,7 @@ Generates a Bazel binary repository name for the specified version.
 A `string` that is suitable for use as a repository name.
 
 
-<a id="#integration_test_utils.bazel_integration_test_name"></a>
+<a id="integration_test_utils.bazel_integration_test_name"></a>
 
 ## integration_test_utils.bazel_integration_test_name
 
@@ -69,7 +69,7 @@ Generates a test name from the provided base name and the Bazel version.
 A `string` that is suitable as an integration test name.
 
 
-<a id="#integration_test_utils.bazel_integration_test_names"></a>
+<a id="integration_test_utils.bazel_integration_test_names"></a>
 
 ## integration_test_utils.bazel_integration_test_names
 
@@ -92,7 +92,7 @@ Generates a `list` of integration test names based upon the provided base name a
 A `list` of integration test names as `string` values.
 
 
-<a id="#integration_test_utils.glob_workspace_files"></a>
+<a id="integration_test_utils.glob_workspace_files"></a>
 
 ## integration_test_utils.glob_workspace_files
 
@@ -115,7 +115,7 @@ A `list` of the files under the specified path ignoring certain Bazel
   artifacts (e.g. `bazel-*`).
 
 
-<a id="#integration_test_utils.is_version_file"></a>
+<a id="integration_test_utils.is_version_file"></a>
 
 ## integration_test_utils.is_version_file
 
@@ -137,7 +137,7 @@ Determines if the version string is a reference to a version file.
 A `bool` the specifies whether the string is a file reference.
 
 
-<a id="#integration_test_utils.semantic_version_to_name"></a>
+<a id="integration_test_utils.semantic_version_to_name"></a>
 
 ## integration_test_utils.semantic_version_to_name
 
