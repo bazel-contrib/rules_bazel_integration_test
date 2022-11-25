@@ -33,7 +33,9 @@ source "${shared_fns_sh}"
 
 remove_bazel_symlinks() {
   local workspace_dir="${1}"
-  find "${workspace_dir}" -maxdepth 1 -type l -name "bazel-*" -print0 | xargs -0 rm
+  # The -r for xargs is important for GNU xargs. Without it, xargs will run the utility
+  # at least once. In this case, we do not want the rm command to run if empty.
+  find "${workspace_dir}" -maxdepth 1 -type l -name "bazel-*" -print0 | xargs -0 -r rm
 }
 
 # MARK - Process Args
