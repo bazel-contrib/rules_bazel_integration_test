@@ -47,3 +47,16 @@ sh_test(
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
     ],
 )
+
+sh_test(
+    name = "remove_child_wksp_bazel_symlinks_test",
+    srcs = ["remove_child_wksp_bazel_symlinks_test.sh"],
+    data = [
+        "//tools:remove_child_wksp_bazel_symlinks",
+    ],
+    deps = [
+        ":setup_test_workspace",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
