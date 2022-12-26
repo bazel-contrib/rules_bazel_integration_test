@@ -39,11 +39,8 @@ reset_test_workspace() {
   reset_bazelrc_files
 }
 
-# MARK - Test Specifying Flags
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") FIRST" 
-# DEBUG END
+# MARK - Test Specifying Flags
 
 # Execute specifying workspace flag
 "${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
@@ -60,15 +57,15 @@ done
 
 reset_test_workspace
 
-# MARK - Test From Outside Workspace with BUILD_WORKSPACE_DIRECTORY
+# MARK - Test From Inside Workspace with BUILD_WORKSPACE_DIRECTORY
 
-# Set up fake Bazel output
-fake_bazel_output_dir="${starting_path}/fake_bazel_out"
-mkdir -p "${fake_bazel_output_dir}"
-cd "${fake_bazel_output_dir}"
+cd "${examples_dir}"
 
-# Set the BUILD_WORKSPACE_DIRECTORY
-export BUILD_WORKSPACE_DIRECTORY="${examples_dir}"
+# Set the BUILD_WORKSPACE_DIRECTORY to the parent
+export BUILD_WORKSPACE_DIRECTORY="${parent_dir}"
+
+# Execute specifying workspace flag
+"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
 
 # Execute the update
 "${update_bin}" 

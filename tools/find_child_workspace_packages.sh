@@ -67,7 +67,7 @@ while (("$#")); do
 done
 
 if [[ -z "${workspace_root:-}" ]]; then
-  workspace_root="${BUILD_WORKSPACE_DIRECTORY}"
+  workspace_root="${BUILD_WORKSPACE_DIRECTORY:-}"
 fi
 if [[ ! -d "${workspace_root:-}" ]]; then
   fail "The workspace root was not found. ${workspace_root:-}"

@@ -52,8 +52,8 @@ while (("$#")); do
 done
 
 
-if [[ -z "${workspace_root:-}" ]] && [[ -n "${BUILD_WORKING_DIRECTORY:-}" ]]; then
-  workspace_root="${BUILD_WORKING_DIRECTORY:-}" 
+if [[ -z "${workspace_root:-}" ]] && [[ -n "${BUILD_WORKSPACE_DIRECTORY:-}" ]]; then
+  workspace_root="${BUILD_WORKSPACE_DIRECTORY:-}" 
 fi
 if [[ -z "${workspace_root:-}" ]]; then
   workspace_root="$(dirname "$(upsearch WORKSPACE)")"
