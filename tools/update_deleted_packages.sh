@@ -72,7 +72,7 @@ done
 
 
 if [[ -z "${workspace_root:-}" ]]; then
-  workspace_root="${BUILD_WORKSPACE_DIRECTORY}"
+  workspace_root="${BUILD_WORKSPACE_DIRECTORY:-}"
 fi
 if [[ ! -d "${workspace_root:-}" ]]; then
   exit_with_msg "The workspace root was not found. ${workspace_root:-}"
