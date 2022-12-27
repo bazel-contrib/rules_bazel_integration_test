@@ -1,7 +1,11 @@
 # Demonstrate a Custom Test Runner for `rules_bazel_integration_test`
 
-This example demonstrates the implementation of a [custom test
-runner](/README.md#custom-test-runner). While the default test runner is implemented using [Bash
+This example demonstrates the following:
+1. An implementation of a [custom test runner](/README.md#custom-test-runner).
+2. A child workspace with that uses `WORKSPACE.bazel` instead of `WORKSPACE`.
+
+
+While the default test runner is implemented using [Bash
 shell scripts](/bazel_integration_test/private/default_test_runner.sh),
 `rules_bazel_integration_test` supports test runners implemented in any language that can create an
 executable target.  This workspace implements Bazel integration tests with a custom test runner

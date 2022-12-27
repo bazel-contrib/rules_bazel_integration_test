@@ -56,6 +56,10 @@ done
 # Execute inside the parent workspace; find the parent workspace root
 # shellcheck disable=SC2154
 cd "${examples_dir}"
+
+# Set the BUILD_WORKSPACE_DIRECTORY
+export BUILD_WORKSPACE_DIRECTORY="${parent_dir}"
+
 actual=()
 while IFS=$'\n' read -r line; do actual+=("$line"); done < <(
   "${find_bin}"
@@ -64,3 +68,7 @@ assert_equal "${#expected[@]}" "${#actual[@]}"
 for (( i = 0; i < ${#expected[@]}; i++ )); do
   assert_equal "${expected[i]}" "${actual[i]}"
 done
+
+# Unset the BUILD_WORKSPACE_DIRECTORY
+unset BUILD_WORKSPACE_DIRECTORY
+

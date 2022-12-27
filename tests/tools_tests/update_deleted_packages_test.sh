@@ -39,6 +39,7 @@ reset_test_workspace() {
   reset_bazelrc_files
 }
 
+
 # MARK - Test Specifying Flags
 
 # Execute specifying workspace flag
@@ -56,33 +57,15 @@ done
 
 reset_test_workspace
 
-# MARK - Test From Child Directory without BUILD_WORKING_DIRECTORY
+# MARK - Test From Inside Workspace with BUILD_WORKSPACE_DIRECTORY
 
-# Execute inside the parent workspace; find the parent workspace root
 cd "${examples_dir}"
-"${update_bin}" 
 
-actual=$(< "${parent_bazelrc}")
-assert_equal "${expected_with_change}" "${actual}"
+# Set the BUILD_WORKSPACE_DIRECTORY to the parent
+export BUILD_WORKSPACE_DIRECTORY="${parent_dir}"
 
-for child_bazelrc in "${child_bazelrcs[@]}" ; do
-  actual=$(< "${child_bazelrc}")
-  assert_equal "${bazelrc_template}" "${actual}"
-done
-
-# MARK - Reset Workspace
-
-reset_test_workspace
-
-# MARK - Test From Outside Workspace with BUILD_WORKING_DIRECTORY
-
-# Set up fake Bazel output
-fake_bazel_output_dir="${starting_path}/fake_bazel_out"
-mkdir -p "${fake_bazel_output_dir}"
-cd "${fake_bazel_output_dir}"
-
-# Set the BUILD_WORKING_DIRECTORY
-export BUILD_WORKING_DIRECTORY="${examples_dir}"
+# Execute specifying workspace flag
+"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
 
 # Execute the update
 "${update_bin}" 
@@ -95,6 +78,6 @@ for child_bazelrc in "${child_bazelrcs[@]}" ; do
   assert_equal "${bazelrc_template}" "${actual}"
 done
 
-# Unset the BUILD_WORKING_DIRECTORY
-unset BUILD_WORKING_DIRECTORY
+# Unset the BUILD_WORKSPACE_DIRECTORY
+unset BUILD_WORKSPACE_DIRECTORY
 

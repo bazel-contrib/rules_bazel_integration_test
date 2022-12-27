@@ -71,15 +71,8 @@ while (("$#")); do
 done
 
 
-# Try to search for the workspace root
 if [[ -z "${workspace_root:-}" ]]; then
-  # If the BUILD_WORKING_DIRECTORY exists, it will be the directory from which the command was run
-  if [[ -n "${BUILD_WORKING_DIRECTORY:-}"  ]]; then 
-    search_start_dir="${BUILD_WORKING_DIRECTORY}"
-  else
-    search_start_dir="${PWD}"
-  fi
-  workspace_root="$(dirname "$(upsearch --start_dir "${search_start_dir}" WORKSPACE)")"
+  workspace_root="${BUILD_WORKSPACE_DIRECTORY:-}"
 fi
 if [[ ! -d "${workspace_root:-}" ]]; then
   exit_with_msg "The workspace root was not found. ${workspace_root:-}"

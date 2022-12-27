@@ -66,11 +66,8 @@ while (("$#")); do
   esac
 done
 
-if [[ -z "${workspace_root:-}" ]] && [[ -n "${BUILD_WORKING_DIRECTORY:-}"  ]]; then
-  workspace_root="${BUILD_WORKING_DIRECTORY:-}"
-fi
 if [[ -z "${workspace_root:-}" ]]; then
-  workspace_root="$(dirname "$(upsearch WORKSPACE)")"
+  workspace_root="${BUILD_WORKSPACE_DIRECTORY:-}"
 fi
 if [[ ! -d "${workspace_root:-}" ]]; then
   fail "The workspace root was not found. ${workspace_root:-}"
