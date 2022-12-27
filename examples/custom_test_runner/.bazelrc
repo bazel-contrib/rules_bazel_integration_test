@@ -2,6 +2,3 @@
 # `bazel run @contrib_rules_bazel_integration_test//tools:update_deleted_packages`
 build --deleted_packages=integration_tests/workspace
 query --deleted_packages=integration_tests/workspace
-
-# Use the Xcode version specified by //:host_codes.
-build --xcode_version_config=//:host_xcodes

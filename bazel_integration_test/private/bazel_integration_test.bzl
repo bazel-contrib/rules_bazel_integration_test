@@ -15,6 +15,27 @@ load(":integration_test_utils.bzl", "integration_test_utils")
 #   CC: if Bazel use specific C-compiler it should be inherited by default
 _DEFAULT_ENV_INHERIT = ["SUDO_ASKPASS", "HOME", "CC"]
 
+def _select_workspace_file_impl(ctx):
+    workspace_file = paths.join(ctx.attr.workspace_path, "WORKSPACE")
+    workspace_bazel = paths.join(ctx.attr.workspace_path, "WORKSPACE.bazel")
+    for file in ctx.attr.srcs.files.to_list():
+        if file.path.endswith(workspace_file) or file.path.endswith(workspace_bazel):
+            return [DefaultInfo(files = depset([file]))]
+    fail("Can't find WORKSPACE or WORKSPACE.bazel in %s" % ctx.attr.workspace_path)
+
+select_workspace_file = rule(
+    implementation = _select_workspace_file_impl,
+    attrs = {
+        "srcs": attr.label(
+            allow_files = True,
+            mandatory = True,
+        ),
+        "workspace_path": attr.string(
+            mandatory = True,
+        ),
+    },
+)
+
 def bazel_integration_test(
         name,
         test_runner,
@@ -116,10 +137,10 @@ def bazel_integration_test(
         # convey the actual workspace directory to the rule. The location of
         # the WORKSPACE file seems to be the best way to do this.
         bazel_wksp_file_name = name + "_bazel_workspace_file"
-        select_file(
+        select_workspace_file(
             name = bazel_wksp_file_name,
             srcs = workspace_files_name,
-            subpath = paths.join(workspace_path, "WORKSPACE"),
+            workspace_path = workspace_path,
             testonly = True,
         )
 
