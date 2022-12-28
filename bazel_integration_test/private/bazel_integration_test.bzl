@@ -102,7 +102,10 @@ def bazel_integration_test(
     select_file(
         name = bazel_bin_name,
         srcs = bazel_binary,
-        subpath = "bazel",
+        subpath = select({
+            "@platforms//os:windows": "bazel.exe",
+            "//conditions:default": "bazel",
+        }),
     )
 
     args = [
