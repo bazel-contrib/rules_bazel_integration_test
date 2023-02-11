@@ -65,17 +65,26 @@ def _get_installer(repository_ctx, version):
     repository_ctx.download_and_extract(**args)
 
 def get_version_from_file(repository_ctx):
+    """Read the Bazel version string from the version file.
+
+    Args:
+      repository_ctx: Repository rule context object.
+
+    Returns:
+      The first non-empty line of the file with surrounding white space stripped.
+    """
     version_file = repository_ctx.attr.version_file
     if repository_ctx.attr.version_file == None:
         return None
     version_file_path = repository_ctx.path(version_file)
 
     # Strip spaces and newlines
-    return (repository_ctx
-        .read(version_file_path)
-        .lstrip(" \n")  # strip leading white space
-        .partition("\n")[0]  # read the first nonempty line
-        .rstrip(" \n")  # strip trailing white space
+    return (
+        repository_ctx
+            .read(version_file_path)
+            .lstrip(" \n")  # strip leading white space
+            .partition("\n")[0]  # read the first nonempty line
+            .rstrip(" \n")  # strip trailing white space
     )
 
 def _bazel_binary_impl(repository_ctx):
