@@ -1,6 +1,9 @@
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load(":integration_test_impl_tests.bzl", "integration_test_impl_test_suite")
 load(":integration_test_utils_tests.bzl", "integration_test_utils_test_suite")
 
 bzlformat_pkg(name = "bzlformat")
+
+integration_test_impl_test_suite()
 
 integration_test_utils_test_suite()

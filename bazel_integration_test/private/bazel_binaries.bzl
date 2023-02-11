@@ -64,7 +64,7 @@ def _get_installer(repository_ctx, version):
 
     repository_ctx.download_and_extract(**args)
 
-def _get_version_from_file(repository_ctx):
+def get_version_from_file(repository_ctx):
     version_file = repository_ctx.attr.version_file
     if repository_ctx.attr.version_file == None:
         return None
@@ -76,7 +76,7 @@ def _get_version_from_file(repository_ctx):
 def _bazel_binary_impl(repository_ctx):
     version = repository_ctx.attr.version
     if version == "":
-        version = _get_version_from_file(repository_ctx)
+        version = get_version_from_file(repository_ctx)
     if version == None:
         fail("A `version` or `version_file` must be specified.")
 
