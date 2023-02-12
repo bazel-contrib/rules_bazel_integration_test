@@ -17,10 +17,10 @@ def bazel_integration_test_rules_dependencies():
     maybe(
         http_archive,
         name = "cgrindel_bazel_starlib",
-        sha256 = "3f04ca2e3bef99563c6d96728b0a09f8484bc3c61ca804d29f67e86e6043c038",
-        strip_prefix = "bazel-starlib-0.11.0",
+        sha256 = "8865c291abf5f4f7b979ab4898906209516737fc33e370c3daa562ba4445f48d",
+        strip_prefix = "bazel-starlib-0.12.1",
         urls = [
-            "http://github.com/cgrindel/bazel-starlib/archive/v0.11.0.tar.gz",
+            "http://github.com/cgrindel/bazel-starlib/archive/v0.12.1.tar.gz",
         ],
     )
 
