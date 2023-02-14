@@ -16,6 +16,7 @@ bzlformat_pkg(name = "bzlformat")
 
 generate_workspace_snippet(
     name = "generate_workspace_snippet",
+    sha256_file = ":archive_sha256",
     template = "workspace_snippet.tmpl",
     workspace_name = "contrib_rules_bazel_integration_test",
 )
