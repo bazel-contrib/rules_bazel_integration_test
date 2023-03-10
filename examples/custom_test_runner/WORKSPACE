@@ -24,7 +24,7 @@ load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
 
 bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
 
-# MARK: - rules_swift and rules_spm
+# MARK: - rules_swift and swift_bazel
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -81,21 +81,3 @@ go_rules_dependencies()
 go_register_toolchains(version = "1.19.1")
 
 gazelle_dependencies()
-
-# load("@cgrindel_rules_spm//spm:defs.bzl", "spm_pkg", "spm_repositories")
-
-# spm_repositories(
-#     name = "swift_pkgs",
-#     dependencies = [
-#         spm_pkg(
-#             "https://github.com/apple/swift-argument-parser.git",
-#             exact_version = "1.0.3",
-#             products = ["ArgumentParser"],
-#         ),
-#         spm_pkg(
-#             "https://github.com/JohnSundell/ShellOut.git",
-#             exact_version = "2.3.0",
-#             products = ["ShellOut"],
-#         ),
-#     ],
-# )
