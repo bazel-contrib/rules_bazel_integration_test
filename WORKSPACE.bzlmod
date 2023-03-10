@@ -1,0 +1,6 @@
+# MARK: - Integration Tests
+
+# load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
+# load("//bazel_integration_test:defs.bzl", "bazel_binaries")
+
+# bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
