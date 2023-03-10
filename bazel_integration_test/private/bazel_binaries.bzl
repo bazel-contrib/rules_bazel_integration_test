@@ -1,6 +1,6 @@
 """Manages the download of Bazel binaries."""
 
-load("//bazel_integration_test/private:integration_test_utils.bzl", "integration_test_utils")
+load(":no_deps_utils.bzl", "no_deps_utils")
 
 # Lovingly inspired by https://github.com/bazelbuild/bazel-integration-testing/blob/master/tools/repositories.bzl.
 
@@ -135,10 +135,10 @@ def bazel_binaries(versions):
         versions: A `list` of Bazel versions.
     """
     for version in versions:
-        name = integration_test_utils.bazel_binary_repo_name(version)
+        name = no_deps_utils.bazel_binary_repo_name(version)
         if native.existing_rule(name):
             continue
-        if integration_test_utils.is_version_file(version):
+        if no_deps_utils.is_version_file(version):
             bazel_binary(name = name, version_file = version)
         else:
             bazel_binary(name = name, version = version)
