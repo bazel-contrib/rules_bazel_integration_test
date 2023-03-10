@@ -1,16 +1,9 @@
-load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_binary")
 
-swift_library(
+swift_binary(
     name = "CustomTestRunner",
-    srcs = [
-        "Bash.swift",
-        "CommandRunner.swift",
-        "CustomTestRunner.swift",
-    ],
+    srcs = ["main.swift"],
     module_name = "CustomTestRunner",
     visibility = ["//visibility:public"],
-    deps = [
-        "@swiftpkg_shellout//:Sources_ShellOut",
-        "@swiftpkg_swift_argument_parser//:Sources_ArgumentParser",
-    ],
+    deps = ["//Sources/CustomTestRunnerLib"],
 )

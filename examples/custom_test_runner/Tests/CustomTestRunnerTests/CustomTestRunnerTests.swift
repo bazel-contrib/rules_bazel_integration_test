@@ -1,4 +1,4 @@
-@testable import CustomTestRunner
+@testable import CustomTestRunnerLib
 import Foundation
 import XCTest
 

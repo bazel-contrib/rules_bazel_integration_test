@@ -4,5 +4,5 @@ swift_test(
     name = "CustomTestRunnerTests",
     srcs = ["CustomTestRunnerTests.swift"],
     module_name = "CustomTestRunnerTests",
-    deps = ["//Sources/CustomTestRunner"],
+    deps = ["//Sources/CustomTestRunnerLib"],
 )

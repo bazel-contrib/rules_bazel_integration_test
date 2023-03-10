@@ -1,3 +1,0 @@
-import CustomTestRunner
-
-CustomTestRunner.main()
