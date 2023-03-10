@@ -22,3 +22,5 @@ local_path_override(
 #     non_module_dependencies,
 #     "cgrindel_bazel_starlib",
 # )
+
+register_toolchains("@bazel_tools//tools/python:autodetecting_toolchain")
