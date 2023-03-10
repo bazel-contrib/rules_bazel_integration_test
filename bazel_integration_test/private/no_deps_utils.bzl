@@ -1,3 +1,5 @@
+"""Module with shared code that has no third-party dependencies."""
+
 def _bazel_binary_repo_name(version):
     """Generates a Bazel binary repository name for the specified version.
 
