@@ -1,0 +1,15 @@
+module(
+    name = "simple_example",
+    version = "0.0.0",
+)
+
+bazel_dep(
+    name = "cgrindel_bazel_starlib",
+    version = "0.0.0",
+)
+local_path_override(
+    module_name = "cgrindel_bazel_starlib",
+    path = "/Users/chuck/code/cgrindel/bazel-starlib/temp_remove_debug_code",
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.4.1")

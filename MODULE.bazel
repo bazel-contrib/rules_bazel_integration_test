@@ -11,7 +11,7 @@ bazel_dep(name = "platforms", version = "0.0.6")
 bazel_dep(name = "cgrindel_bazel_starlib", version = "0.0.0")
 local_path_override(
     module_name = "cgrindel_bazel_starlib",
-    path = "/Users/chuck/code/cgrindel/bazel-starlib/main",
+    path = "/Users/chuck/code/cgrindel/bazel-starlib/temp_remove_debug_code",
 )
 
 # non_module_dependencies = use_extension(
