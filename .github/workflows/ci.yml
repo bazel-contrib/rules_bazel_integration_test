@@ -9,7 +9,7 @@ on:
 
 jobs:
   macos_build:
-    runs-on: macos-11.0
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v3
     - uses: cgrindel/gha_set_up_bazel@v1
@@ -18,7 +18,7 @@ jobs:
     - uses: ./.github/actions/build_and_test
 
   ubuntu_build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       CC: clang
     steps:
