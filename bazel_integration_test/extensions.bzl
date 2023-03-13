@@ -12,12 +12,6 @@ def _declare_bazel_binary(download):
 A bazel_binary.download can only have one of the following: \
 version, version_file.\
 """)
-
-    # DEBUG BEGIN
-    print("*** CHUCK download.version: ", download.version)
-    print("*** CHUCK download.version_file: ", download.version_file)
-
-    # DEBUG END
     if download.version != "":
         _bazel_binary_repo_rule(
             name = no_deps_utils.bazel_binary_repo_name(download.version),
