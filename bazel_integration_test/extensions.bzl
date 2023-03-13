@@ -24,7 +24,6 @@ version, version_file.\
         )
 
 def _bazel_binary_impl(module_ctx):
-    bazel_versions = []
     for mod in module_ctx.modules:
         for download in mod.tags.download:
             _declare_bazel_binary(download)
