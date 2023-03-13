@@ -1,0 +1,86 @@
+{
+  "direct_dep_identities": [
+    "swift-argument-parser",
+    "shellout"
+  ],
+  "modules": [
+    {
+      "name": "ShellOut",
+      "c99name": "ShellOut",
+      "src_type": "swift",
+      "label": "@swiftpkg_shellout//:Sources_ShellOut",
+      "package_identity": "shellout",
+      "product_memberships": [
+        "ShellOut"
+      ]
+    },
+    {
+      "name": "GenerateManual",
+      "c99name": "GenerateManual",
+      "src_type": "unknown",
+      "label": "@swiftpkg_swift_argument_parser//:Plugins_GenerateManual",
+      "package_identity": "swift-argument-parser",
+      "product_memberships": [
+        "GenerateManual"
+      ]
+    },
+    {
+      "name": "ArgumentParser",
+      "c99name": "ArgumentParser",
+      "src_type": "swift",
+      "label": "@swiftpkg_swift_argument_parser//:Sources_ArgumentParser",
+      "package_identity": "swift-argument-parser",
+      "product_memberships": [
+        "ArgumentParser",
+        "GenerateManual"
+      ]
+    },
+    {
+      "name": "ArgumentParserToolInfo",
+      "c99name": "ArgumentParserToolInfo",
+      "src_type": "swift",
+      "label": "@swiftpkg_swift_argument_parser//:Sources_ArgumentParserToolInfo",
+      "package_identity": "swift-argument-parser",
+      "product_memberships": [
+        "ArgumentParser",
+        "GenerateManual"
+      ]
+    },
+    {
+      "name": "generate-manual",
+      "c99name": "generate_manual",
+      "src_type": "swift",
+      "label": "@swiftpkg_swift_argument_parser//:Tools_generate-manual",
+      "package_identity": "swift-argument-parser",
+      "product_memberships": [
+        "GenerateManual"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "identity": "shellout",
+      "name": "ShellOut",
+      "type": "library",
+      "target_labels": [
+        "@swiftpkg_shellout//:Sources_ShellOut"
+      ]
+    },
+    {
+      "identity": "swift-argument-parser",
+      "name": "ArgumentParser",
+      "type": "library",
+      "target_labels": [
+        "@swiftpkg_swift_argument_parser//:Sources_ArgumentParser"
+      ]
+    },
+    {
+      "identity": "swift-argument-parser",
+      "name": "GenerateManual",
+      "type": "plugin",
+      "target_labels": [
+        "@swiftpkg_swift_argument_parser//:Plugins_GenerateManual"
+      ]
+    }
+  ]
+}
