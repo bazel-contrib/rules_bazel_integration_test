@@ -7,10 +7,10 @@ build --incompatible_strict_action_env=true
 # Change default for glob
 build --incompatible_disallow_empty_glob
 
+# Pretty output
 common --color=auto --curses=auto
 
-# # GH195: Do not use bzlmod until stardoc supports repo mappings
-# common --noenable_bzlmod
+# Enable bzlmod
 common --enable_bzlmod
 
 
