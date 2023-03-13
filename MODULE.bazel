@@ -6,13 +6,7 @@ module(
 bazel_dep(name = "bazel_skylib", version = "1.4.1")
 bazel_dep(name = "rules_python", version = "0.19.0")
 bazel_dep(name = "platforms", version = "0.0.6")
-
-# TODO(chuck): FIX ME
-bazel_dep(name = "cgrindel_bazel_starlib", version = "0.0.0")
-local_path_override(
-    module_name = "cgrindel_bazel_starlib",
-    path = "/Users/chuck/code/cgrindel/bazel-starlib/temp_remove_debug_code",
-)
+bazel_dep(name = "cgrindel_bazel_starlib", version = "0.14.8")
 
 # non_module_dependencies = use_extension(
 #     "//bazel_integration_test:extensions.bzl",

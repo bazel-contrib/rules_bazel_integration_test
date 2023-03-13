@@ -1,6 +1,15 @@
 module(
-    name = "simple_example",
+    name = "custom_test_runner_example",
     version = "0.0.0",
+)
+
+bazel_dep(
+    name = "rules_bazel_integration_test",
+    version = "0.0.0",
+)
+local_path_override(
+    module_name = "rules_bazel_integration_test",
+    path = "../..",
 )
 
 bazel_dep(
@@ -8,7 +17,7 @@ bazel_dep(
     version = "0.0.0",
 )
 
-# TODO(chuck): FIX ME
+# TODO(chuck): FIX ME!
 local_path_override(
     module_name = "cgrindel_bazel_starlib",
     path = "/Users/chuck/code/cgrindel/bazel-starlib/main",
