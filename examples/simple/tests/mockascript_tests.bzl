@@ -1,3 +1,5 @@
+"""Tests for `mockascript`."""
+
 load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
 
 def _something_test(ctx):

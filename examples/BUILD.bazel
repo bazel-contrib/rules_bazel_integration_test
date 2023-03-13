@@ -22,6 +22,9 @@ bazel_integration_test(
     name = "simple_test",
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":simple_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("simple") + [
+        "//:shared_bazelrc_files",
+    ],
     workspace_path = "simple",
 )
 
@@ -33,6 +36,9 @@ bazel_integration_tests(
     name = "simple_test",
     bazel_versions = OTHER_BAZEL_VERSIONS,
     test_runner = ":simple_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("simple") + [
+        "//:shared_bazelrc_files",
+    ],
     workspace_path = "simple",
 )
 

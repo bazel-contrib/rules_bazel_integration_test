@@ -4,10 +4,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "cgrindel_bazel_starlib",
-    sha256 = "5b36e7f11bf0c1d52480f1b022430611b402b5424979f280f13c52550de76584",
-    strip_prefix = "bazel-starlib-0.3.0",
+    sha256 = "782cd9f51106d88693fb651b96bbfab71708bbdcb99a8b6d8741a24a1445908b",
     urls = [
-        "http://github.com/cgrindel/bazel-starlib/archive/v0.3.0.tar.gz",
+        "https://github.com/cgrindel/bazel-starlib/releases/download/v0.14.8/bazel-starlib.v0.14.8.tar.gz",
     ],
 )
 
@@ -21,16 +20,10 @@ bazel_skylib_workspace()
 
 # Buildifier Dependencies
 
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("@buildifier_prebuilt//:deps.bzl", "buildifier_prebuilt_deps")
 
-go_rules_dependencies()
+buildifier_prebuilt_deps()
 
-go_register_toolchains(version = "1.17.2")
+load("@buildifier_prebuilt//:defs.bzl", "buildifier_prebuilt_register_toolchains")
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-
-gazelle_dependencies()
-
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-
-protobuf_deps()
+buildifier_prebuilt_register_toolchains()
