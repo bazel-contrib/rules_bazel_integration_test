@@ -1,3 +1,3 @@
-import CustomTestRunner
+import CustomTestRunnerLib
 
 CustomTestRunner.main()

@@ -229,7 +229,7 @@ local_repository(
 
 This section explains how to use `rules_bazel_integration_test` in this situation. To review working
 examples, check out [bazel-starlib](https://github.com/cgrindel/bazel-starlib) and
-[rules_spm](https://github.com/cgrindel/rules_spm).
+[swift_bazel](https://github.com/cgrindel/swift_bazel).
 
 ### 1. Declare a `filegroup` to represent the parent workspace files
 

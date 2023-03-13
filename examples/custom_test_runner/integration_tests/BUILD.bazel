@@ -13,7 +13,7 @@ bazel_integration_test(
     # Specify the version of Bazel to use to execute the test.
     bazel_version = CURRENT_BAZEL_VERSION,
     # This is a reference to the custom test runner.
-    test_runner = "//Sources/CustomTestRunner:custom_test_runner",
+    test_runner = "//Sources/CustomTestRunner",
     visibility = ["//:__subpackages__"],
     workspace_path = "workspace",
 )
