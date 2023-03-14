@@ -39,7 +39,7 @@ actual source files. Modifications to these files will change the actual sources
 A utility, called [`create_scratch_dir.sh`](/tools/create_scratch_dir.sh), provides a convenient way
 to create a copy of a workspace directory that can be safely modified by an integration test.
 
-To use the utility, add `@contrib_rules_bazel_integration_test//tools:create_scratch_dir` as
+To use the utility, add `@rules_bazel_integration_test//tools:create_scratch_dir` as
 a dependency to your test runner binary target:
 
 ```python
@@ -48,7 +48,7 @@ sh_binary(
     testonly = True,
     srcs = ["use_create_scratch_dir_test.sh"],
     data = [
-        "@contrib_rules_bazel_integration_test//tools:create_scratch_dir",
+        "@rules_bazel_integration_test//tools:create_scratch_dir",
     ],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
@@ -61,7 +61,7 @@ In your test runner code, you will need to locate the utility. Bazel provides he
 locating dependencies in shell binaries.
 
 ```bash
-create_scratch_dir_sh_location=contrib_rules_bazel_integration_test/tools/create_scratch_dir.sh
+create_scratch_dir_sh_location=rules_bazel_integration_test/tools/create_scratch_dir.sh
 create_scratch_dir_sh="$(rlocation "${create_scratch_dir_sh_location}")" || \
   (echo >&2 "Failed to locate ${create_scratch_dir_sh_location}" && exit 1)
 ```

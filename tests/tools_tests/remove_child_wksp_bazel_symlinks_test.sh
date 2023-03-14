@@ -19,12 +19,12 @@ assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
 source "${assertions_sh}"
 
-remove_child_wksp_bazel_symlinks_sh_location=contrib_rules_bazel_integration_test/tools/remove_child_wksp_bazel_symlinks.sh
+remove_child_wksp_bazel_symlinks_sh_location=rules_bazel_integration_test/tools/remove_child_wksp_bazel_symlinks.sh
 remove_child_wksp_bazel_symlinks_sh="$(rlocation "${remove_child_wksp_bazel_symlinks_sh_location}")" || \
   (echo >&2 "Failed to locate ${remove_child_wksp_bazel_symlinks_sh_location}" && exit 1)
 
 # Set up the parent workspace
-setup_test_workspace_sh_location=contrib_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
+setup_test_workspace_sh_location=rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
 setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
   (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
 # shellcheck source=SCRIPTDIR/setup_test_workspace.sh

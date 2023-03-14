@@ -26,7 +26,7 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
 
-find_pkgs_script="$(rlocation contrib_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
+find_pkgs_script="$(rlocation rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
 
 messages_sh_location=cgrindel_bazel_starlib/shlib/lib/messages.sh
 messages_sh="$(rlocation "${messages_sh_location}")" || \
