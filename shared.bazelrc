@@ -12,3 +12,4 @@ common --color=auto --curses=auto
 
 # Enable bzlmod
 common --enable_bzlmod
+build --@cgrindel_bazel_starlib//bzlmod:enabled

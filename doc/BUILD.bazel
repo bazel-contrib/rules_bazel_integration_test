@@ -1,100 +1,98 @@
-# GH120: Enable once stardoc supports repo mapping.
+load(
+    "@cgrindel_bazel_starlib//bazeldoc:defs.bzl",
+    "doc_for_provs",
+    "write_file_list",
+    "write_header",
+    doc_providers = "providers",
+)
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 
-# load(
-#     "@cgrindel_bazel_starlib//bazeldoc:defs.bzl",
-#     "doc_for_provs",
-#     "write_file_list",
-#     "write_header",
-#     doc_providers = "providers",
-# )
-# load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+bzlformat_pkg(name = "bzlformat")
 
-# bzlformat_pkg(name = "bzlformat")
+# MARK: - Document Providers
 
-# # MARK: - Document Providers
+_API_SRCS = [
+    "integration_test_utils",
+]
 
-# _API_SRCS = [
-#     "integration_test_utils",
-# ]
+_STARDOC_INPUT = "//bazel_integration_test:defs.bzl"
 
-# _STARDOC_INPUT = "//bazel_integration_test:defs.bzl"
+_DOC_DEPS = ["//bazel_integration_test:defs"]
 
-# _DOC_DEPS = ["//bazel_integration_test:defs"]
+_RULES_AND_MACROS_DOC_PROVIDER = doc_providers.create(
+    name = "rules_and_macros_overview",
+    stardoc_input = _STARDOC_INPUT,
+    symbols = [
+        "bazel_integration_test",
+        "bazel_integration_tests",
+        "default_test_runner",
+    ],
+    deps = _DOC_DEPS,
+)
 
-# _RULES_AND_MACROS_DOC_PROVIDER = doc_providers.create(
-#     name = "rules_and_macros_overview",
-#     stardoc_input = _STARDOC_INPUT,
-#     symbols = [
-#         "bazel_integration_test",
-#         "bazel_integration_tests",
-#         "default_test_runner",
-#     ],
-#     deps = _DOC_DEPS,
-# )
+_API_DOC_PROVIDERS = [
+    doc_providers.create(
+        name = name,
+        stardoc_input = _STARDOC_INPUT,
+        symbols = [name],
+        deps = _DOC_DEPS,
+    )
+    for name in _API_SRCS
+]
 
-# _API_DOC_PROVIDERS = [
-#     doc_providers.create(
-#         name = name,
-#         stardoc_input = _STARDOC_INPUT,
-#         symbols = [name],
-#         deps = _DOC_DEPS,
-#     )
-#     for name in _API_SRCS
-# ]
+_API_OVERVIEW_DOC_PROVIDER = doc_providers.create(
+    name = "api",
+    is_stardoc = False,
+    stardoc_input = _STARDOC_INPUT,
+    deps = _DOC_DEPS,
+)
 
-# _API_OVERVIEW_DOC_PROVIDER = doc_providers.create(
-#     name = "api",
-#     is_stardoc = False,
-#     stardoc_input = _STARDOC_INPUT,
-#     deps = _DOC_DEPS,
-# )
+_ALL_DOC_PROVIDERS = [
+    _RULES_AND_MACROS_DOC_PROVIDER,
+    _API_OVERVIEW_DOC_PROVIDER,
+] + _API_DOC_PROVIDERS
 
-# _ALL_DOC_PROVIDERS = [
-#     _RULES_AND_MACROS_DOC_PROVIDER,
-#     _API_OVERVIEW_DOC_PROVIDER,
-# ] + _API_DOC_PROVIDERS
+# MARK: - Special Case api.md
 
-# # MARK: - Special Case api.md
+# Write the api.md_ file as a special case.
+write_file_list(
+    name = "api_doc",
+    out = "api.md_",
+    doc_provs = _API_DOC_PROVIDERS,
+    header_content = [
+        "# APIs",
+        "",
+        "The APIs described below are used to configure the Bazel integration tests.",
+        "",
+    ],
+)
 
-# # Write the api.md_ file as a special case.
-# write_file_list(
-#     name = "api_doc",
-#     out = "api.md_",
-#     doc_provs = _API_DOC_PROVIDERS,
-#     header_content = [
-#         "# APIs",
-#         "",
-#         "The APIs described below are used to configure the Bazel integration tests.",
-#         "",
-#     ],
-# )
+# MARK: - Headers
 
-# # MARK: - Headers
+# Write the API headers
+[
+    write_header(
+        name = doc_prov.header_label,
+        out = doc_prov.header_basename,
+        header_content = [
+            "# `{name}` API".format(name = doc_prov.name),
+        ],
+    )
+    for doc_prov in _API_DOC_PROVIDERS
+    if doc_prov.is_stardoc
+]
 
-# # Write the API headers
-# [
-#     write_header(
-#         name = doc_prov.header_label,
-#         out = doc_prov.header_basename,
-#         header_content = [
-#             "# `{name}` API".format(name = doc_prov.name),
-#         ],
-#     )
-#     for doc_prov in _API_DOC_PROVIDERS
-#     if doc_prov.is_stardoc
-# ]
+write_header(
+    name = _RULES_AND_MACROS_DOC_PROVIDER.header_label,
+    header_content = [
+        "# Rules and Macros",
+        "",
+        "The rules and macros described below are used to define integration tests",
+        "run against select versions of Bazel.",
+    ],
+    symbols = _RULES_AND_MACROS_DOC_PROVIDER.symbols,
+)
 
-# write_header(
-#     name = _RULES_AND_MACROS_DOC_PROVIDER.header_label,
-#     header_content = [
-#         "# Rules and Macros",
-#         "",
-#         "The rules and macros described below are used to define integration tests",
-#         "run against select versions of Bazel.",
-#     ],
-#     symbols = _RULES_AND_MACROS_DOC_PROVIDER.symbols,
-# )
+# MARK: - Generate Documentation from Providers
 
-# # MARK: - Generate Documentation from Providers
-
-# doc_for_provs(doc_provs = _ALL_DOC_PROVIDERS)
+doc_for_provs(doc_provs = _ALL_DOC_PROVIDERS)
