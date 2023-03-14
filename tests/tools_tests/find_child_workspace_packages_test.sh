@@ -14,7 +14,7 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 assertions_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/assertions.sh)"
 source "${assertions_lib}"
 
-find_bin="$(rlocation contrib_rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
+find_bin="$(rlocation rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
 
 # MARK - Execute without a workspace
 
@@ -35,7 +35,7 @@ rm -rf "${empty_example_workspace_dir}"
 # MARK - Execute with a workspace
 
 # Set up the parent workspace
-setup_test_workspace_sh_location=contrib_rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
+setup_test_workspace_sh_location=rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
 setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
   (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
 source "${setup_test_workspace_sh}"

@@ -1,4 +1,4 @@
-workspace(name = "contrib_rules_bazel_integration_test")
+workspace(name = "rules_bazel_integration_test")
 
 load("//bazel_integration_test:deps.bzl", "bazel_integration_test_rules_dependencies")
 
