@@ -1,5 +1,5 @@
 # To update these lines, execute 
-# `bazel run @contrib_rules_bazel_integration_test//tools:update_deleted_packages`
+# `bazel run @rules_bazel_integration_test//tools:update_deleted_packages`
 build --deleted_packages=integration_tests/workspace
 query --deleted_packages=integration_tests/workspace
 

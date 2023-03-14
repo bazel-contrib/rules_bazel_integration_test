@@ -23,7 +23,7 @@ files_sh="$(rlocation "${files_sh_location}")" || \
   (echo >&2 "Failed to locate ${files_sh_location}" && exit 1)
 source "${files_sh}"
 
-shared_fns_sh_location=contrib_rules_bazel_integration_test/tools/shared_fns.sh
+shared_fns_sh_location=rules_bazel_integration_test/tools/shared_fns.sh
 shared_fns_sh="$(rlocation "${shared_fns_sh_location}")" || \
   (echo >&2 "Failed to locate ${shared_fns_sh_location}" && exit 1)
 # shellcheck source=SCRIPTDIR/shared_fns.sh
