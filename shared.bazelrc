@@ -12,5 +12,3 @@ common --color=auto --curses=auto
 
 # Enable bzlmod
 common --enable_bzlmod
-
-
