@@ -33,14 +33,14 @@ bazel_dep(
     repo_name = "io_bazel_rules_go",
 )
 
-bazel_binary = use_extension(
+bazel_binaries = use_extension(
     "@rules_bazel_integration_test//bazel_integration_test:extensions.bzl",
-    "bazel_binary",
+    "bazel_binaries",
 )
-bazel_binary.download(version_file = "//:.bazelversion")
-bazel_binary.download(version = "6.0.0")
+bazel_binaries.download(version_file = "//:.bazelversion")
+bazel_binaries.download(version = "6.0.0")
 use_repo(
-    bazel_binary,
+    bazel_binaries,
     "build_bazel_bazel_.bazelversion",
     "build_bazel_bazel_6_0_0",
 )
