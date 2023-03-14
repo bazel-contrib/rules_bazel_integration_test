@@ -10,4 +10,14 @@ bazel_dep(name = "cgrindel_bazel_starlib", version = "0.14.8")
 
 register_toolchains("@bazel_tools//tools/python:autodetecting_toolchain")
 
-# TODO(chuck): Add bazel_binary extension calls
+bazel_binary = use_extension(
+    "//bazel_integration_test:extensions.bzl",
+    "bazel_binary",
+)
+bazel_binary.download(version_file = "//:.bazelversion")
+bazel_binary.download(version = "7.0.0-pre.20230215.2")
+use_repo(
+    bazel_binary,
+    "build_bazel_bazel_.bazelversion",
+    "build_bazel_bazel_7_0_0-pre_20230215_2",
+)

@@ -1,6 +1,2 @@
-# MARK: - Integration Tests
-
-load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
-load("//bazel_integration_test:bazel_binaries.bzl", "bazel_binaries")
-
-bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
+# Intentionally blank
+# This exists to force Bazel in bzlmod mode to be strict.
