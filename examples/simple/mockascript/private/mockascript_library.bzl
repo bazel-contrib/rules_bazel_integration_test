@@ -1,4 +1,6 @@
-def _mockascript_library_impl(ctx):
+"""Implementation of `mockascript_library`."""
+
+def _mockascript_library_impl(_ctx):
     pass
 
 mockascript_library = rule(
