@@ -12,10 +12,7 @@ register_toolchains("@bazel_tools//tools/python:autodetecting_toolchain")
 
 # GH125: Must keep the Bazel version listed in bazel_versions.bzl in sync with
 # those loaded below.
-bazel_binaries = use_extension(
-    "//bazel_integration_test:extensions.bzl",
-    "bazel_binaries",
-)
+bazel_binaries = use_extension("//:extensions.bzl", "bazel_binaries")
 bazel_binaries.download(version_file = "//:.bazelversion")
 bazel_binaries.download(version = "7.0.0-pre.20230215.2")
 use_repo(
