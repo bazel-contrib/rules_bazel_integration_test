@@ -22,6 +22,5 @@ def _label(version_to_repo_name, version, canonicalize):
     return canonicalize(no_deps_utils.bazel_binary_label(repo_name))
 
 bazel_binary_utils = struct(
-    repo_name = _repo_name,
     label = _label,
 )

@@ -21,14 +21,6 @@ bazel_binaries = struct(
 )
 """
 
-# _BAZEL_BINARIES_HELPER_DEFS_BZL = """load("@rule_bazel_integration_test//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
-#
-# def repo_name(version):
-#     return no_deps_utils.bazel_binary_repo_name(version)
-#
-# _VERSIONS = {}
-# """
-
 def _bazel_binaries_helper_impl(repository_ctx):
     repository_ctx.file("defs.bzl", _BAZEL_BINARIES_HELPER_DEFS_BZL.format(
         versions = repository_ctx.attr.versions,
@@ -49,6 +41,7 @@ _bazel_binaries_helper = repository_rule(
             mandatory = True,
         ),
     },
+    doc = "Hub repository that resolves Bazel versions to Bazel labels.",
 )
 
 # MARK: - bazel_binaries Extension
@@ -94,6 +87,11 @@ _rbt_repo_tag = tag_class(
             doc = "The name of the rules_bazel_integration_test repository.",
         ),
     },
+    doc = """\
+For internal use only. Allow a client to specify the name of the \
+`rules_bazel_integration_test` repository. The only repository that should use \
+this tag class is `rules_bazel_integration_test`.\
+""",
 )
 
 _download_tag = tag_class(
@@ -111,9 +109,17 @@ string.\
 """,
         ),
     },
+    doc = """\
+Identifies Bazel versions that will be downloaded and made available for \
+`bazel_integration_test`.\
+""",
 )
 
 bazel_binaries = module_extension(
     implementation = _bazel_binaries_impl,
     tag_classes = {"download": _download_tag, "rbt_repo": _rbt_repo_tag},
+    doc = """\
+Provides a means for clients to download Bazel binaries for their integration \
+tests.\
+""",
 )
