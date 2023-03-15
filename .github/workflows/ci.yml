@@ -13,6 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         runner: [macos-12, ubuntu-22.04]
+        bzlmod_enabled: [true, false]
     runs-on: ${{ matrix.runner }}
     env:
       # Linux runners need this.
@@ -28,6 +29,9 @@ jobs:
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
+    - uses: ./.github/actions/configure_bzlmod
+      with:
+          enabled: ${{ matrix.bzlmod_enabled }}
     - uses: ./.github/actions/build_and_test
   
   all_ci_tests:

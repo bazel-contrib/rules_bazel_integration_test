@@ -16,3 +16,10 @@ def swift_dependencies():
         dependencies_index = "@//:swift_deps_index.json",
         remote = "https://github.com/apple/swift-argument-parser",
     )
+
+def _swift_dependencies_ext_impl(module_ctx):
+    swift_dependencies()
+
+swift_dependencies_ext = module_extension(
+    implementation = _swift_dependencies_ext_impl,
+)
