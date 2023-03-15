@@ -1,3 +1,4 @@
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION", "OTHER_BAZEL_VERSIONS")
 load(
@@ -20,6 +21,7 @@ default_test_runner(
 # bazel_integration_test.
 bazel_integration_test(
     name = "simple_test",
+    bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
@@ -34,6 +36,7 @@ bazel_integration_test(
 bazel_integration_tests(
     # buildifier: disable=duplicated-name
     name = "simple_test",
+    bazel_binaries = bazel_binaries,
     bazel_versions = OTHER_BAZEL_VERSIONS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
@@ -57,6 +60,7 @@ default_test_runner(
 
 bazel_integration_test(
     name = "custom_test_runner_test",
+    bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
     # GH120: Enable the custom_test_runner test once swift_bazel supports
     # bzlmod.
@@ -88,6 +92,7 @@ sh_binary(
 
 bazel_integration_test(
     name = "use_create_scratch_dir_test",
+    bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":use_create_scratch_dir_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
@@ -110,6 +115,7 @@ sh_binary(
 
 bazel_integration_test(
     name = "dynamic_workspace_test",
+    bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":dynamic_workspace_test_runner",
 )

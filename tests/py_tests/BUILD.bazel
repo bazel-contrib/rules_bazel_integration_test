@@ -1,3 +1,4 @@
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
 load("//bazel_integration_test:defs.bzl", "integration_test_utils")
@@ -8,6 +9,7 @@ bzlformat_pkg(name = "bzlformat")
 bazel_py_integration_tests(
     name = "test_base_test",
     srcs = ["test_base_test.py"],
+    bazel_binaries = bazel_binaries,
     bazel_versions = SUPPORTED_BAZEL_VERSIONS,
 )
 
