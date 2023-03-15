@@ -36,7 +36,6 @@ updatesrc_update_all(
     name = "update_all",
     targets_to_run = [
         "@rules_bazel_integration_test//tools:update_deleted_packages",
-        "//doc:update",
         ":bzlformat_missing_pkgs_fix",
     ],
 )
@@ -62,6 +61,7 @@ filegroup(
     # Include every package that is required by the child workspaces.
     srcs = [
         "BUILD.bazel",
+        "MODULE.bazel",
         "WORKSPACE",
         ":shared_bazelrc_files",
         "//bazel_integration_test:all_files",

@@ -20,6 +20,7 @@ bzl_library(
     name = "integration_test_utils",
     srcs = ["integration_test_utils.bzl"],
     deps = [
+        ":no_deps_utils",
         "@bazel_skylib//lib:paths",
     ],
 )
@@ -46,4 +47,9 @@ bzl_library(
 bzl_library(
     name = "bazel_binaries",
     srcs = ["bazel_binaries.bzl"],
+)
+
+bzl_library(
+    name = "no_deps_utils",
+    srcs = ["no_deps_utils.bzl"],
 )
