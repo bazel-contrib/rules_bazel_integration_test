@@ -8,12 +8,6 @@ bazel_dep(name = "rules_python", version = "0.19.0")
 bazel_dep(name = "platforms", version = "0.0.6")
 bazel_dep(name = "cgrindel_bazel_starlib", version = "0.14.9")
 
-# TODO(chuck): FIX ME!
-local_path_override(
-    module_name = "cgrindel_bazel_starlib",
-    path = "/Users/chuck/code/cgrindel/bazel-starlib/main",
-)
-
 register_toolchains("@bazel_tools//tools/python:autodetecting_toolchain")
 
 # GH125: Must keep the Bazel version listed in bazel_versions.bzl in sync with

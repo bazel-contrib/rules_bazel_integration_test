@@ -15,20 +15,13 @@ def bazel_integration_test_rules_dependencies():
         sha256 = "b8a1527901774180afc798aeb28c4634bdccf19c4d98e7bdd1ce79d1fe9aaad7",
     )
 
-    # TODO(chuck): FIX ME!
-
-    # maybe(
-    #     http_archive,
-    #     name = "cgrindel_bazel_starlib",
-    #     sha256 = "00ea5182b75330de5934d0e5fdcfdaa22c2452227153b67278bb0389326ebcba",
-    #     urls = [
-    #         "https://github.com/cgrindel/bazel-starlib/releases/download/v0.14.9/bazel-starlib.v0.14.9.tar.gz",
-    #     ],
-    # )
     maybe(
-        native.local_repository,
+        http_archive,
         name = "cgrindel_bazel_starlib",
-        path = "/Users/chuck/code/cgrindel/bazel-starlib/main",
+        sha256 = "00ea5182b75330de5934d0e5fdcfdaa22c2452227153b67278bb0389326ebcba",
+        urls = [
+            "https://github.com/cgrindel/bazel-starlib/releases/download/v0.14.9/bazel-starlib.v0.14.9.tar.gz",
+        ],
     )
 
     # MARK: - Python Runner
