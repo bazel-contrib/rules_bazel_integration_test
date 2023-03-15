@@ -93,12 +93,16 @@ def bazel_integration_test(
         **kwargs: additional attributes like timeout and visibility
     """
 
+    # To support clients that have not transitioned to bzlmod, we provide a
+    # bazel_binaries implementation that works in that mode. If a client using
+    # bzlmod does not specify bazel_binaries, things will go badly for them.
+    if bazel_binaries == None:
+        bazel_binaries = struct(
+            label = integration_test_utils.bazel_binary_label,
+        )
     if bazel_binary == None and bazel_version == None:
         fail("The `bazel_binary` or the `bazel_version` must be specified.")
     if bazel_binary == None:
-        # bazel_binary = integration_test_utils.bazel_binary_label(bazel_version)
-        if bazel_binaries == None:
-            fail("Need to specify a `bazel_binaries` to resolve the Bazel version.")
         bazel_binary = bazel_binaries.label(bazel_version)
 
     # Find the Bazel binary

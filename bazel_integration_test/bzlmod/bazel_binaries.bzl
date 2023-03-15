@@ -9,7 +9,6 @@ load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 # MARK: - bazel_binaries_helper Repository Rule
 
 _BAZEL_BINARIES_HELPER_DEFS_BZL = """load("@{rbt_repo_name}//bazel_integration_test/bzlmod:bazel_binary_utils.bzl", "bazel_binary_utils")
-load("@{rbt_repo_name}//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
 def _label(version):
     return bazel_binary_utils.label(_VERSIONS, version, lambda x: Label(x))
