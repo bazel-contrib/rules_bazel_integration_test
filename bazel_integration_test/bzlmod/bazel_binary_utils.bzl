@@ -7,14 +7,19 @@ def _repo_name(version_to_repo_name, version):
         # Fallback to original behavior.
         return no_deps_utils.bazel_binary_repo_name(version)
     if no_deps_utils.is_version_file(version):
+        if not version.startswith("@"):
+            version = "@@{}".format(version)
         version_str = str(Label(version))
     else:
         version_str = version
     repo_name = version_to_repo_name.get(version_str, None)
     if repo_name == None:
         fail("""\
-Failed to find a Bazel binary registered for version '{}'.\
-""".format(version))
+Failed to find a Bazel binary registered for version '{version}' ({version_str}).\
+""".format(
+            version = version,
+            version_str = version_str,
+        ))
     return repo_name
 
 def _label(version_to_repo_name, version, canonicalize):

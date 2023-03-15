@@ -1,3 +1,5 @@
+"""Implementation for `workspace_bazel_binaries`."""
+
 _BAZEL_BINARIES_HELPER_DEFS_BZL = """load("@{rbt_repo_name}//bazel_integration_test/private:integration_test_utils.bzl", "integration_test_utils")
 
 bazel_binaries = struct(
