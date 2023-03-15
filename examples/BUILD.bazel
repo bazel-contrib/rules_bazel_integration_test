@@ -48,24 +48,28 @@ bazel_integration_tests(
 # tests work. It does not demonstrate how to use a custom test runner. See the
 # custom_test_runner workspace for how to use a custom test runner.
 
-# GH120: Enable the custom_test_runner test once swift_bazel supports bzlmod.
+default_test_runner(
+    name = "custom_test_runner_test_runner",
+    bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS + [
+        "test //:all_integration_tests",
+    ],
+)
 
-# default_test_runner(
-#     name = "custom_test_runner_test_runner",
-#     bazel_cmds = integration_test_utils.DEFAULT_BAZEL_CMDS + [
-#         "test //:all_integration_tests",
-#     ],
-# )
-
-# bazel_integration_test(
-#     name = "custom_test_runner_test",
-#     bazel_version = CURRENT_BAZEL_VERSION,
-#     test_runner = ":custom_test_runner_test_runner",
-#     workspace_files = integration_test_utils.glob_workspace_files("custom_test_runner") + [
-#         "//:local_repository_files",
-#     ],
-#     workspace_path = "custom_test_runner",
-# )
+bazel_integration_test(
+    name = "custom_test_runner_test",
+    bazel_version = CURRENT_BAZEL_VERSION,
+    # GH120: Enable the custom_test_runner test once swift_bazel supports
+    # bzlmod.
+    target_compatible_with = select({
+        "@cgrindel_bazel_starlib//bzlmod:is_enabled": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    test_runner = ":custom_test_runner_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("custom_test_runner") + [
+        "//:local_repository_files",
+    ],
+    workspace_path = "custom_test_runner",
+)
 
 # MARK: - Custom Test Runner That Uses create_scratch_dir Test
 
