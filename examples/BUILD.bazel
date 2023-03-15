@@ -143,3 +143,11 @@ test_suite(
     ),
     visibility = ["//:__subpackages__"],
 )
+
+# We do not want to pull everything into the release archive. We just need the
+# bzlmod_e2e workspace.
+filegroup(
+    name = "all_files",
+    srcs = glob(["simple/**"]),
+    visibility = ["//:__subpackages__"],
+)
