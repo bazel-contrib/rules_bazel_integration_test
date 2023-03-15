@@ -6,6 +6,31 @@ load(
 )
 load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
+# MARK: - bazel_binaries_helper Repository Rule
+
+_BAZEL_BINARIES_HELPER_DEFS_BZL = """load("@rule_bazel_integration_test//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
+
+def repo_name(version):
+    return no_deps_utils.bazel_binary_repo_name(version)
+
+_VERSIONS = {}
+"""
+
+def _bazel_binaries_helper_impl(repository_ctx):
+    pass
+
+_bazel_binaries_helper = repository_rule(
+    implementation = _bazel_binaries_helper_impl,
+    attrs = {
+        "versions": attr.string_dict(
+            doc = "A mapping of version number/reference to repository name.",
+            mandatory = True,
+        ),
+    },
+)
+
+# MARK: - bazel_binaries Extension
+
 def _declare_bazel_binary(download):
     if download.version != "" and download.version_file != None:
         fail("""\
