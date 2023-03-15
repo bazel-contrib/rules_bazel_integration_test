@@ -1,5 +1,7 @@
 workspace(name = "simple_example")
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 http_archive(
     name = "cgrindel_bazel_starlib",
     sha256 = "00ea5182b75330de5934d0e5fdcfdaa22c2452227153b67278bb0389326ebcba",
