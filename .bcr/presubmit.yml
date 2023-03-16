@@ -1,5 +1,5 @@
 bcr_test_module:
-  module_path: "examples/simple"
+  module_path: ""
   matrix:
     platform: ["macos", "ubuntu2004"]
   tasks:
@@ -7,4 +7,4 @@ bcr_test_module:
       name: "Run test module"
       platform: ${{ platform }}
       test_targets:
-        - "//..."
+        - "//examples:simple_test"
