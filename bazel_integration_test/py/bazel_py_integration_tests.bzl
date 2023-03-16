@@ -3,7 +3,14 @@
 load("@rules_python//python:defs.bzl", "py_binary")
 load("//bazel_integration_test:defs.bzl", "bazel_integration_tests")
 
-def bazel_py_integration_tests(name, srcs, bazel_versions, main = None, deps = [], env = {}):
+def bazel_py_integration_tests(
+        name,
+        srcs,
+        bazel_versions,
+        main = None,
+        deps = [],
+        env = {},
+        bazel_binaries = None):
     # Declare the test runner
     runner_name = name
     py_binary(
@@ -19,6 +26,7 @@ def bazel_py_integration_tests(name, srcs, bazel_versions, main = None, deps = [
     # Declare the integration tests.
     bazel_integration_tests(
         name = name,
+        bazel_binaries = bazel_binaries,
         bazel_versions = bazel_versions,
         test_runner = runner_name,
         env = env,

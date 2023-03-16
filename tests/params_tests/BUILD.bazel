@@ -1,3 +1,4 @@
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION")
 load(
@@ -18,6 +19,7 @@ default_test_runner(
 
 bazel_integration_test(
     name = "default_env_inherit_int_test",
+    bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":test_runner",
     workspace_path = "workspace",
@@ -36,6 +38,7 @@ env_inherit_attr_test(
 
 bazel_integration_test(
     name = "override_env_inherit_int_test",
+    bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
     env_inherit = [
         "HOME",
@@ -64,6 +67,7 @@ bazel_integration_test(
     additional_env_inherit = [
         "CHICKEN",
     ],
+    bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
     test_runner = ":test_runner",
     workspace_path = "workspace",
