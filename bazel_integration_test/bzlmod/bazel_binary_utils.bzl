@@ -6,12 +6,7 @@ def _repo_name(version_to_repo_name, version):
     if len(version_to_repo_name) == 0:
         # Fallback to original behavior.
         return no_deps_utils.bazel_binary_repo_name(version)
-    if no_deps_utils.is_version_file(version):
-        if not version.startswith("@"):
-            version = "@@{}".format(version)
-        version_str = str(Label(version))
-    else:
-        version_str = version
+    version_str = no_deps_utils.normalize_version(version)
     repo_name = version_to_repo_name.get(version_str, None)
     if repo_name == None:
         fail("""\

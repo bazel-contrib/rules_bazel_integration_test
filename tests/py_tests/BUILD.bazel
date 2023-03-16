@@ -1,6 +1,5 @@
 load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
-load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
 load("//bazel_integration_test:defs.bzl", "integration_test_utils")
 load("//bazel_integration_test/py:bazel_py_integration_tests.bzl", "bazel_py_integration_tests")
 
@@ -10,7 +9,7 @@ bazel_py_integration_tests(
     name = "test_base_test",
     srcs = ["test_base_test.py"],
     bazel_binaries = bazel_binaries,
-    bazel_versions = SUPPORTED_BAZEL_VERSIONS,
+    bazel_versions = bazel_binaries.versions.all,
 )
 
 # MARK: - Test Suite
@@ -22,7 +21,7 @@ test_suite(
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
     tests = integration_test_utils.bazel_integration_test_names(
         "test_base_test",
-        SUPPORTED_BAZEL_VERSIONS,
+        bazel_binaries.versions.all,
     ),
     visibility = ["//:__subpackages__"],
 )

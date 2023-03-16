@@ -30,7 +30,7 @@ def _bazel_integration_test_name(name, version):
     """
     return "{name}_bazel_{version}".format(
         name = name,
-        version = no_deps_utils.normalize_version(version),
+        version = no_deps_utils.format_version_for_label(version),
     )
 
 def _bazel_integration_test_names(name, versions = []):

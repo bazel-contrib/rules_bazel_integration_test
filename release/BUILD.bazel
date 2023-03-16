@@ -10,7 +10,6 @@ load(
     "release_archive",
     "update_readme",
 )
-load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION")
 load(
     "//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
@@ -76,6 +75,6 @@ sh_binary(
 bazel_integration_test(
     name = "archive_test",
     bazel_binaries = bazel_binaries,
-    bazel_version = CURRENT_BAZEL_VERSION,
+    bazel_version = bazel_binaries.versions.current,
     test_runner = ":archive_test_runner",
 )
