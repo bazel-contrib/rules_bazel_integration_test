@@ -48,6 +48,7 @@ def bazel_integration_test(
         env = {},
         env_inherit = _DEFAULT_ENV_INHERIT,
         additional_env_inherit = [],
+        bazel_binaries = None,
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
@@ -89,13 +90,25 @@ def bazel_integration_test(
                      values.
         additional_env_inherit: Optional. Specify additional `env_inherit`
                                 values that should be passed to the test.
+        bazel_binaries: Optional for WORKSPACE loaded repositories. Required
+            for repositories that enable bzlmod. The value for this parameter
+            is loaded by adding
+            `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
+            build file.
         **kwargs: additional attributes like timeout and visibility
     """
 
+    # To support clients that have not transitioned to bzlmod, we provide a
+    # bazel_binaries implementation that works in that mode. If a client using
+    # bzlmod does not specify bazel_binaries, things will go badly for them.
+    if bazel_binaries == None:
+        bazel_binaries = struct(
+            label = integration_test_utils.bazel_binary_label,
+        )
     if bazel_binary == None and bazel_version == None:
         fail("The `bazel_binary` or the `bazel_version` must be specified.")
     if bazel_binary == None:
-        bazel_binary = integration_test_utils.bazel_binary_label(bazel_version)
+        bazel_binary = bazel_binaries.label(bazel_version)
 
     # Find the Bazel binary
     bazel_bin_name = name + "_bazel_binary"
@@ -178,6 +191,7 @@ def bazel_integration_tests(
         timeout = "long",
         env_inherit = _DEFAULT_ENV_INHERIT,
         additional_env_inherit = [],
+        bazel_binaries = None,
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
 
@@ -203,6 +217,11 @@ def bazel_integration_tests(
                      values.
         additional_env_inherit: Optional. Specify additional `env_inherit`
                                 values that should be passed to the test.
+        bazel_binaries: Optional for WORKSPACE loaded repositories. Required
+            for repositories that enable bzlmod. The value for this parameter
+            is loaded by adding
+            `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
+            build file.
         **kwargs: additional attributes like timeout and visibility
     """
     if bazel_versions == []:
@@ -222,5 +241,6 @@ def bazel_integration_tests(
             timeout = timeout,
             env_inherit = env_inherit,
             additional_env_inherit = additional_env_inherit,
+            bazel_binaries = bazel_binaries,
             **kwargs
         )

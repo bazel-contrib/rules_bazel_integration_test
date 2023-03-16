@@ -16,7 +16,7 @@ def _bazel_binary_label(version):
         A `string` representing a label for a version of Bazel.
     """
     repo_name = no_deps_utils.bazel_binary_repo_name(version)
-    return "@{repo_name}//:bazel_binary".format(repo_name = repo_name)
+    return no_deps_utils.bazel_binary_label(repo_name)
 
 def _bazel_integration_test_name(name, version):
     """Generates a test name from the provided base name and the Bazel version.

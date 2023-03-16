@@ -30,6 +30,15 @@ buildifier_prebuilt_register_toolchains()
 
 # MARK: - Integration Tests
 
+load("//bazel_integration_test/bzlmod:workspace_bazel_binaries.bzl", "workspace_bazel_binaries")
+
+# This is only necessary while rules_bazel_integration_test switches back and
+# forth between WORKSPACE repositories and bzlmod repositories.
+workspace_bazel_binaries(
+    name = "bazel_binaries",
+    rbt_repo_name = "",
+)
+
 load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
 load("//bazel_integration_test:defs.bzl", "bazel_binaries")
 

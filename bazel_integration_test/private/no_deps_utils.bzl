@@ -55,8 +55,12 @@ def _is_version_file(version):
     """
     return version.find("//") > -1
 
+def _bazel_binary_label(repo_name):
+    return "@{repo_name}//:bazel_binary".format(repo_name = repo_name)
+
 no_deps_utils = struct(
     bazel_binary_repo_name = _bazel_binary_repo_name,
+    bazel_binary_label = _bazel_binary_label,
     is_version_file = _is_version_file,
     normalize_version = _normalize_version,
     semantic_version_to_name = _semantic_version_to_name,
