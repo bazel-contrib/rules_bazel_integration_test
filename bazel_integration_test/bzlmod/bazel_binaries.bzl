@@ -11,12 +11,15 @@ load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 _BAZEL_BINARIES_HELPER_DEFS_BZL = """load("@{rbt_repo_name}//bazel_integration_test/bzlmod:bazel_binary_utils.bzl", "bazel_binary_utils")
 
 def _label(version):
-    return bazel_binary_utils.label(_VERSIONS, version, lambda x: Label(x))
+    return bazel_binary_utils.label(_VERSION_TO_REPO, version, lambda x: Label(x))
 
-_VERSIONS = {versions}
+_VERSION_TO_REPO = {versions}
+
+
 
 bazel_binaries = struct(
     label = _label,
+    versions = _versions,
 )
 """
 
