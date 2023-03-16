@@ -45,6 +45,12 @@ done
 # Extract the contents of the archive into the workspace directory
 tar -xf "${rules_bazel_integration_test_tar_gz}" -C "${workspace_dir}"
 
+# DEBUG BEGIN
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") =========" 
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") workspace_dir: ${workspace_dir}" 
+tree >&2
+# DEBUG END
+
 # Test the extracted contents
 cd "${workspace_dir}"
 "${bazel}" test //examples:simple_test

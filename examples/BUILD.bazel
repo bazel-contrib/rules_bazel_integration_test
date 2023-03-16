@@ -148,6 +148,9 @@ test_suite(
 # simple workspace.
 filegroup(
     name = "all_files",
-    srcs = glob(["simple/**"]),
+    srcs = glob([
+        "*",
+        "simple/**",
+    ]),
     visibility = ["//:__subpackages__"],
 )
