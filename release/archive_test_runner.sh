@@ -40,17 +40,20 @@ done
 [[ -n "${bazel:-}" ]] || exit_with_msg "Must specify the location of the Bazel binary."
 [[ -n "${workspace_dir:-}" ]] || exit_with_msg "Must specify the path of the workspace directory."
 
+# MARK - Create a HOME directory
+
+# Not sure why, but the download and extract for the Bazel binaries was
+# experiencing a permission denied when trying to use the local repository
+# cache.
+home_dir="${PWD}/home"
+mkdir -p "${home_dir}"
+export HOME="${home_dir}"
+
 # MARK - Create a WORKSPACE
 
 # Extract the contents of the archive into the workspace directory
 tar -xf "${rules_bazel_integration_test_tar_gz}" -C "${workspace_dir}"
 
-# DEBUG BEGIN
-echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") =========" 
-echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") workspace_dir: ${workspace_dir}" 
-tree >&2
-# DEBUG END
-
 # Test the extracted contents
 cd "${workspace_dir}"
-"${bazel}" test //examples:simple_test
+"${bazel}" test //bazel_integration_test/bzlmod/...

@@ -62,23 +62,11 @@ build_test(
     ],
 )
 
-# sh_test(
-#     name = "archive_run_test",
-#     srcs = ["archive_run_test.sh"],
-#     data = [
-#         ":archive",
-#     ],
-#     deps = [
-#         "@bazel_tools//tools/bash/runfiles",
-#         "@cgrindel_bazel_starlib//shlib/lib:assertions",
-#     ],
-# )
-
 sh_binary(
-    name = "archive_run_test_runner",
+    name = "archive_test_runner",
     testonly = True,
-    srcs = ["archive_run_test.sh"],
-    data = [":archive"],
+    srcs = ["archive_test_runner.sh"],
+    data = ["//release:archive"],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
@@ -86,10 +74,8 @@ sh_binary(
 )
 
 bazel_integration_test(
-    name = "archive_run_test",
+    name = "archive_test",
     bazel_binaries = bazel_binaries,
     bazel_version = CURRENT_BAZEL_VERSION,
-    # Override the default tags. Let this run with bazel test //...
-    tags = [],
-    test_runner = ":archive_run_test_runner",
+    test_runner = ":archive_test_runner",
 )
