@@ -55,18 +55,23 @@ filegroup(
     visibility = ["//:__subpackages__"],
 )
 
+# Provides the *.bazlerc files for the example workspace integration tests.
+filegroup(
+    name = "all_files",
+    srcs = glob(["*"]),
+    visibility = ["//:__subpackages__"],
+)
+
 # This target collects all of the parent workspace files needed by the child workspaces.
 filegroup(
     name = "local_repository_files",
     # Include every package that is required by the child workspaces.
     srcs = [
-        "BUILD.bazel",
-        "MODULE.bazel",
-        "WORKSPACE",
+        ":all_files",
         ":shared_bazelrc_files",
         "//bazel_integration_test:all_files",
+        "//bazel_integration_test/bzlmod:all_files",
         "//bazel_integration_test/private:all_files",
-        "//examples:all_files",
         "//tools:all_files",
     ],
     visibility = ["//:__subpackages__"],
@@ -77,6 +82,7 @@ test_suite(
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
     tests = [
         "//examples:integration_tests",
+        "//release:archive_test",
         "//tests/params_tests:integration_tests",
         "//tests/py_tests:integration_tests",
     ],
