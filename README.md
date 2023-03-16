@@ -35,9 +35,9 @@ Add the following to your `WORKSPACE` file to add this repository and its depend
 ```python
 http_archive(
     name = "rules_bazel_integration_test",
-    sha256 = "71eae1efc3ff8c917eb2da73d5c847255672272203790f09649f19dc2aa347f6",
+    sha256 = "e843087f7e3475b52b302f9e1cf324d62d17a77d311dac26c4d66fdbff1b9b38",
     urls = [
-        "https://github.com/bazel-contrib/rules_bazel_integration_test/releases/download/v0.11.0/rules_bazel_integration_test.v0.11.0.tar.gz",
+        "https://github.com/bazel-contrib/rules_bazel_integration_test/releases/download/v0.11.1/rules_bazel_integration_test.v0.11.1.tar.gz",
     ],
 )
 
