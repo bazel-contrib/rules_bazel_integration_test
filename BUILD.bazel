@@ -63,6 +63,7 @@ filegroup(
         "BUILD.bazel",
         "MODULE.bazel",
         "WORKSPACE",
+        "extensions.bzl",
         ":shared_bazelrc_files",
         "//bazel_integration_test:all_files",
         "//bazel_integration_test/bzlmod:all_files",
