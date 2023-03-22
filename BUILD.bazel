@@ -1,4 +1,3 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load(
     "@cgrindel_bazel_starlib//bzlformat:defs.bzl",
     "bzlformat_missing_pkgs",
@@ -43,12 +42,6 @@ updatesrc_update_all(
 alias(
     name = "update_files",
     actual = ":update_all",
-)
-
-bzl_library(
-    name = "bazel_versions",
-    srcs = ["bazel_versions.bzl"],
-    visibility = ["//:__subpackages__"],
 )
 
 # MARK: - Related to Integration Tests
