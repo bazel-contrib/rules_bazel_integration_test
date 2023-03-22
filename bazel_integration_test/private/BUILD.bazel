@@ -39,6 +39,7 @@ bzl_library(
     srcs = ["bazel_integration_test.bzl"],
     deps = [
         ":integration_test_utils",
+        "@bazel_binaries//:defs",
         "@bazel_skylib//lib:paths",
         "@bazel_skylib//rules:select_file",
     ],

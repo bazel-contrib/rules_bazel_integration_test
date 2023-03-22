@@ -26,7 +26,6 @@ sh_binary(
 # This test exists to be run as part of the BCR presubmit.
 bazel_integration_test(
     name = "e2e_test",
-    bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
     # Override the default tags. Let this run with bazel test //...
     tags = [],

@@ -9,8 +9,7 @@ def bazel_py_integration_tests(
         bazel_versions,
         main = None,
         deps = [],
-        env = {},
-        bazel_binaries = None):
+        env = {}):
     # Declare the test runner
     runner_name = name
     py_binary(
@@ -26,7 +25,6 @@ def bazel_py_integration_tests(
     # Declare the integration tests.
     bazel_integration_tests(
         name = name,
-        bazel_binaries = bazel_binaries,
         bazel_versions = bazel_versions,
         test_runner = runner_name,
         env = env,

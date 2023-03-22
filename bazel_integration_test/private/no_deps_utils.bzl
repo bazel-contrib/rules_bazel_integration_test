@@ -55,7 +55,28 @@ def _is_version_file(version):
     """
     return version.find("//") > -1
 
+def _bazel_binary_label_from_version(version):
+    """Returns a label for the specified Bazel version as provided by https://github.com/bazelbuild/bazel-integration-testing.
+
+    Args:
+        version: A `string` value representing the semantic version of
+                 Bazel to use for the integration test.
+
+    Returns:
+        A `string` representing a label for a version of Bazel.
+    """
+    repo_name = no_deps_utils.bazel_binary_repo_name(version)
+    return _bazel_binary_label(repo_name)
+
 def _bazel_binary_label(repo_name):
+    """Returns a label string for the bazel binary for the specified repository.
+
+    Args:
+        repo_name: The repository name as a `string`.
+
+    Returns:
+        A `string` representing a label for a Bazel binary.
+    """
     return "@{repo_name}//:bazel_binary".format(repo_name = repo_name)
 
 def _normalize_version(version):
@@ -70,6 +91,7 @@ def _normalize_version(version):
 no_deps_utils = struct(
     bazel_binary_label = _bazel_binary_label,
     bazel_binary_repo_name = _bazel_binary_repo_name,
+    bazel_binary_label_from_version = _bazel_binary_label_from_version,
     format_version_for_label = _format_version_for_label,
     is_version_file = _is_version_file,
     normalize_version = _normalize_version,

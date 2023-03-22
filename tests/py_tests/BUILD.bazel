@@ -8,7 +8,6 @@ bzlformat_pkg(name = "bzlformat")
 bazel_py_integration_tests(
     name = "test_base_test",
     srcs = ["test_base_test.py"],
-    bazel_binaries = bazel_binaries,
     bazel_versions = bazel_binaries.versions.all,
 )
 
