@@ -175,7 +175,7 @@ def _bazel_binaries_helper_impl(repository_ctx):
     ))
     repository_ctx.file(
         "no_deps_utils.bzl",
-        repository_ctx.file("//bazel_integration_test/private:no_deps_utils.bzl"),
+        repository_ctx.read(Label("//bazel_integration_test/private:no_deps_utils.bzl")),
     )
     repository_ctx.file(
         "BUILD.bazel",

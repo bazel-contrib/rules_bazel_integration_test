@@ -11,6 +11,14 @@ bzl_library(
 )
 
 bzl_library(
+    name = "repo_defs",
+    srcs = ["repo_defs.bzl"],
+    deps = [
+        "//bazel_integration_test/private:bazel_binaries",
+    ],
+)
+
+bzl_library(
     name = "defs",
     srcs = ["defs.bzl"],
     deps = [

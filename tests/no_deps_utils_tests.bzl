@@ -1,6 +1,9 @@
 """Tests for `no_deps_utils` module."""
 
-load("@bazel_skylib//lib:unittest.bzl", "unittest")
+load("@bazel_skylib//lib:unittest.bzl", "asserts", "unittest")
+
+# buildifier: disable=bzl-visibility
+load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
 def _bazel_binary_repo_name_test(ctx):
     env = unittest.begin(ctx)
@@ -56,7 +59,9 @@ is_version_file_test = unittest.make(_is_version_file_test)
 def _bazel_binary_label_test(ctx):
     env = unittest.begin(ctx)
 
-    unittest.fail(env, "IMPLEMENT ME!")
+    actual = no_deps_utils.bazel_binary_label("rules_chicken")
+    expected = "@rules_chicken//:bazel_binary"
+    asserts.equals(env, expected, actual)
 
     return unittest.end(env)
 

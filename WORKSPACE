@@ -32,12 +32,12 @@ buildifier_prebuilt_register_toolchains()
 
 # TODO(chuck): Clean me up
 
-load(
-    "//:bazel_versions.bzl",
-    # "CURRENT_BAZEL_VERSION",
-    # "OTHER_BAZEL_VERSIONS",
-    "SUPPORTED_BAZEL_VERSIONS",
-)
+# load(
+#     "//:bazel_versions.bzl",
+#     # "CURRENT_BAZEL_VERSION",
+#     # "OTHER_BAZEL_VERSIONS",
+#     "SUPPORTED_BAZEL_VERSIONS",
+# )
 # load("//bazel_integration_test/bzlmod:workspace_bazel_binaries.bzl", "workspace_bazel_binaries")
 
 # # This is only necessary while rules_bazel_integration_test switches back and
@@ -49,6 +49,7 @@ load(
 #     rbt_repo_name = "",
 # )
 
-load("//bazel_integration_test:defs.bzl", "bazel_binaries")
+load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
+load("//bazel_integration_test:repo_defs.bzl", "bazel_binaries")
 
 bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
