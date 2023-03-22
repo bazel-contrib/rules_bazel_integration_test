@@ -4,6 +4,8 @@ load(":no_deps_utils.bzl", "no_deps_utils")
 
 # Lovingly inspired by https://github.com/bazelbuild/bazel-integration-testing/blob/master/tools/repositories.bzl.
 
+# MARK: - Helpers
+
 def _get_platform_name(repository_ctx):
     os_name = repository_ctx.os.name.lower()
 
@@ -87,6 +89,8 @@ def get_version_from_file(repository_ctx):
             .rstrip(" \n")  # strip trailing white space
     )
 
+# MARK: - bazel_binary Repository Rule
+
 def _bazel_binary_impl(repository_ctx):
     version = repository_ctx.attr.version
     if version == "":
@@ -125,6 +129,8 @@ string.\
 Download a bazel binary for integration test.\
 """,
 )
+
+# MARK: - bazel_binaries_helper Repository Rule
 
 _BAZEL_BINARIES_HELPER_DEFS_BZL = """\
 load(":no_deps_utils.bzl", "no_deps_utils")
@@ -194,11 +200,12 @@ _bazel_binaries_helper = repository_rule(
         ),
     },
     doc = """\
-Provides a default implementation for a `bazel_binaries` repository. This is \
-only necessary for repositories that switch back and forth between WORKSPACE \
-repositories and bzlmod repositories.\
+Provides a default implementation for a `bazel_binaries` repository for clients \
+that load dependencies via the `WORKSPACE`.\
 """,
 )
+
+# MARK: - bazel-binaries Macro
 
 # GH026: Consider having versions be list of JSON. JSON would have version, sha256 and/or urls.
 
