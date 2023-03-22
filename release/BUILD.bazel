@@ -4,6 +4,7 @@ load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load(
     "@cgrindel_bazel_starlib//bzlrelease:defs.bzl",
     "create_release",
+    "generate_module_snippet",
     "generate_release_notes",
     "generate_workspace_snippet",
     "hash_sha256",
@@ -19,6 +20,11 @@ bzlformat_pkg(name = "bzlformat")
 
 # MARK: - Release
 
+generate_module_snippet(
+    name = "generate_module_snippet",
+    module_name = "rules_bazel_integration_test",
+)
+
 generate_workspace_snippet(
     name = "generate_workspace_snippet",
     sha256_file = ":archive_sha256",
@@ -28,11 +34,13 @@ generate_workspace_snippet(
 
 generate_release_notes(
     name = "generate_release_notes",
+    generate_module_snippet = ":generate_module_snippet",
     generate_workspace_snippet = ":generate_workspace_snippet",
 )
 
 update_readme(
     name = "update_readme",
+    generate_module_snippet = ":generate_module_snippet",
     generate_workspace_snippet = ":generate_workspace_snippet",
 )
 
