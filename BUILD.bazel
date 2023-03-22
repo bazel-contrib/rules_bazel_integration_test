@@ -40,6 +40,11 @@ updatesrc_update_all(
     ],
 )
 
+alias(
+    name = "update_files",
+    actual = ":update_all",
+)
+
 bzl_library(
     name = "bazel_versions",
     srcs = ["bazel_versions.bzl"],
