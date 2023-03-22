@@ -10,11 +10,6 @@ build --incompatible_disallow_empty_glob
 # Pretty output
 common --color=auto --curses=auto
 
-# TODO: FIX ME
-
-# # Enable bzlmod
-# common --enable_bzlmod
-# build --@cgrindel_bazel_starlib//bzlmod:enabled
-
-common --noenable_bzlmod
-build --no@cgrindel_bazel_starlib//bzlmod:enabled
+# Enable bzlmod
+common --enable_bzlmod
+build --@cgrindel_bazel_starlib//bzlmod:enabled

@@ -9,7 +9,8 @@ load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
 # MARK: - bazel_binaries_helper Repository Rule
 
-_BAZEL_BINARIES_HELPER_DEFS_BZL = """load("@{rbt_repo_name}//bazel_integration_test/bzlmod:bazel_binary_utils.bzl", "bazel_binary_utils")
+_BAZEL_BINARIES_HELPER_DEFS_BZL = """\
+load("@{rbt_repo_name}//bazel_integration_test/bzlmod:bazel_binary_utils.bzl", "bazel_binary_utils")
 
 def _label(version):
     return bazel_binary_utils.label(_VERSION_TO_REPO, version, lambda x: Label(x))
@@ -25,6 +26,19 @@ _versions = struct(
 bazel_binaries = struct(
     label = _label,
     versions = _versions,
+)
+"""
+
+_BAZEL_BINARIES_HELPER_BUILD_BAZEL = """\
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+bzl_library(
+    name = "defs",
+    srcs = ["defs.bzl"],
+    deps = [
+        "@{rbt_repo_name}//bazel_integration_test/bzlmod:bazel_binary_utils"
+    ],
+    visibility = ["//visibility:public"],
 )
 """
 
@@ -47,8 +61,13 @@ The specified current version ({}) is not in the `version_to_repo` dict.\
         other_versions = other_versions,
         all_versions = all_versions,
     ))
+    repository_ctx.file(
+        "BUILD.bazel",
+        _BAZEL_BINARIES_HELPER_BUILD_BAZEL.format(
+            rbt_repo_name = repository_ctx.attr.rbt_repo_name,
+        ),
+    )
     repository_ctx.file("WORKSPACE")
-    repository_ctx.file("BUILD.bazel")
 
 _bazel_binaries_helper = repository_rule(
     implementation = _bazel_binaries_helper_impl,
