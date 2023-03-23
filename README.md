@@ -29,7 +29,20 @@ and the [custom test runner example](/examples/custom_test_runner) for more info
 
 ### 1. Configure your workspace to use `rules_bazel_integration_test`
 
-Add the following to your `WORKSPACE` file to add this repository and its dependencies.
+#### Recommended: Add dependency to `MODULE.bazel`
+
+If you are using Bazel with bzlmod enabled, add the following snippet to your `MODULE.bazel` file.
+
+<!-- BEGIN MODULE SNIPPET -->
+```python
+bazel_dep(name = "rules_bazel_integration_test", version = "0.11.1")
+```
+<!-- BEGIN MODULE SNIPPET -->
+
+#### Legacy: Update `WORKSPACE`
+
+If you are using Bazel with bzlmod disabled, add the following to your `WORKSPACE` file to add this
+repository and its dependencies.
 
 <!-- BEGIN WORKSPACE SNIPPET -->
 ```python
@@ -55,59 +68,40 @@ bazel_skylib_workspace()
 ```
 <!-- END WORKSPACE SNIPPET -->
 
-### 2. Create a `bazel_versions.bzl` in the root of your repository
+### 2. List the Bazel versions for testing
 
-Add the following to a file called `bazel_versions.bzl` at the root of your repository. Replace the
-Bazel version values with the values that you would like to test against for your integration tests.
+#### Recommended: Add Bazel versions to `MODULE.bazel`
 
-```python
-# If you are using Bazelisk for your project, you can specify that the current 
-# Bazel version be retrieved from the `.bazelversion` file. Otherwise, specify
-# a valid semantic version. 
-CURRENT_BAZEL_VERSION = "//:.bazelversion"
-
-OTHER_BAZEL_VERSIONS = [
-    "4.2.2",
-    "6.0.0-pre.20220328.1",
-]
-
-SUPPORTED_BAZEL_VERSIONS = [
-    CURRENT_BAZEL_VERSION,
-] + OTHER_BAZEL_VERSIONS
-```
-
-NOTE: The above code designates a current version and other versions. This can be useful if you have
-a large number of integration tests where you want to execute all of them against the current
-version and execute a subset of them against other Bazel versions.
-
-NOTE: For more information on supported Bazelisk Bazel version formats, please see [Bazelisk Bazel
-Version Formats](#bazelisk-bazel-version-formats).
-
-Add the following to the Bazel build file in the same package as the `bazel_versions.bzl` file.
+Load the `bazel_binaries` extension and specify the Bazel verions to download.
 
 ```python
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-
-bzl_library(
-    name = "bazel_versions",
-    srcs = ["bazel_versions.bzl"],
-    visibility = ["//:__subpackages__"],
+bazel_binaries = use_extension(
+    "@rules_bazel_integration_test//:extensions.bzl",
+    "bazel_binaries",
+    dev_dependency = True,
 )
+bazel_binaries.download(version_file = "//:.bazelversion")
+bazel_binaries.download(version = "6.0.0")
+bazel_binaries.download(version = "7.0.0-pre.20230215.2")
+use_repo(bazel_binaries, "bazel_binaries")
 ```
 
-### 3. Declare the Bazel binaries in the `WORKSPACE` file
+#### Legacy: Declare the Bazel binaries in the `WORKSPACE` file
 
-Back in the `WORKSPACE` file, add the following to download and prepare the Bazel binaries for
+In the `WORKSPACE` file, add the following to download and prepare the Bazel binaries for
 testing.
 
 ```python
-load("//:bazel_versions.bzl", "SUPPORTED_BAZEL_VERSIONS")
 load("@rules_bazel_integration_test//bazel_integration_test:defs.bzl", "bazel_binaries")
 
-bazel_binaries(versions = SUPPORTED_BAZEL_VERSIONS)
+bazel_binaries(versions = [
+    "//:.bazelversion",
+    "6.0.0",
+    "7.0.0-pre.20230215.2",
+])
 ```
 
-### 4. Configure the deleted packages for the parent workspace
+### 3. Configure the deleted packages for the parent workspace
 
 If you have child workspaces under your parent workspace, you need to tell Bazel to ignore the child
 workspaces. This can be done in one of two ways:
@@ -139,7 +133,7 @@ $ bazel run @rules_bazel_integration_test//tools:update_deleted_packages
 After running the utility, the `--deleted_packages` entries in the `.bazelrc` should have a
 comma-separated list of packages under the child workspaces. 
 
-### 5. Define integration test targets
+### 4. Define integration test targets
 
 For the purposes of this example, lets assume that we have an `examples` directory which contains a
 subdirectory called `simple`. The `simple` directory contains another Bazel workspace (i.e. has its
@@ -149,7 +143,7 @@ execute tests in the `simple` workspace using different versions of Bazel.
 Add the following to the `BUILD.bazel` file in the `examples` directory.
 
 ```python
-load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION", "OTHER_BAZEL_VERSIONS")
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load(
     "@rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
@@ -167,7 +161,7 @@ default_test_runner(
 # bazel_integration_test.
 bazel_integration_test(
     name = "simple_test",
-    bazel_version = CURRENT_BAZEL_VERSION,
+    bazel_version = bazel_binaries.versions.current,
     test_runner = ":simple_test_runner",
     workspace_path = "simple",
 )
@@ -177,7 +171,7 @@ bazel_integration_test(
 # targets with names derived from the base name and the bazel version.
 bazel_integration_tests(
     name = "simple_test",
-    bazel_versions = OTHER_BAZEL_VERSIONS,
+    bazel_versions = bazel_binaries.versions.other,
     test_runner = ":simple_test_runner",
     workspace_path = "simple",
 )
@@ -194,15 +188,15 @@ test_suite(
     tests = [":simple_test"] +
             integration_test_utils.bazel_integration_test_names(
                 "simple_test",
-                OTHER_BAZEL_VERSIONS,
+                bazel_binaries.versions.other,
             ),
     visibility = ["//:__subpackages__"],
 )
 ```
 
 The above code defines three test targets: `//examples:simple_test`,
-`//examples:simple_test_bazel_5_0_0-pre_20211011_2`, and
-`//examples:simple_test_bazel_6_0_0-pre_20211101_2`. The `all_integration_tests` target is a test
+`//examples:simple_test_bazel_6_0_0`, and
+`//examples:simple_test_bazel_7_0_0-pre_20230215_2`. The `all_integration_tests` target is a test
 suite that executes all of the integration tests with a single command:
 
 ```sh
@@ -214,15 +208,15 @@ $ bazel test //examples:all_integration_tests
 
 In the quickstart example, the child workspace does not reference the parent workspace. In many
 cases, a child workspace will reference the parent workspace using a
-[local_repository](https://docs.bazel.build/versions/main/be/workspace.html#local_repository)
-declaration to demonstrate functionality from the parent workspace. 
+[local_path_override](https://bazel.build/rules/lib/globals#local_path_override) declaration in
+their `MODULE.bazel` file to demonstrate functionality from the parent workspace. 
 
 ```python
-# Child WORKSPACE at examples/simple/WORKSPACE
+# Child MODULE.bazel at examples/simple/MODULE.bazel
 
 # Reference the parent workspace
-local_repository(
-    name = "my_parent_workspace",
+local_path_override(
+    module_name = "my_parent_workspace",
     path = "../..",
 )
 ```
@@ -246,9 +240,9 @@ filegroup(
     srcs = [
         "BUILD.bazel",
         "WORKSPACE",
-        "//spm:all_files",
-        "//spm/internal:all_files",
-        "//spm/internal/modulemap_parser:all_files",
+        "//foo:all_files",
+        "//foo/internal:all_files",
+        "//foo/internal/modulemap_parser:all_files",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -307,8 +301,8 @@ Bazel integration tests require a Bazel version or a Bazel binary to use for the
 integration test. Bazel version values can be a Bazel semantic version or a reference to a file that
 contains a Bazel semantic version (e.g., `//:.bazelversion`). If you are using
 [Bazelisk](https://github.com/bazelbuild/bazelisk) to specify the version of Bazel for use in
-development and CI, then specifying `//:.bazelversion` as one of integration test versions may make
-sense. 
+development and CI, then specifying `//:.bazelversion` as one of the integration test versions may
+make sense. 
 
 Currently, `rules_bazel_integration_test` only supports Bazel semantic versions in the
 `.bazelversion` file. If you are interested in being able to use Bazelisk's `<FORK>/<VERSION>`,
