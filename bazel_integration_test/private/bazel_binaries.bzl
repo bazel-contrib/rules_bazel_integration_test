@@ -134,7 +134,7 @@ Download a bazel binary for integration test.\
 # MARK: - bazel_binaries_helper Repository Rule
 
 _BAZEL_BINARIES_HELPER_DEFS_BZL = """\
-load(":no_deps_utils.bzl", "no_deps_utils")
+load("@rules_bazel_integration_test//bazel_integration_test:repo_defs.bzl", "no_deps_utils")
 
 _versions = struct(
     current = "{current_version}",
@@ -152,15 +152,10 @@ _BAZEL_BINARIES_HELPER_BUILD_BAZEL = """\
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
 bzl_library(
-    name = "no_deps_utils",
-    srcs = ["no_deps_utils.bzl"],
-)
-
-bzl_library(
     name = "defs",
     srcs = ["defs.bzl"],
     deps = [
-        ":no_deps_utils",
+        "@rules_bazel_integration_test//bazel_integration_test:repo_defs",
     ],
     visibility = ["//visibility:public"],
 )
@@ -180,10 +175,6 @@ def _bazel_binaries_helper_impl(repository_ctx):
         other_versions = other_versions,
         all_versions = all_versions,
     ))
-    repository_ctx.file(
-        "no_deps_utils.bzl",
-        repository_ctx.read(Label("//bazel_integration_test/private:no_deps_utils.bzl")),
-    )
     repository_ctx.file(
         "BUILD.bazel",
         _BAZEL_BINARIES_HELPER_BUILD_BAZEL,
