@@ -8,6 +8,7 @@ with multiple versions of Bazel.
 
 ## Table of Contents
 
+<!-- MARKDOWN TOC: BEGIN -->
 * [Quickstart](#quickstart)
   * [1\. Configure your workspace to use rules\_bazel\_integration\_test](#1-configure-your-workspace-to-use-rules_bazel_integration_test)
     * [Recommended: Add dependency to MODULE\.bazel](#recommended-add-dependency-to-modulebazel)
@@ -23,6 +24,7 @@ with multiple versions of Bazel.
   * [3\. Execute the integration tests](#3-execute-the-integration-tests)
 * [Custom Test Runner](#custom-test-runner)
 * [Bazelisk Bazel Version Formats](#bazelisk-bazel-version-formats)
+<!-- MARKDOWN TOC: END -->
 
 ## Quickstart
 
