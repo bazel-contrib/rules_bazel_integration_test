@@ -5,19 +5,6 @@ load(":no_deps_utils.bzl", "no_deps_utils")
 
 # MARK: - Name Functions
 
-def _bazel_binary_label(version):
-    """Returns a label for the specified Bazel version as provided by https://github.com/bazelbuild/bazel-integration-testing.
-
-    Args:
-        version: A `string` value representing the semantic version of
-                 Bazel to use for the integration test.
-
-    Returns:
-        A `string` representing a label for a version of Bazel.
-    """
-    repo_name = no_deps_utils.bazel_binary_repo_name(version)
-    return no_deps_utils.bazel_binary_label(repo_name)
-
 def _bazel_integration_test_name(name, version):
     """Generates a test name from the provided base name and the Bazel version.
 
@@ -75,7 +62,7 @@ _DEFAULT_INTEGRATION_TEST_TAGS = [
 ]
 
 integration_test_utils = struct(
-    bazel_binary_label = _bazel_binary_label,
+    bazel_binary_label = no_deps_utils.bazel_binary_label_from_version,
     bazel_binary_repo_name = no_deps_utils.bazel_binary_repo_name,
     bazel_integration_test_name = _bazel_integration_test_name,
     bazel_integration_test_names = _bazel_integration_test_names,

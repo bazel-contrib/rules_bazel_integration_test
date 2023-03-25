@@ -9,7 +9,8 @@ load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
 # MARK: - bazel_binaries_helper Repository Rule
 
-_BAZEL_BINARIES_HELPER_DEFS_BZL = """load("@{rbt_repo_name}//bazel_integration_test/bzlmod:bazel_binary_utils.bzl", "bazel_binary_utils")
+_BAZEL_BINARIES_HELPER_DEFS_BZL = """\
+load("@rules_bazel_integration_test//bazel_integration_test/bzlmod:bazel_binary_utils.bzl", "bazel_binary_utils")
 
 def _label(version):
     return bazel_binary_utils.label(_VERSION_TO_REPO, version, lambda x: Label(x))
@@ -28,6 +29,19 @@ bazel_binaries = struct(
 )
 """
 
+_BAZEL_BINARIES_HELPER_BUILD_BAZEL = """\
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+bzl_library(
+    name = "defs",
+    srcs = ["defs.bzl"],
+    deps = [
+        "@rules_bazel_integration_test//bazel_integration_test/bzlmod:bazel_binary_utils"
+    ],
+    visibility = ["//visibility:public"],
+)
+"""
+
 def _bazel_binaries_helper_impl(repository_ctx):
     current_version = repository_ctx.attr.current_version
     version_to_repo = repository_ctx.attr.version_to_repo
@@ -42,23 +56,21 @@ The specified current version ({}) is not in the `version_to_repo` dict.\
     other_versions = [v for v in all_versions if v != current_version]
     repository_ctx.file("defs.bzl", _BAZEL_BINARIES_HELPER_DEFS_BZL.format(
         version_to_repo = repository_ctx.attr.version_to_repo,
-        rbt_repo_name = repository_ctx.attr.rbt_repo_name,
         current_version = current_version,
         other_versions = other_versions,
         all_versions = all_versions,
     ))
+    repository_ctx.file(
+        "BUILD.bazel",
+        _BAZEL_BINARIES_HELPER_BUILD_BAZEL,
+    )
     repository_ctx.file("WORKSPACE")
-    repository_ctx.file("BUILD.bazel")
 
 _bazel_binaries_helper = repository_rule(
     implementation = _bazel_binaries_helper_impl,
     attrs = {
         "current_version": attr.string(
             doc = "The value to be used as the current version.",
-            mandatory = True,
-        ),
-        "rbt_repo_name": attr.string(
-            doc = "The name of the rules_bazel_integration_test repo.",
             mandatory = True,
         ),
         "version_to_repo": attr.string_dict(
@@ -110,14 +122,11 @@ version, version_file.\
     return vi
 
 def _bazel_binaries_impl(module_ctx):
-    rbt_repo_name = "rules_bazel_integration_test"
     version_infos = []
     for mod in module_ctx.modules:
         for download in mod.tags.download:
             vi = _declare_bazel_binary(download)
             version_infos.append(vi)
-        for rbt_repo in mod.tags.rbt_repo:
-            rbt_repo_name = rbt_repo.name
 
     if len(version_infos) == 0:
         fail("No versions were specified.")
@@ -135,22 +144,8 @@ def _bazel_binaries_impl(module_ctx):
     _bazel_binaries_helper(
         name = "bazel_binaries",
         version_to_repo = version_to_repo,
-        rbt_repo_name = rbt_repo_name,
         current_version = current_vi.version,
     )
-
-_rbt_repo_tag = tag_class(
-    attrs = {
-        "name": attr.string(
-            doc = "The name of the rules_bazel_integration_test repository.",
-        ),
-    },
-    doc = """\
-For internal use only. Allow a client to specify the name of the \
-`rules_bazel_integration_test` repository. The only repository that should use \
-this tag class is `rules_bazel_integration_test`.\
-""",
-)
 
 _download_tag = tag_class(
     attrs = {
@@ -178,7 +173,7 @@ Identifies Bazel versions that will be downloaded and made available for \
 
 bazel_binaries = module_extension(
     implementation = _bazel_binaries_impl,
-    tag_classes = {"download": _download_tag, "rbt_repo": _rbt_repo_tag},
+    tag_classes = {"download": _download_tag},
     doc = """\
 Provides a means for clients to download Bazel binaries for their integration \
 tests.\

@@ -1,8 +1,8 @@
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load(
     "@rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
 )
-load("//:bazel_versions.bzl", "CURRENT_BAZEL_VERSION")
 
 # This Bazel integration test uses the custom test runner from this workspace to execute Bazel
 # commands in the `workspace` child workspace.
@@ -10,8 +10,9 @@ bazel_integration_test(
     # If the test is named XXX_test, the macro will assume that the child workspace is named XXX.
     # One can specify a different location by using the workspace_path attribute.
     name = "workspace_test",
+    bazel_binaries = bazel_binaries,
     # Specify the version of Bazel to use to execute the test.
-    bazel_version = CURRENT_BAZEL_VERSION,
+    bazel_version = bazel_binaries.versions.current,
     # This is a reference to the custom test runner.
     test_runner = "//Sources/CustomTestRunner",
     visibility = ["//:__subpackages__"],
