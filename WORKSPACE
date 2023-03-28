@@ -36,3 +36,21 @@ bazel_binaries(versions = [
     "//:.bazelversion",
     "7.0.0-pre.20230215.2",
 ])
+
+# MARK: - Markdown
+
+# Workaround for missing strict deps error as described here:
+# https://github.com/bazelbuild/bazel-gazelle/issues/1217#issuecomment-1152236735
+# gazelle:repository go_repository name=in_gopkg_alecthomas_kingpin_v2 importpath=gopkg.in/alecthomas/kingpin.v2
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@cgrindel_bazel_starlib//:go_deps.bzl", "bazel_starlib_go_dependencies")
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+
+bazel_starlib_go_dependencies()
+
+go_rules_dependencies()
+
+go_register_toolchains(version = "1.19.5")
+
+gazelle_dependencies()
