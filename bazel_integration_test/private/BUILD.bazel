@@ -49,6 +49,7 @@ bzl_library(
     srcs = ["bazel_binaries.bzl"],
     deps = [
         ":no_deps_utils",
+        "@cgrindel_bazel_starlib//bzllib:defs",
     ],
 )
 
