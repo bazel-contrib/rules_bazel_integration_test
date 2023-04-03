@@ -49,6 +49,7 @@ def bazel_integration_test(
         env_inherit = _DEFAULT_ENV_INHERIT,
         additional_env_inherit = [],
         bazel_binaries = None,
+        data = None,
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
@@ -95,6 +96,7 @@ def bazel_integration_test(
             is loaded by adding
             `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
             build file.
+        data: Optional. A list of files to make present at test runtime.
         **kwargs: additional attributes like timeout and visibility
     """
 
@@ -127,7 +129,7 @@ def bazel_integration_test(
         "--bazel",
         "$(location :%s)" % (bazel_bin_name),
     ]
-    data = [
+    data = (data or []) + [
         test_runner,
         bazel_binary,
         bazel_bin_name,
