@@ -28,14 +28,14 @@ bazel_binaries(versions = ["//:.bazelversion"])
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
-    name = "cgrindel_swift_bazel",
-    sha256 = "434cf75cbd6c3f9bd4b750a7f9c9b5bc2cc662922d24862d559abf6ecaff8b72",
+    name = "rules_swift_package_manager",
+    sha256 = "e26967e8f76a654b4b15c05d8d6af30dfa4bd463bc7731ec180cd19bddc6273d",
     urls = [
-        "https://github.com/cgrindel/swift_bazel/releases/download/v0.3.2/swift_bazel.v0.3.2.tar.gz",
+        "https://github.com/cgrindel/rules_swift_package_manager/releases/download/v0.4.2/rules_swift_package_manager.v0.4.2.tar.gz",
     ],
 )
 
-load("@cgrindel_swift_bazel//:deps.bzl", "swift_bazel_dependencies")
+load("@rules_swift_package_manager//:deps.bzl", "swift_bazel_dependencies")
 
 swift_bazel_dependencies()
 
@@ -69,8 +69,8 @@ swift_rules_extra_dependencies()
 # gazelle:repo bazel_gazelle
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-load("@cgrindel_swift_bazel//:go_deps.bzl", "swift_bazel_go_dependencies")
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("@rules_swift_package_manager//:go_deps.bzl", "swift_bazel_go_dependencies")
 
 # Declare Go dependencies before calling go_rules_dependencies.
 swift_bazel_go_dependencies()

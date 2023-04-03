@@ -131,11 +131,10 @@ test_suite(
     # be found when `bazel test //...` is executed.
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
     tests = [
-        ":simple_test",
-        # GH120: Enable the custom_test_runner test once swift_bazel supports bzlmod.
-        # ":custom_test_runner_test",
-        ":use_create_scratch_dir_test",
+        ":custom_test_runner_test",
         ":dynamic_workspace_test",
+        ":simple_test",
+        ":use_create_scratch_dir_test",
     ] + integration_test_utils.bazel_integration_test_names(
         "simple_test",
         bazel_binaries.versions.other,
