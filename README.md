@@ -42,7 +42,7 @@ If you are using Bazel with bzlmod enabled, add the following snippet to your `M
 ```python
 bazel_dep(name = "rules_bazel_integration_test", version = "0.12.0")
 ```
-<!-- BEGIN MODULE SNIPPET -->
+<!-- END MODULE SNIPPET -->
 
 #### Legacy: Update `WORKSPACE`
 
