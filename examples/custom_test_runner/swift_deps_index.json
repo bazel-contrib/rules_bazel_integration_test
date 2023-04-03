@@ -1,7 +1,7 @@
 {
   "direct_dep_identities": [
-    "swift-argument-parser",
-    "shellout"
+    "shellout",
+    "swift-argument-parser"
   ],
   "modules": [
     {
@@ -81,6 +81,26 @@
       "target_labels": [
         "@swiftpkg_swift_argument_parser//:Plugins_GenerateManual"
       ]
+    }
+  ],
+  "packages": [
+    {
+      "name": "swiftpkg_shellout",
+      "identity": "shellout",
+      "remote": {
+        "commit": "e1577acf2b6e90086d01a6d5e2b8efdaae033568",
+        "remote": "https://github.com/JohnSundell/ShellOut.git",
+        "version": "2.3.0"
+      }
+    },
+    {
+      "name": "swiftpkg_swift_argument_parser",
+      "identity": "swift-argument-parser",
+      "remote": {
+        "commit": "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
+        "remote": "https://github.com/apple/swift-argument-parser",
+        "version": "1.2.2"
+      }
     }
   ]
 }

@@ -1,4 +1,4 @@
-load("@cgrindel_swift_bazel//swiftpkg:defs.bzl", "swift_package")
+load("@rules_swift_package_manager//swiftpkg:defs.bzl", "swift_package")
 
 def swift_dependencies():
     # version: 2.3.0
@@ -16,10 +16,3 @@ def swift_dependencies():
         dependencies_index = "@//:swift_deps_index.json",
         remote = "https://github.com/apple/swift-argument-parser",
     )
-
-def _swift_dependencies_ext_impl(module_ctx):
-    swift_dependencies()
-
-swift_dependencies_ext = module_extension(
-    implementation = _swift_dependencies_ext_impl,
-)
