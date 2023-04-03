@@ -168,6 +168,13 @@ def bazel_integration_test(
 
     env_inherit = env_inherit + additional_env_inherit
 
+    env_vars_are_rootpaths = []
+    for k, v in env.items():
+        if v.startswith("$(rootpath") and v.index(")") == len(v) - 1:
+            env_vars_are_rootpaths.append(k)
+    if env_vars_are_rootpaths:
+        env["ENV_VARS_TO_ABSOLUTIFY"] = " ".join(env_vars_are_rootpaths)
+
     native.sh_test(
         name = name,
         srcs = [

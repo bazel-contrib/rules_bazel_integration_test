@@ -83,6 +83,7 @@ test_suite(
     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
     tests = [
         "//examples:integration_tests",
+        "//examples/env_var_with_rootpath:integration_tests",
         "//release:archive_test",
         "//tests/params_tests:integration_tests",
         "//tests/py_tests:integration_tests",

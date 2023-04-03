@@ -1,0 +1,37 @@
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load(
+    "@rules_bazel_integration_test//bazel_integration_test:defs.bzl",
+    "bazel_integration_test",
+    "default_test_runner",
+    "integration_test_utils",
+)
+
+bzlformat_pkg(name = "bzlformat")
+
+default_test_runner(
+    name = "simple_test_runner",
+)
+
+bazel_integration_test(
+    name = "simple_bazel_test",
+    bazel_binaries = bazel_binaries,
+    bazel_version = bazel_binaries.versions.current,
+    data = ["@sample_file//file"],
+    env = {
+        "SAMPLE_FILE": "$(rootpath @sample_file//file)",
+    },
+    test_runner = ":simple_test_runner",
+    workspace_path = "sample_workspace",
+)
+
+# MARK: - Test Suite
+
+test_suite(
+    name = "integration_tests",
+    # If you don't apply the test tags to the test suite, the test suite will
+    # be found when `bazel test //...` is executed.
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
+    tests = [":simple_bazel_test"],
+    visibility = ["//:__subpackages__"],
+)
