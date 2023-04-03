@@ -50,6 +50,7 @@ def bazel_integration_test(
         additional_env_inherit = [],
         bazel_binaries = None,
         data = None,
+        bazel_basename = "bazel",
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
@@ -97,6 +98,8 @@ def bazel_integration_test(
             `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
             build file.
         data: Optional. A list of files to make present at test runtime.
+        bazel_basename: Optional. The basename of the passed bazel_binaries file.
+                        Defaults to "bazel".
         **kwargs: additional attributes like timeout and visibility
     """
 
@@ -118,8 +121,8 @@ def bazel_integration_test(
         name = bazel_bin_name,
         srcs = bazel_binary,
         subpath = select({
-            "@platforms//os:windows": "bazel.exe",
-            "//conditions:default": "bazel",
+            "@platforms//os:windows": bazel_basename + ".exe",
+            "//conditions:default": bazel_basename,
         }),
     )
 
