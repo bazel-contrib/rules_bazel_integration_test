@@ -22,6 +22,7 @@ bzlformat_pkg(name = "bzlformat")
 
 generate_module_snippet(
     name = "generate_module_snippet",
+    dev_dependency = True,
     module_name = "rules_bazel_integration_test",
 )
 
