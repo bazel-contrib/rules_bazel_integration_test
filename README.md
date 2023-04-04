@@ -40,7 +40,11 @@ If you are using Bazel with bzlmod enabled, add the following snippet to your `M
 
 <!-- BEGIN MODULE SNIPPET -->
 ```python
-bazel_dep(name = "rules_bazel_integration_test", version = "0.12.0")
+bazel_dep(
+    name = "rules_bazel_integration_test",
+    version = "0.12.0",
+    dev_dependency = True,
+)
 ```
 <!-- END MODULE SNIPPET -->
 
