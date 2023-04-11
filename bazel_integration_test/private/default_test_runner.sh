@@ -42,6 +42,10 @@ done
 [[ -n "${workspace_dir:-}" ]] || exit_with_msg "Must specify the path of the workspace directory."
 [[ ${#bazel_cmds[@]} > 0 ]] || exit_with_msg "No Bazel commands were specified."
 
+for var_name in ${ENV_VARS_TO_ABSOLUTIFY:-}; do
+  export "${var_name}=$(pwd)/$(printenv "${var_name}")"
+done
+
 cd "${workspace_dir}"
 
 for cmd in "${bazel_cmds[@]}" ; do

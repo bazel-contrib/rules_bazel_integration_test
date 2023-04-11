@@ -54,3 +54,11 @@ go_rules_dependencies()
 go_register_toolchains(version = "1.19.5")
 
 gazelle_dependencies()
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_file(
+    name = "sample_file",
+    sha256 = "0baf36f9c3ef9d8b4833833e1d633707965c9850f69f04dd96712672b9e75cc0",
+    url = "https://raw.githubusercontent.com/bazel-contrib/rules_bazel_integration_test/v0.12.0/.bazelversion",
+)
