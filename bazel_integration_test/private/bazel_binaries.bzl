@@ -150,6 +150,8 @@ bazel_binaries = struct(
 
 _BAZEL_BINARIES_HELPER_BUILD_BAZEL = """\
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@rules_bazel_integration_test//bazel_integration_test:repo_defs.bzl",
+    "no_deps_utils")
 
 bzl_library(
     name = "defs",
@@ -157,6 +159,12 @@ bzl_library(
     deps = [
         "@rules_bazel_integration_test//bazel_integration_test:repo_defs",
     ],
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "current",
+    actual = no_deps_utils.bazel_binary_label_from_version("{current_version}"),
     visibility = ["//visibility:public"],
 )
 """
@@ -170,6 +178,9 @@ def _bazel_binaries_helper_impl(repository_ctx):
     all_versions.extend(other_versions)
     if len(all_versions) == 0:
         fail("No versions were specified.")
+    if not current_version:
+        # Use the first found.
+        current_version = all_versions[0]
     repository_ctx.file("defs.bzl", _BAZEL_BINARIES_HELPER_DEFS_BZL.format(
         current_version = current_version,
         other_versions = other_versions,
@@ -177,7 +188,9 @@ def _bazel_binaries_helper_impl(repository_ctx):
     ))
     repository_ctx.file(
         "BUILD.bazel",
-        _BAZEL_BINARIES_HELPER_BUILD_BAZEL,
+        _BAZEL_BINARIES_HELPER_BUILD_BAZEL.format(
+            current_version = current_version,
+        ),
     )
     repository_ctx.file("WORKSPACE")
 
