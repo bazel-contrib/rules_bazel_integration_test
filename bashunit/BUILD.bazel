@@ -1,7 +1,13 @@
 # Bash unit testing support.
 load("@rules_python//python:defs.bzl", "py_test")
+load(
+    "@cgrindel_bazel_starlib//bzlformat:defs.bzl",
+    "bzlformat_pkg",
+)
 
 package(default_visibility = ["//visibility:public"])
+
+bzlformat_pkg(name = "bzlformat")
 
 exports_files([
     "bashunit.bash",
