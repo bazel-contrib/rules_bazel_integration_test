@@ -1,0 +1,32 @@
+# Bash unit testing support.
+load("@rules_python//python:defs.bzl", "py_test")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files([
+    "bashunit.bash",
+])
+
+sh_library(
+    name = "bashunit",
+    srcs = [
+        "bashunit.bash",
+        "bashunit_utils.sh",
+    ],
+)
+
+# Test bashunit with python to avoid recursion.
+py_test(
+    name = "bashunit_test",
+    srcs = ["bashunit_test.py"],
+    data = [
+        ":bashunit",
+        # This test relies on writing shell scripts that use bash runfiles
+        # to load the actual copy of bashunit.bash being tested.
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+    main = "bashunit_test.py",
+    tags = [
+        "no_windows",  # test runs bash scripts in a subprocess
+    ],
+)
