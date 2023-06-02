@@ -3,6 +3,7 @@
 # --- begin runfiles.bash initialization v2 ---
 # Copy-pasted from the Bazel Bash runfiles library v2.
 set -uo pipefail; f=bazel_tools/tools/bash/runfiles/runfiles.bash
+# shellcheck disable=SC1090
 source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   source "$(grep -sm1 "^$f " "${RUNFILES_MANIFEST_FILE:-/dev/null}" | cut -f2- -d' ')" 2>/dev/null || \
   source "$0.runfiles/$f" 2>/dev/null || \
@@ -12,9 +13,12 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 # --- end runfiles.bash initialization v2 ---
 
 assertions_lib="$(rlocation cgrindel_bazel_starlib/shlib/lib/assertions.sh)"
+# shellcheck disable=SC1090
 source "${assertions_lib}"
 
 find_bin="$(rlocation rules_bazel_integration_test/tools/find_child_workspace_packages.sh)"
+
+initial_test_dir="${PWD}"
 
 # MARK - Execute without a workspace
 
@@ -38,6 +42,7 @@ rm -rf "${empty_example_workspace_dir}"
 setup_test_workspace_sh_location=rules_bazel_integration_test/tests/tools_tests/setup_test_workspace.sh
 setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || \
   (echo >&2 "Failed to locate ${setup_test_workspace_sh_location}" && exit 1)
+# shellcheck source=SCRIPTDIR/setup_test_workspace.sh
 source "${setup_test_workspace_sh}"
 
 expected=("examples/child_a" "examples/child_a/foo" "somewhere_else/child_b/bar")
@@ -52,9 +57,7 @@ for (( i = 0; i < ${#expected[@]}; i++ )); do
   assert_equal "${expected[i]}" "${actual[i]}"
 done
 
-
 # Execute inside the parent workspace; find the parent workspace root
-# shellcheck disable=SC2154
 cd "${examples_dir}"
 
 # Set the BUILD_WORKSPACE_DIRECTORY
@@ -72,3 +75,16 @@ done
 # Unset the BUILD_WORKSPACE_DIRECTORY
 unset BUILD_WORKSPACE_DIRECTORY
 
+# Ensure that we ignore directories in .bazelignore
+
+cd "${initial_test_dir}"
+echo "somewhere_else" > "${parent_dir}/.bazelignore"
+expected=("examples/child_a" "examples/child_a/foo")
+actual=()
+while IFS=$'\n' read -r line; do actual+=("$line"); done < <(
+  "${find_bin}" --workspace "${parent_dir}"
+)
+assert_equal "${#expected[@]}" "${#actual[@]}"
+for (( i = 0; i < ${#expected[@]}; i++ )); do
+  assert_equal "${expected[i]}" "${actual[i]}"
+done

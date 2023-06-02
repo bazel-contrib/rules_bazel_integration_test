@@ -4,9 +4,23 @@ filter_bazelignored_directories() {
   local workspace_root="${1}"
   local path="${2}"
 
+  # If the path and the workspace_root are equal, then there is nothing to 
+  # check.
+  if [[ "${workspace_root}" == "${path}" ]]; then
+    echo "${path}"
+    return
+  fi
+
   if [[ -f "${workspace_root}/.bazelignore" ]]; then
-    path_relative_to_workspace="${path#${workspace_root}/}"
-    bazelignore_dirs=($(grep -v '^#' "${workspace_root}/.bazelignore" | grep "."))
+    local path_relative_to_workspace="${path#"${workspace_root}"/}"
+    local bazelignore_dirs=()
+    while IFS=$'\n' read -r line; do bazelignore_dirs+=("$line"); done < <(
+      grep -v '^#' "${workspace_root}/.bazelignore" | grep "."
+    )
+    if [[ ${#bazelignore_dirs[@]} -eq 0 ]]; then
+      echo "${path}"
+      return
+    fi
     for bazelignore_dir in "${bazelignore_dirs[@]}"; do
       if [[ "${path_relative_to_workspace}" == "${bazelignore_dir}" || "${path_relative_to_workspace}" == "${bazelignore_dir}/"* ]]; then
         return
