@@ -7,6 +7,7 @@ load(
     "default_test_runner",
     "integration_test_utils",
 )
+load("//bazel_integration_test:script_test.bzl", "script_test")
 
 bzlformat_pkg(name = "bzlformat")
 
@@ -120,8 +121,6 @@ bazel_integration_test(
 )
 
 # MARK: - script_test sample
-
-load("//bazel_integration_test:script_test.bzl", "script_test")
 
 script_test(
     name = "sample_script_test",
