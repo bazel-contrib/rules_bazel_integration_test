@@ -6,8 +6,8 @@ load(
     "bazel_integration_tests",
     "default_test_runner",
     "integration_test_utils",
+    "script_test",
 )
-load("//bazel_integration_test:script_test.bzl", "script_test")
 
 bzlformat_pkg(name = "bzlformat")
 

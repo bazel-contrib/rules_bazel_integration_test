@@ -1,7 +1,7 @@
 "A facility for script tests that create workspaces and call Bazel."
 
 load(
-    "//bazel_integration_test:defs.bzl",
+    "//bazel_integration_test/private:bazel_integration_test.bzl",
     "bazel_integration_test",
 )
 
