@@ -17,6 +17,10 @@ load(
     "//bazel_integration_test/private:integration_test_utils.bzl",
     _integration_test_utils = "integration_test_utils",
 )
+load(
+    "//bazel_integration_test/private:script_test.bzl",
+    _script_test = "script_test",
+)
 
 # Macros
 bazel_integration_test = _bazel_integration_test
@@ -28,3 +32,6 @@ bazel_binaries = _bazel_binaries
 
 # APIs
 integration_test_utils = _integration_test_utils
+
+# Script tests
+script_test = _script_test
