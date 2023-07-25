@@ -19,8 +19,9 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 assertions_sh_location=cgrindel_bazel_starlib/shlib/lib/assertions.sh
 assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
-
+# shellcheck disable=SC1090 # external source
 source "${assertions_sh}"
+
 logfile="${TEST_TMPDIR}/test.log"
 
 # Verify the Bazel binary by checking the release number.

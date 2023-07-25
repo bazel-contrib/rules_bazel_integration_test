@@ -8,12 +8,12 @@ load(
 _RUNNER_SCRIPT = """
 #!/bin/bash
 
-script="%s"
+script="${PWD}/%s"
 
-working_dir="."
+working_dir="${BIT_WORKSPACE_DIR:-}"
 cd "${working_dir}"
 
-export bazel
+export BAZEL
 
 # Run the actual tests
 # Bazel is available as ${BIT_BAZEL_BINARY}.
