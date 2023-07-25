@@ -25,7 +25,7 @@ logfile="${TEST_TMPDIR}/test.log"
 
 # Verify the Bazel binary by checking the release number.
 touch WORKSPACE
-${bazel} info release > "${logfile}"
+${BIT_BAZEL_BINARY} info release > "${logfile}"
 
 if ! egrep -q "^release [0-9]+\.[0-9]+\.[0-9]$" "${logfile}"; then
   fail "Did not find release in output of `bazel info release`"

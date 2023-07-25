@@ -1,3 +1,5 @@
+"A facility for script tests that create workspaces and call Bazel."
+
 load(
     "//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
@@ -7,9 +9,6 @@ _RUNNER_SCRIPT = """
 #!/bin/bash
 
 script="%s"
-bazel="${BIT_BAZEL_BINARY:-}"
-
-[[ -n "${bazel:-}" ]] || exit_with_msg "Must specify the location of the Bazel binary."
 
 working_dir="."
 cd "${working_dir}"
@@ -17,6 +16,7 @@ cd "${working_dir}"
 export bazel
 
 # Run the actual tests
+# Bazel is available as ${BIT_BAZEL_BINARY}.
 if "${script}"; then
   echo "test passed"
 else
