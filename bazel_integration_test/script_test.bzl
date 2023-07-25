@@ -56,6 +56,31 @@ def script_test(
         deps,
         bazel_binaries,
         bazel_version):
+    """
+    Macro that allows writing script tests which create a Bazel workspace and call the binary directly.
+
+    These are intended to be like the Bazel integration tests found at https://github.com/bazelbuild/bazel/tree/master/src/test/shell/integration.
+
+    Tests will find the Bazel binary via the `${BIT_BAZEL_BINARY}` environment variable.
+
+    Args:
+        name: name of the resulting test
+        srcs: The file containing the shell script. This attribute must be a
+            singleton list, whose only element is the shell script. This script
+            must be executable, and may be a source file or a generated file. All
+            other files required at runtime (whether scripts or data) belong in the
+            deps attribute.
+        deps: The list of library targets to be used in this test.
+        bazel_binaries: Optional for WORKSPACE loaded repositories. Required
+            for repositories that enable bzlmod. The value for this parameter
+            is loaded by adding
+            `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
+            build file.
+        bazel_version: Optional. A `string` value representing the semantic
+                       version of Bazel to use for the integration test. If a
+                       version is not specified, then the `bazel_binary` must
+                       be specified.
+    """
     runner_script = "%s_runner.sh" % name
     runner_target = "%s_runner" % name
 
