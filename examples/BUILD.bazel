@@ -119,6 +119,21 @@ bazel_integration_test(
     test_runner = ":dynamic_workspace_test_runner",
 )
 
+# MARK: - script_test sample
+
+load("//bazel_integration_test:script_test.bzl", "script_test")
+
+script_test(
+    name = "sample_script_test",
+    srcs = ["sample_script_test.sh"],
+    bazel_binaries = bazel_binaries,
+    bazel_version = bazel_binaries.versions.current,
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
+
 # MARK: - Test Suite
 
 # By default, the integration test targets are tagged as `manual`. This
@@ -133,6 +148,7 @@ test_suite(
     tests = [
         ":custom_test_runner_test",
         ":dynamic_workspace_test",
+        ":sample_script_test",
         ":simple_test",
         ":use_create_scratch_dir_test",
     ] + integration_test_utils.bazel_integration_test_names(
