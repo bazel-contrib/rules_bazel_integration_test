@@ -44,8 +44,8 @@ def _write_runner_impl(ctx):
 _write_runner = rule(
     implementation = _write_runner_impl,
     attrs = {
-        "script": attr.label(allow_single_file = True, mandatory = True),
         "out": attr.output(mandatory = True),
+        "script": attr.label(allow_single_file = True, mandatory = True),
     },
     executable = True,
 )
