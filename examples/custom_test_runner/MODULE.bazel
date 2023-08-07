@@ -26,7 +26,7 @@ bazel_dep(
     version = "1.6.0",
     repo_name = "build_bazel_rules_swift",
 )
-bazel_dep(name = "rules_swift_package_manager", version = "0.4.2")
+bazel_dep(name = "rules_swift_package_manager", version = "0.7.1")
 
 bazel_binaries = use_extension(
     "@rules_bazel_integration_test//:extensions.bzl",
