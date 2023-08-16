@@ -53,7 +53,8 @@ def script_test(
         srcs,
         deps,
         bazel_binaries,
-        bazel_version):
+        bazel_version,
+        **kwargs):
     """
     Macro that allows writing script tests which create a Bazel workspace and call the binary directly.
 
@@ -78,6 +79,7 @@ def script_test(
                        version of Bazel to use for the integration test. If a
                        version is not specified, then the `bazel_binary` must
                        be specified.
+        **kwargs: additional attributes like timeout and visibility
     """
     runner_script = "%s_runner.sh" % name
     runner_target = "%s_runner" % name
@@ -111,4 +113,5 @@ def script_test(
         bazel_binaries = bazel_binaries,
         bazel_version = bazel_version,
         test_runner = ":%s" % runner_target,
+        **kwargs
     )
