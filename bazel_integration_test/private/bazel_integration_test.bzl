@@ -115,27 +115,15 @@ def bazel_integration_test(
     if bazel_binary == None:
         bazel_binary = bazel_binaries.label(bazel_version)
 
-    # Find the Bazel binary
-    bazel_bin_name = name + "_bazel_binary"
-    select_file(
-        name = bazel_bin_name,
-        srcs = bazel_binary,
-        subpath = select({
-            "@platforms//os:windows": bazel_basename + ".exe",
-            "//conditions:default": bazel_basename,
-        }),
-    )
-
     args = [
         "--runner",
         "$(location %s)" % (test_runner),
         "--bazel",
-        "$(location :%s)" % (bazel_bin_name),
+        "$(location %s)" % (bazel_binary),
     ]
     data = (data or []) + [
         test_runner,
         bazel_binary,
-        bazel_bin_name,
     ]
 
     if workspace_files != None and workspace_path == None:
