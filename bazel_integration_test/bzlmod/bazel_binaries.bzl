@@ -4,6 +4,7 @@ load("@cgrindel_bazel_starlib//bzllib:defs.bzl", "lists")
 load(
     "//bazel_integration_test/private:bazel_binaries.bzl",
     _bazel_binary_repo_rule = "bazel_binary",
+    _bazelisk_binary_repo_rule = "bazelisk_binary",
 )
 load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
@@ -96,7 +97,7 @@ _version_types = struct(
     label = "label",
 )
 
-def _declare_bazel_binary(download):
+def _declare_bazel_binary(download, bazelisk_repo_name):
     if download.version != "" and download.version_file != None:
         fail("""\
 A bazel_binary.download can only have one of the following: \
@@ -108,7 +109,11 @@ version, version_file.\
             type = _version_types.string,
             current = download.current,
         )
-        _bazel_binary_repo_rule(name = vi.repo_name, version = vi.version)
+        _bazel_binary_repo_rule(
+            name = vi.repo_name,
+            version = vi.version,
+            bazelisk = "@%s//:bazelisk" % bazelisk_repo_name,
+        )
     else:
         vi = _version_info(
             version = str(download.version_file),
@@ -118,14 +123,26 @@ version, version_file.\
         _bazel_binary_repo_rule(
             name = vi.repo_name,
             version_file = download.version_file,
+            bazelisk = "@%s//:bazelisk" % bazelisk_repo_name,
         )
     return vi
 
+# TODO: Make this configurable.
+_BAZELISK_VERSION = "1.18.0"
+
 def _bazel_binaries_impl(module_ctx):
+    # Create a repository for the bazelisk binary.
+    bazelisk_repo_name = "bazel_binaries_bazelisk"
+    _bazelisk_binary_repo_rule(
+        name = bazelisk_repo_name,
+        version = _BAZELISK_VERSION,
+    )
+
+    # Create version-specific bazel repos.
     version_infos = []
     for mod in module_ctx.modules:
         for download in mod.tags.download:
-            vi = _declare_bazel_binary(download)
+            vi = _declare_bazel_binary(download, bazelisk_repo_name)
             version_infos.append(vi)
 
     if len(version_infos) == 0:
