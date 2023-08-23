@@ -291,6 +291,8 @@ def bazel_binaries(
 
     Args:
         versions: A `list` of Bazel versions.
+        bazelisk_version: The version of Bazelisk to use for downloading Bazel
+            binaries.
         current: Optional. The version that is considered the current version.
             If not specified, a reference to a `.bazelversion` will be
             considered the current version.
