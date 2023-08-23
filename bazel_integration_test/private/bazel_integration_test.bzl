@@ -3,7 +3,6 @@ an integration test.\
 """
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
-load("@bazel_skylib//rules:select_file.bzl", "select_file")
 load(":integration_test_utils.bzl", "integration_test_utils")
 
 # This was lovingly inspired by

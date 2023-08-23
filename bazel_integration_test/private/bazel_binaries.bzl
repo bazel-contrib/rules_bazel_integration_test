@@ -178,17 +178,22 @@ sh_binary(
         "bazel.sh",
         Label(":bazel_binaries_script.template"),
         substitutions = {
-            "{version}": version,
             "{bazelisk}": bazelisk_runfile,
+            "{version}": version,
         },
         executable = True,
     )
 
 bazel_binary = repository_rule(
     attrs = {
+        "bazelisk": attr.string(
+            doc = """\
+The label of the bazelisk binary.
+""",
+        ),
         "version": attr.string(
             doc = """\
-The Bazel version to download as a valid Bazel semantic version string.\
+The Bazel version to download as a valid Bazel semantic version string.
 """,
         ),
         "version_file": attr.label(
@@ -196,11 +201,6 @@ The Bazel version to download as a valid Bazel semantic version string.\
             doc = """\
 A file (e.g., `//:.bazelversion`) that contains a valid Bazel semantic version \
 string.\
-""",
-        ),
-        "bazelisk": attr.string(
-            doc = """\
-The label of the bazelisk binary.
 """,
         ),
     },
