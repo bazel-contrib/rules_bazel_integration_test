@@ -7,66 +7,6 @@ load(":no_deps_utils.bzl", "no_deps_utils")
 
 # MARK: - Helpers
 
-def _get_platform_name(repository_ctx):
-    os_name = repository_ctx.os.name.lower()
-
-    if os_name.startswith("mac os"):
-        return "darwin-x86_64"
-    if os_name.startswith("windows"):
-        return "windows-x86_64"
-
-    # We default on linux-x86_64 because we only support 3 platforms
-    return "linux-x86_64"
-
-def _is_windows(repository_ctx):
-    return _get_platform_name(repository_ctx).startswith("windows")
-
-def _get_installer(repository_ctx, version):
-    platform = _get_platform_name(repository_ctx)
-
-    if _is_windows(repository_ctx):
-        extension = "zip"
-        installer = ""
-    else:
-        extension = "sh"
-        installer = "-installer"
-
-    filename = "bazel-{version}{installer}-{platform}.{extension}".format(
-        version = version,
-        installer = installer,
-        platform = platform,
-        extension = extension,
-    )
-
-    kind = "release"
-
-    # Mimics determineURL in github.com/bazelbuild/bazelisk/bazelisk.go
-    enabled_packages = [
-        "https://releases.bazel.build/{version}/{kind}/{filename}",
-    ]
-
-    if "rc" in version:
-        version_components = version.split("rc")
-        version = version_components[0]
-        kind = "rc" + version_components[1]
-    else:
-        enabled_packages.append(
-            "https://github.com/{fork}/bazel/releases/download/{version}/{filename}",
-        )
-
-    urls = [
-        url.format(
-            fork = "bazelbuild",
-            version = version,
-            kind = kind,
-            filename = filename,
-        )
-        for url in enabled_packages
-    ]
-    args = {"type": "zip", "url": urls}
-
-    repository_ctx.download_and_extract(**args)
-
 _BAZELISK_URL_TEMPLATE = "https://github.com/bazelbuild/bazelisk/releases/download/v{version}/{filename}"
 
 def _download_bazelisk_binary(repository_ctx, version):
