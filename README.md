@@ -82,6 +82,9 @@ bazel_skylib_workspace()
 #### Recommended: Add Bazel versions to `MODULE.bazel`
 
 Load the `bazel_binaries` extension and specify the Bazel verions to download.
+All version specifiers supported by
+[Bazelisk](https://github.com/bazelbuild/bazelisk#how-does-bazelisk-know-which-bazel-version-to-run)
+are supported.
 
 ```python
 bazel_binaries = use_extension(
@@ -91,7 +94,7 @@ bazel_binaries = use_extension(
 )
 bazel_binaries.download(version_file = "//:.bazelversion")
 bazel_binaries.download(version = "6.0.0")
-bazel_binaries.download(version = "7.0.0-pre.20230215.2")
+bazel_binaries.download(version = "last_green")
 use_repo(bazel_binaries, "bazel_binaries")
 ```
 
@@ -106,7 +109,7 @@ load("@rules_bazel_integration_test//bazel_integration_test:defs.bzl", "bazel_bi
 bazel_binaries(versions = [
     "//:.bazelversion",
     "6.0.0",
-    "7.0.0-pre.20230215.2",
+    "last_green",
 ])
 ```
 
