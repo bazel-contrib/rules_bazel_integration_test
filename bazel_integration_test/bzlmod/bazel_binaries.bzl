@@ -127,7 +127,7 @@ version, version_file.\
         )
     return vi
 
-# TODO: Make this configurable.
+# TODO(GH184): Make this configurable.
 _BAZELISK_VERSION = "1.18.0"
 
 def _bazel_binaries_impl(module_ctx):
