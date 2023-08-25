@@ -252,8 +252,10 @@ class TestBase(unittest.TestCase):
       java_home = TestBase.GetEnv('JAVA_HOME', '')
       if java_home:
         env['JAVA_HOME'] = java_home
+      # TODO(GH182): figure out Windows runfiles_dir.
     else:
       env = {'HOME': os.path.join(self._temp, 'home')}
+      env['RUNFILES_DIR'] = self._runfiles
 
     env['PATH'] = TestBase.GetEnv('PATH')
     # The inner Bazel must know that it's running as part of a test (so that it
