@@ -233,6 +233,8 @@ def bazel_binaries(
         else:
             bazel_binary(name = bb_name, version = version)
 
+    if not current_version:
+        current_version = all_versions[0]
     other_versions = [v for v in all_versions if v != current_version]
 
     _bazel_binaries_helper(
