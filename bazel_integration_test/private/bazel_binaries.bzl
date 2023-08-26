@@ -7,65 +7,36 @@ load(":no_deps_utils.bzl", "no_deps_utils")
 
 # MARK: - Helpers
 
-def _get_platform_name(repository_ctx):
+_BAZELISK_URL_TEMPLATE = "https://github.com/bazelbuild/bazelisk/releases/download/v{version}/{filename}"
+
+def _download_bazelisk_binary(repository_ctx, version):
     os_name = repository_ctx.os.name.lower()
+    arch_name = repository_ctx.os.arch.lower()
 
-    if os_name.startswith("mac os"):
-        return "darwin-x86_64"
-    if os_name.startswith("windows"):
-        return "windows-x86_64"
-
-    # We default on linux-x86_64 because we only support 3 platforms
-    return "linux-x86_64"
-
-def _is_windows(repository_ctx):
-    return _get_platform_name(repository_ctx).startswith("windows")
-
-def _get_installer(repository_ctx, version):
-    platform = _get_platform_name(repository_ctx)
-
-    if _is_windows(repository_ctx):
-        extension = "zip"
-        installer = ""
+    if os_name.startswith("linux") and arch_name.startswith("x86_64"):
+        suffix = "linux-amd64"
+    elif os_name.startswith("linux") and arch_name.startswith("arm"):
+        suffix = "linux-arm64"
+    elif os_name.startswith("mac os") and arch_name.startswith("x86_64"):
+        suffix = "darwin-amd64"
+    elif os_name.startswith("mac os") and arch_name.startswith("arm"):
+        suffix = "darwin-arm64"
+    elif os_name.startswith("windows") and arch_name.startswith("x86_64"):
+        suffix = "windows-amd64.exe"
     else:
-        extension = "sh"
-        installer = "-installer"
+        # We default on linux-x86_64 because we only support 3 platforms
+        suffix = "linux-amd64"
 
-    filename = "bazel-{version}{installer}-{platform}.{extension}".format(
+    filename = "bazelisk-%s" % suffix
+    url = _BAZELISK_URL_TEMPLATE.format(
         version = version,
-        installer = installer,
-        platform = platform,
-        extension = extension,
+        filename = filename,
     )
-
-    kind = "release"
-
-    # Mimics determineURL in github.com/bazelbuild/bazelisk/bazelisk.go
-    enabled_packages = [
-        "https://releases.bazel.build/{version}/{kind}/{filename}",
-    ]
-
-    if "rc" in version:
-        version_components = version.split("rc")
-        version = version_components[0]
-        kind = "rc" + version_components[1]
-    else:
-        enabled_packages.append(
-            "https://github.com/{fork}/bazel/releases/download/{version}/{filename}",
-        )
-
-    urls = [
-        url.format(
-            fork = "bazelbuild",
-            version = version,
-            kind = kind,
-            filename = filename,
-        )
-        for url in enabled_packages
-    ]
-    args = {"type": "zip", "url": urls}
-
-    repository_ctx.download_and_extract(**args)
+    repository_ctx.download(
+        url = url,
+        executable = True,
+        output = "bazelisk",
+    )
 
 def get_version_from_file(repository_ctx):
     """Read the Bazel version string from the version file.
@@ -90,6 +61,32 @@ def get_version_from_file(repository_ctx):
             .rstrip(" \n")  # strip trailing white space
     )
 
+# MARK: - bazelisk_binary Repository Rule
+
+def _bazelisk_binary_impl(repository_ctx):
+    version = repository_ctx.attr.version
+
+    _download_bazelisk_binary(repository_ctx, version)
+    repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
+    repository_ctx.file("BUILD", """
+exports_files(
+    ["bazelisk"],
+    visibility = ["//visibility:public"],
+)""")
+
+bazelisk_binary = repository_rule(
+    attrs = {
+        "version": attr.string(
+            doc = """\
+The Bazelisk version to download as a valid Bazel semantic version string.\
+""",
+        ),
+    },
+    implementation = _bazelisk_binary_impl,
+    doc = """\
+Download a bazelisk binary for integration tests.\
+""",
+)
 # MARK: - bazel_binary Repository Rule
 
 def _bazel_binary_impl(repository_ctx):
@@ -99,22 +96,44 @@ def _bazel_binary_impl(repository_ctx):
     if version == None:
         fail("A `version` or `version_file` must be specified.")
 
-    _get_installer(repository_ctx, version)
+    bazelisk_label = repository_ctx.attr.bazelisk
+
+    # The runfile manifest uses a different format, so we need to convert.
+    bazelisk_runfile = bazelisk_label.replace("@", "").replace("//", "/").replace(":", "")
+
     repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
     repository_ctx.file("BUILD", """
-filegroup(
-  name = "bazel_binary",
-  srcs = select({
-    "@bazel_tools//src/conditions:windows" : ["bazel.exe"],
-    "//conditions:default": ["bazel-real","bazel"],
-  }),
-  visibility = ["//visibility:public"])""")
+sh_binary(
+    name = "bazel_binary",
+    srcs = ["bazel.sh"],
+    data = ["{bazelisk}"],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+    visibility = ["//visibility:public"])""".format(
+        bazelisk = bazelisk_label,
+    ))
+
+    repository_ctx.template(
+        "bazel.sh",
+        Label(":bazel_binaries_script.template"),
+        substitutions = {
+            "{bazelisk}": bazelisk_runfile,
+            "{version}": version,
+        },
+        executable = True,
+    )
 
 bazel_binary = repository_rule(
     attrs = {
+        "bazelisk": attr.string(
+            doc = """\
+The label of the bazelisk binary.
+""",
+        ),
         "version": attr.string(
             doc = """\
-The Bazel version to download as a valid Bazel semantic version string.\
+The Bazel version to download as a valid Bazel semantic version string.
 """,
         ),
         "version_file": attr.label(
@@ -201,6 +220,7 @@ that load dependencies via the `WORKSPACE`.\
 
 def bazel_binaries(
         versions,
+        bazelisk_version = "1.18.0",
         current = None,
         name = "bazel_binaries"):
     """Download the specified bazel binaries.
@@ -211,6 +231,8 @@ def bazel_binaries(
 
     Args:
         versions: A `list` of Bazel versions.
+        bazelisk_version: The version of Bazelisk to use for downloading Bazel
+            binaries.
         current: Optional. The version that is considered the current version.
             If not specified, a reference to a `.bazelversion` will be
             considered the current version.
@@ -222,6 +244,13 @@ def bazel_binaries(
         all_versions.append(current)
     current_version = current if current else ""
 
+    # Create a repository for the bazelisk binary.
+    bazelisk_repo_name = "%s_bazelisk" % name
+    bazelisk_binary(
+        name = bazelisk_repo_name,
+        version = bazelisk_version,
+    )
+
     for version in all_versions:
         bb_name = no_deps_utils.bazel_binary_repo_name(version)
         if native.existing_rule(bb_name):
@@ -229,9 +258,17 @@ def bazel_binaries(
         if no_deps_utils.is_version_file(version):
             if not current_version:
                 current_version = version
-            bazel_binary(name = bb_name, version_file = version)
+            bazel_binary(
+                name = bb_name,
+                version_file = version,
+                bazelisk = "@%s//:bazelisk" % bazelisk_repo_name,
+            )
         else:
-            bazel_binary(name = bb_name, version = version)
+            bazel_binary(
+                name = bb_name,
+                version = version,
+                bazelisk = "@%s//:bazelisk" % bazelisk_repo_name,
+            )
 
     if not current_version:
         current_version = all_versions[0]
