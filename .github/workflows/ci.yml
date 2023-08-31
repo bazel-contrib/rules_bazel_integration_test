@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  XCODE_VERSION: 14.0.1
+
 jobs:
   tidy_and_test_matrix:
     strategy:
@@ -26,7 +29,7 @@ jobs:
     - uses: maxim-lobanov/setup-xcode@v1
       if: ${{ startsWith(matrix.runner, 'macos') }}
       with:
-        xcode-version: 14.0.1
+        xcode-version: ${{ env.XCODE_VERSION }}
     - uses: ./.github/actions/configure_swift_for_linux
       if: ${{ startsWith(matrix.runner, 'ubuntu') }}
     - uses: cgrindel/gha_set_up_bazel@v1
@@ -47,7 +50,7 @@ jobs:
     - uses: maxim-lobanov/setup-xcode@v1
       if: ${{ startsWith(matrix.runner, 'macos') }}
       with:
-        xcode-version: 14.0.1
+        xcode-version: ${{ env.XCODE_VERSION }}
     - uses: ./.github/actions/configure_swift_for_linux
       if: ${{ startsWith(matrix.runner, 'ubuntu') }}
     - uses: cgrindel/gha_set_up_bazel@v1
