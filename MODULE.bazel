@@ -6,7 +6,7 @@ module(
 bazel_dep(name = "bazel_skylib", version = "1.4.1")
 bazel_dep(name = "rules_python", version = "0.19.0")
 bazel_dep(name = "platforms", version = "0.0.7")
-bazel_dep(name = "cgrindel_bazel_starlib", version = "0.16.0")
+bazel_dep(name = "cgrindel_bazel_starlib", version = "0.17.0")
 
 register_toolchains("@bazel_tools//tools/python:autodetecting_toolchain")
 
@@ -18,7 +18,7 @@ bazel_binaries = use_extension(
     dev_dependency = True,
 )
 bazel_binaries.download(version_file = "//:.bazelversion")
-bazel_binaries.download(version = "7.0.0-pre.20230215.2")
+bazel_binaries.download(version = "7.0.0-pre.20230823.4")
 use_repo(bazel_binaries, "bazel_binaries")
 
 download_sample_file = use_extension(
@@ -26,5 +26,4 @@ download_sample_file = use_extension(
     "download_sample_file",
     dev_dependency = True,
 )
-
 use_repo(download_sample_file, "sample_file")

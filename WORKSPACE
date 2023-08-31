@@ -34,7 +34,7 @@ load("//bazel_integration_test:repo_defs.bzl", "bazel_binaries")
 
 bazel_binaries(versions = [
     "//:.bazelversion",
-    "7.0.0-pre.20230215.2",
+    "7.0.0-pre.20230823.4",
 ])
 
 # MARK: - Markdown
