@@ -17,6 +17,19 @@ default_test_runner(
     name = "simple_test_runner",
 )
 
+_LEGACY_FLAGS = [
+    "--noenable_bzlmod",
+    "--no@cgrindel_bazel_starlib//bzlmod:enabled",
+]
+
+default_test_runner(
+    name = "legacy_simple_test_runner",
+    bazel_cmds = [
+        "info {}".format(" ".join(_LEGACY_FLAGS)),
+        "test {} //...".format(" ".join(_LEGACY_FLAGS)),
+    ],
+)
+
 # If you only want to execute against a single version of Bazel, use
 # bazel_integration_test.
 bazel_integration_test(
@@ -24,6 +37,19 @@ bazel_integration_test(
     bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
     test_runner = ":simple_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("simple") + [
+        "//:shared_bazelrc_files",
+    ],
+    workspace_path = "simple",
+)
+
+# This is testing that the legacy loading of Bazel deps for
+# rules_bazel_integration_test works.
+bazel_integration_test(
+    name = "legacy_simple_test",
+    bazel_binaries = bazel_binaries,
+    bazel_version = bazel_binaries.versions.current,
+    test_runner = ":legacy_simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:shared_bazelrc_files",
     ],
@@ -147,6 +173,7 @@ test_suite(
     tests = [
         ":custom_test_runner_test",
         ":dynamic_workspace_test",
+        ":legacy_simple_test",
         ":sample_script_test",
         ":simple_test",
         ":use_create_scratch_dir_test",
