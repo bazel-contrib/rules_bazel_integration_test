@@ -12,12 +12,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test_matrix:
+  tidy_and_test_matrix:
     strategy:
       fail-fast: false
       matrix:
         runner: [macos-12, ubuntu-22.04]
-        bzlmod_enabled: [true, false]
     runs-on: ${{ matrix.runner }}
     env:
       # Linux runners need this.
@@ -33,10 +32,28 @@ jobs:
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
-    - uses: ./.github/actions/configure_bzlmod
+    - uses: ./.github/actions/tidy_and_test
+  integration_test_matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-12, ubuntu-22.04]
+    runs-on: ${{ matrix.runner }}
+    env:
+      # Linux runners need this.
+      CC: clang
+    steps:
+    - uses: actions/checkout@v3
+    - uses: maxim-lobanov/setup-xcode@v1
+      if: ${{ startsWith(matrix.runner, 'macos') }}
       with:
-          enabled: ${{ matrix.bzlmod_enabled }}
-    - uses: ./.github/actions/build_and_test
+        xcode-version: 14.0.1
+    - uses: ./.github/actions/configure_swift_for_linux
+      if: ${{ startsWith(matrix.runner, 'ubuntu') }}
+    - uses: cgrindel/gha_set_up_bazel@v1
+      with:
+        repo_name: rules_bazel_integration_test
+    - uses: ./.github/actions/integration_test
   
   all_ci_tests:
     runs-on: ubuntu-22.04

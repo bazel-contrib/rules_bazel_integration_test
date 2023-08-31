@@ -1,0 +1,9 @@
+name: Build and Test
+
+runs:
+  using: composite
+  steps:
+    - name: Execute Integration Tests
+      shell: bash
+      run: |
+        bazelisk test //:all_integration_tests
