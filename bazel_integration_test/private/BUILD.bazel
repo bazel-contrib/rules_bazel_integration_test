@@ -57,3 +57,11 @@ bzl_library(
     name = "no_deps_utils",
     srcs = ["no_deps_utils.bzl"],
 )
+
+bzl_library(
+    name = "script_test",
+    srcs = ["script_test.bzl"],
+    deps = [
+        ":bazel_integration_test",
+    ],
+)
