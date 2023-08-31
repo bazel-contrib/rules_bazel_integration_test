@@ -18,7 +18,7 @@ bazel_binaries = use_extension(
     dev_dependency = True,
 )
 bazel_binaries.download(version_file = "//:.bazelversion")
-bazel_binaries.download(version = "7.0.0-pre.20230215.2")
+bazel_binaries.download(version = "7.0.0-pre.20230823.4")
 use_repo(bazel_binaries, "bazel_binaries")
 
 download_sample_file = use_extension(
