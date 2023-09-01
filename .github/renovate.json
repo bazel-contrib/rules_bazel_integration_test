@@ -1,7 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
+    ":automergeAll",
     ":dependencyDashboard",
+    ":rebaseStalePrs",
+    ":semanticCommits",
     ":semanticPrefixFixDepsChoreOthers",
     "group:monorepos",
     "group:recommended",
@@ -10,7 +13,10 @@
   ],
   "packageRules": [
     {
-      "matchFiles": ["MODULE.bazel"],
+      "matchFiles": [
+        "MODULE.bazel", 
+        "bazel_integration_test/deps.bzl"
+      ],
       "enabled": false
     }
   ]
