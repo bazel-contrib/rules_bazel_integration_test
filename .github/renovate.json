@@ -13,10 +13,7 @@
   ],
   "packageRules": [
     {
-      "matchFiles": [
-        "MODULE.bazel", 
-        "bazel_integration_test/deps.bzl"
-      ],
+      "matchFiles": ["MODULE.bazel"],
       "enabled": false
     }
   ]
