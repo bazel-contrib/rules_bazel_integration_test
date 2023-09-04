@@ -29,7 +29,7 @@ def bazel_integration_test_rules_dependencies():
     maybe(
         http_archive,
         name = "rules_python",
-        sha256 = "a644da969b6824cc87f8fe7b18101a8a6c57da5db39caa6566ec6109f37d2141",
-        strip_prefix = "rules_python-0.20.0",
-        url = "https://github.com/bazelbuild/rules_python/archive/0.20.0.tar.gz",
+        sha256 = "5868e73107a8e85d8f323806e60cad7283f34b32163ea6ff1020cf27abef6036",
+        strip_prefix = "rules_python-0.25.0",
+        url = "https://github.com/bazelbuild/rules_python/archive/0.25.0.tar.gz",
     )
