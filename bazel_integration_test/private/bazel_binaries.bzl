@@ -19,7 +19,7 @@ def _download_bazelisk_binary(repository_ctx, version):
         suffix = "linux-arm64"
     elif os_name.startswith("mac os") and arch_name.startswith("x86_64"):
         suffix = "darwin-amd64"
-    elif os_name.startswith("mac os") and arch_name.startswith("arm64"):
+    elif os_name.startswith("mac os") and arch_name.startswith("aarch64"):
         suffix = "darwin-arm64"
     elif os_name.startswith("windows") and arch_name.startswith("x86_64"):
         suffix = "windows-amd64.exe"
