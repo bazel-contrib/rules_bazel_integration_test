@@ -9,23 +9,40 @@ load(":no_deps_utils.bzl", "no_deps_utils")
 
 _BAZELISK_URL_TEMPLATE = "https://github.com/bazelbuild/bazelisk/releases/download/v{version}/{filename}"
 
+def _is_linux(os_name):
+    return os_name.startswith("linux")
+
+def _is_macos(os_name):
+    return os_name.startswith("mac os")
+
+def _is_windows(os_name):
+    return os_name.startswith("windows")
+
+def _is_x86_64(arch_name):
+    return arch_name.startswith("x86_64")
+
+def _is_arm(arch_name):
+    return arch_name.startswith("aarch64") or arch_name.startswith("arm")
+
 def _download_bazelisk_binary(repository_ctx, version):
     os_name = repository_ctx.os.name.lower()
     arch_name = repository_ctx.os.arch.lower()
 
-    if os_name.startswith("linux") and arch_name.startswith("x86_64"):
+    if _is_linux(os_name) and _is_x86_64(arch_name):
         suffix = "linux-amd64"
-    elif os_name.startswith("linux") and arch_name.startswith("arm"):
+    elif _is_linux(os_name) and _is_arm(arch_name):
         suffix = "linux-arm64"
-    elif os_name.startswith("mac os") and arch_name.startswith("x86_64"):
+    elif _is_macos(os_name) and _is_x86_64(arch_name):
         suffix = "darwin-amd64"
-    elif os_name.startswith("mac os") and arch_name.startswith("aarch64"):
+    elif _is_macos(os_name) and _is_arm(arch_name):
         suffix = "darwin-arm64"
-    elif os_name.startswith("windows") and arch_name.startswith("x86_64"):
+    elif _is_windows(os_name) and _is_x86_64(arch_name):
         suffix = "windows-amd64.exe"
     else:
-        # We default on linux-x86_64 because we only support 3 platforms
-        suffix = "linux-amd64"
+        fail("Unrecognized os and arch. os: {}, arch: {}".format(
+            os_name,
+            arch_name,
+        ))
 
     filename = "bazelisk-%s" % suffix
     url = _BAZELISK_URL_TEMPLATE.format(
