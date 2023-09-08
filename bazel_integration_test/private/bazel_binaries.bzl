@@ -19,7 +19,7 @@ def _is_windows(os_name):
     return os_name.startswith("windows")
 
 def _is_x86_64(arch_name):
-    return arch_name.startswith("x86_64")
+    return arch_name.startswith("amd64") or arch_name.startswith("x86_64")
 
 def _is_arm(arch_name):
     return arch_name.startswith("aarch64") or arch_name.startswith("arm")
