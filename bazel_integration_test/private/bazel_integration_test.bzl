@@ -135,6 +135,7 @@ def bazel_integration_test(
         native.filegroup(
             name = workspace_files_name,
             srcs = workspace_files,
+            testonly = True,
         )
 
         # Find the Bazel WORKSPACE file for the target workspace. We need to
@@ -145,6 +146,7 @@ def bazel_integration_test(
             name = bazel_wksp_file_name,
             srcs = workspace_files_name,
             workspace_path = workspace_path,
+            testonly = True,
         )
 
         args.extend(["--workspace", "$(location :%s)" % (bazel_wksp_file_name)])
