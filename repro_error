@@ -10,6 +10,9 @@ bazel clean --expunge
 echo 'build --repository_cache=~/.bazel/repo_cache' >> ~/.bazelrc
 bazel test --remote_cache= --disk_cache= //examples:simple_test
 
+# bazel --bisect=6.4.0..7.0.0rc2 test --remote_cache= --disk_cache= //examples:simple_test
+# bazel --bisect=6.4.0..release-7.0.0rc2 test --remote_cache= --disk_cache= //examples:simple_test
+
 # # NO FAIL - No repository_cache setting in ~/.bazelrc
 # bazel test --remote_cache= --disk_cache= --repository_cache=~/.bazel/repo_cache //examples:simple_test
 
@@ -19,5 +22,9 @@ bazel test --remote_cache= --disk_cache= //examples:simple_test
 
 # # FAILS
 # echo 'build --repository_cache=/Users/chuck/.bazel/repo_cache' >> ~/.bazelrc
+# bazel test --remote_cache= --disk_cache= //examples:simple_test
+
+# # NO FAIL
+# echo 'build --repository_cache=~/.bazel/repo_cache' >> .bazelrc
 # bazel test --remote_cache= --disk_cache= //examples:simple_test
 
