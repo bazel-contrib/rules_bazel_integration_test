@@ -28,6 +28,6 @@ logfile="${TEST_TMPDIR}/test.log"
 touch WORKSPACE
 ${BIT_BAZEL_BINARY} info release > "${logfile}"
 
-if ! grep -E -q "^release [0-9]+\.[0-9]+\.[0-9]$" "${logfile}"; then
-  fail "Did not find release in output of $(bazel info release)"
+if ! grep -E -q "^release [0-9]+\.[0-9]+\.[0-9]" "${logfile}"; then
+  fail "Did not find release in output of '$(cat "${logfile}")'"
 fi

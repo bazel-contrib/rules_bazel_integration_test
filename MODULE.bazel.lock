@@ -1421,6 +1421,24 @@
         }
       }
     },
+    "//examples/env_var_with_rootpath:sample_file_extension.bzl%download_sample_file": {
+      "general": {
+        "bzlTransitiveDigest": "pOnGiXSdv60lZKp/pV9TpEBg7qlKV8c+pAXHubc2RBY=",
+        "accumulatedFileDigests": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "sample_file": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "_main~download_sample_file~sample_file",
+              "url": "https://raw.githubusercontent.com/bazel-contrib/rules_bazel_integration_test/v0.12.0/.bazelversion",
+              "sha256": "0baf36f9c3ef9d8b4833833e1d633707965c9850f69f04dd96712672b9e75cc0"
+            }
+          }
+        }
+      }
+    },
     "@apple_support~1.5.0//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "pMLFCYaRPkgXPQ8vtuNkMfiHfPmRBy6QJfnid4sWfv0=",
