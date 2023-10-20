@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "91de9c64d23154e8f3884ae1cb2f2caddd29ec2054b8db1473c59c395a0745ea",
+  "moduleFileHash": "b539be22aff628947231a866038b521ff6ecd95547aba830ceb3abbca711fd6a",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -57,7 +57,7 @@
             {
               "tagName": "download",
               "attributeValues": {
-                "version": "7.0.0-pre.20230823.4"
+                "version": "6.4.0"
               },
               "devDependency": true,
               "location": {
@@ -1380,6 +1380,15 @@
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
+          "build_bazel_bazel_6_4_0": {
+            "bzlFile": "@@//bazel_integration_test/private:bazel_binaries.bzl",
+            "ruleClassName": "bazel_binary",
+            "attributes": {
+              "name": "_main~bazel_binaries~build_bazel_bazel_6_4_0",
+              "version": "6.4.0",
+              "bazelisk": "@bazel_binaries_bazelisk//:bazelisk"
+            }
+          },
           "bazel_binaries_bazelisk": {
             "bzlFile": "@@//bazel_integration_test/private:bazel_binaries.bzl",
             "ruleClassName": "bazelisk_binary",
@@ -1397,15 +1406,6 @@
               "bazelisk": "@bazel_binaries_bazelisk//:bazelisk"
             }
           },
-          "build_bazel_bazel_7_0_0-pre_20230823_4": {
-            "bzlFile": "@@//bazel_integration_test/private:bazel_binaries.bzl",
-            "ruleClassName": "bazel_binary",
-            "attributes": {
-              "name": "_main~bazel_binaries~build_bazel_bazel_7_0_0-pre_20230823_4",
-              "version": "7.0.0-pre.20230823.4",
-              "bazelisk": "@bazel_binaries_bazelisk//:bazelisk"
-            }
-          },
           "bazel_binaries": {
             "bzlFile": "@@//bazel_integration_test/bzlmod:bazel_binaries.bzl",
             "ruleClassName": "_bazel_binaries_helper",
@@ -1413,7 +1413,7 @@
               "name": "_main~bazel_binaries~bazel_binaries",
               "version_to_repo": {
                 "'@@//:.bazelversion'": "build_bazel_bazel_.bazelversion",
-                "7.0.0-pre.20230823.4": "build_bazel_bazel_7_0_0-pre_20230823_4"
+                "6.4.0": "build_bazel_bazel_6_4_0"
               },
               "current_version": "'@@//:.bazelversion'"
             }
