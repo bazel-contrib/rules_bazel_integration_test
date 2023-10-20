@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -o errexit -o nounset -o pipefail
+
+REPO_CACHE="${HOME}/.bazel/repo_cache" 
+rm -rf "${REPO_CACHE}" 
+bazel clean --expunge 
+
+# FAILS
+echo 'build --repository_cache=~/.bazel/repo_cache' >> ~/.bazelrc
+bazel test --remote_cache= --disk_cache= //examples:simple_test
+
+# # NO FAIL - No repository_cache setting in ~/.bazelrc
+# bazel test --remote_cache= --disk_cache= --repository_cache=~/.bazel/repo_cache //examples:simple_test
+
+# # NO FAIL
+# echo 'build --repository_cache=~/.bazel/repo_cache' >> repro.bazelrc
+# bazel --bazelrc=repro.bazelrc --bazelrc=.bazelrc test --remote_cache= --disk_cache= //examples:simple_test
+
+# # FAILS
+# echo 'build --repository_cache=/Users/chuck/.bazel/repo_cache' >> ~/.bazelrc
+# bazel test --remote_cache= --disk_cache= //examples:simple_test
+
