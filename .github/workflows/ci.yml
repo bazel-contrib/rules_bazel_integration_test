@@ -35,6 +35,9 @@ jobs:
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
+        # Disable local disk and repository caches related to file permission 
+        # error in 7.0.0rc2.
+        # https://github.com/bazelbuild/bazel/issues/19908
         bazel_repo_cache_dir: ""
         bazel_disk_cache_dir: ""
     - uses: ./.github/actions/tidy_and_test
@@ -58,6 +61,9 @@ jobs:
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
+        # Disable local disk and repository caches related to file permission 
+        # error in 7.0.0rc2.
+        # https://github.com/bazelbuild/bazel/issues/19908
         bazel_repo_cache_dir: ""
         bazel_disk_cache_dir: ""
     - uses: ./.github/actions/execute_integration_tests
