@@ -35,6 +35,8 @@ jobs:
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
+        bazel_repo_cache_dir: ""
+        bazel_disk_cache_dir: ""
     - uses: ./.github/actions/tidy_and_test
   integration_test_matrix:
     strategy:
@@ -56,6 +58,8 @@ jobs:
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: rules_bazel_integration_test
+        bazel_repo_cache_dir: ""
+        bazel_disk_cache_dir: ""
     - uses: ./.github/actions/execute_integration_tests
   
   all_ci_tests:
