@@ -140,7 +140,7 @@ def _bazel_binaries_impl(module_ctx):
         else:
             dep_names.append(name)
 
-    module_is_dev_dep = not module_ctx.root_module_has_non_dev_dependency
+    ext_is_dev_dep = not module_ctx.root_module_has_non_dev_dependency
 
     # Create a repository for the bazelisk binary.
     bazelisk_repo_name = "bazel_binaries_bazelisk"
@@ -148,7 +148,7 @@ def _bazel_binaries_impl(module_ctx):
         name = bazelisk_repo_name,
         version = _BAZELISK_VERSION,
     )
-    _add_dep_name(bazelisk_repo_name, is_dev_dependency = module_is_dev_dep)
+    _add_dep_name(bazelisk_repo_name, is_dev_dependency = ext_is_dev_dep)
 
     # Create version-specific bazel repos.
     version_infos = []
@@ -180,7 +180,7 @@ def _bazel_binaries_impl(module_ctx):
         version_to_repo = version_to_repo,
         current_version = current_vi.version,
     )
-    _add_dep_name(bazel_binaries_repo_name, is_dev_dependency = module_is_dev_dep)
+    _add_dep_name(bazel_binaries_repo_name, is_dev_dependency = ext_is_dev_dep)
 
     return module_ctx.extension_metadata(
         root_module_direct_deps = dep_names,
