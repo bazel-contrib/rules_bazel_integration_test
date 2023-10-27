@@ -1,0 +1,21 @@
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
+load(
+    "@rules_bazel_integration_test//bazel_integration_test:defs.bzl",
+    "bazel_integration_tests",
+    "default_test_runner",
+)
+
+# Declare a test runner to drive the integration tests.
+default_test_runner(
+    name = "child_test_runner",
+)
+
+# If you want to execute an integration test using multiple versions of Bazel,
+# use bazel_integration_tests. It will generate multiple integration test
+# targets with names derived from the base name and the bazel version.
+bazel_integration_tests(
+    name = "child_test",
+    bazel_versions = bazel_binaries.versions.all,
+    test_runner = ":child_test_runner",
+    workspace_path = "child_workspace",
+)
