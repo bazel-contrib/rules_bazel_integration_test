@@ -5,6 +5,12 @@ load(
     "default_test_runner",
 )
 
+filegroup(
+    name = "all_files",
+    srcs = glob(["*"]),
+    visibility = ["//:__subpackages__"],
+)
+
 # Declare a test runner to drive the integration tests.
 default_test_runner(
     name = "child_test_runner",
