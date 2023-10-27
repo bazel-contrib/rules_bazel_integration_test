@@ -28,10 +28,6 @@ def default_test_runner(
         srcs = [
             "@rules_bazel_integration_test//bazel_integration_test/private:default_test_runner.sh",
         ],
-        deps = [
-            "@bazel_tools//tools/bash/runfiles",
-            "@cgrindel_bazel_starlib//shlib/lib:messages",
-        ],
         args = args,
         **kwargs
     )
