@@ -11,6 +11,25 @@ On this page:
   * [default_test_runner](#default_test_runner)
 
 
+<a id="default_test_runner"></a>
+
+## default_test_runner
+
+<pre>
+default_test_runner(<a href="#default_test_runner-name">name</a>, <a href="#default_test_runner-bazel_cmds">bazel_cmds</a>)
+</pre>
+
+
+
+**ATTRIBUTES**
+
+
+| Name  | Description | Type | Mandatory | Default |
+| :------------- | :------------- | :------------- | :------------- | :------------- |
+| <a id="default_test_runner-name"></a>name |  A unique name for this target.   | <a href="https://bazel.build/concepts/labels#target-names">Name</a> | required |  |
+| <a id="default_test_runner-bazel_cmds"></a>bazel_cmds |  The Bazel commands to be executed by the test runner in the test workspace.   | List of strings | optional | <code>["info", "test //..."]</code> |
+
+
 <a id="bazel_integration_test"></a>
 
 ## bazel_integration_test
@@ -81,25 +100,5 @@ Macro that defines a set Bazel integration tests each executed with a different 
 | <a id="bazel_integration_tests-additional_env_inherit"></a>additional_env_inherit |  Optional. Specify additional <code>env_inherit</code> values that should be passed to the test.   |  <code>[]</code> |
 | <a id="bazel_integration_tests-bazel_binaries"></a>bazel_binaries |  Optional for WORKSPACE loaded repositories. Required for repositories that enable bzlmod. The value for this parameter is loaded by adding <code>load("@bazel_binaries//:defs.bzl", "bazel_binaries")</code> to your build file.   |  <code>None</code> |
 | <a id="bazel_integration_tests-kwargs"></a>kwargs |  additional attributes like timeout and visibility   |  none |
-
-
-<a id="default_test_runner"></a>
-
-## default_test_runner
-
-<pre>
-default_test_runner(<a href="#default_test_runner-name">name</a>, <a href="#default_test_runner-bazel_cmds">bazel_cmds</a>, <a href="#default_test_runner-kwargs">kwargs</a>)
-</pre>
-
-Macro that defines a test runner that executes a set of Bazel commands against a workspace.
-
-**PARAMETERS**
-
-
-| Name  | Description | Default Value |
-| :------------- | :------------- | :------------- |
-| <a id="default_test_runner-name"></a>name |  The name for the integration runner instance.   |  none |
-| <a id="default_test_runner-bazel_cmds"></a>bazel_cmds |  A <code>list</code> of <code>string</code> values that represent arguments for Bazel.   |  <code>["info", "test //..."]</code> |
-| <a id="default_test_runner-kwargs"></a>kwargs |  attributes that are passed to the <code>sh_binary</code> target.   |  none |
 
 

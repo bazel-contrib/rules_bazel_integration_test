@@ -16,6 +16,7 @@ default_test_runner(
 bazel_integration_tests(
     name = "child_test",
     bazel_versions = bazel_binaries.versions.all,
+    tags = ["exclusive-if-local"],
     test_runner = ":child_test_runner",
     workspace_path = "child_workspace",
 )
