@@ -12,5 +12,9 @@ import %workspace%/shared.bazelrc
 # Import CI settings.
 import %workspace%/ci.bazelrc
 
+# Only enable for rules_bazel_integration_test
+build --@cgrindel_bazel_starlib//bzlmod:enabled
+
 # Try to import a local.rc file; typically, written by CI
 try-import %workspace%/local.bazelrc
+
