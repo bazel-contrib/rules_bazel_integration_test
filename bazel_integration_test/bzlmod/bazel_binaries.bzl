@@ -131,12 +131,24 @@ version, version_file.\
 _BAZELISK_VERSION = "1.18.0"
 
 def _bazel_binaries_impl(module_ctx):
+    dep_names = []
+    dev_dep_names = []
+
+    def _add_dep_name(name, is_dev_dependency):
+        if is_dev_dependency:
+            dev_dep_names.append(name)
+        else:
+            dep_names.append(name)
+
+    ext_is_dev_dep = not module_ctx.root_module_has_non_dev_dependency
+
     # Create a repository for the bazelisk binary.
     bazelisk_repo_name = "bazel_binaries_bazelisk"
     _bazelisk_binary_repo_rule(
         name = bazelisk_repo_name,
         version = _BAZELISK_VERSION,
     )
+    _add_dep_name(bazelisk_repo_name, is_dev_dependency = ext_is_dev_dep)
 
     # Create version-specific bazel repos.
     version_infos = []
@@ -144,6 +156,10 @@ def _bazel_binaries_impl(module_ctx):
         for download in mod.tags.download:
             vi = _declare_bazel_binary(download, bazelisk_repo_name)
             version_infos.append(vi)
+            _add_dep_name(
+                vi.repo_name,
+                is_dev_dependency = module_ctx.is_dev_dependency(download),
+            )
 
     if len(version_infos) == 0:
         fail("No versions were specified.")
@@ -158,10 +174,17 @@ def _bazel_binaries_impl(module_ctx):
         if current_vi == None:
             current_vi = version_infos[0]
 
+    bazel_binaries_repo_name = "bazel_binaries"
     _bazel_binaries_helper(
-        name = "bazel_binaries",
+        name = bazel_binaries_repo_name,
         version_to_repo = version_to_repo,
         current_version = current_vi.version,
+    )
+    _add_dep_name(bazel_binaries_repo_name, is_dev_dependency = ext_is_dev_dep)
+
+    return module_ctx.extension_metadata(
+        root_module_direct_deps = dep_names,
+        root_module_direct_dev_deps = dev_dep_names,
     )
 
 _download_tag = tag_class(
