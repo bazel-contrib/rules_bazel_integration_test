@@ -1376,7 +1376,7 @@
   "moduleExtensions": {
     "//:extensions.bzl%bazel_binaries": {
       "general": {
-        "bzlTransitiveDigest": "NvYgoKveJNAsIRLu8JKt9bQJuYTeBnwp13+F9c/rHS4=",
+        "bzlTransitiveDigest": "O7TKulptMidCxRqJMN/xMtga4vaq2sDROGbXAUYiAIQ=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1418,6 +1418,16 @@
               "current_version": "'@@//:.bazelversion'"
             }
           }
+        },
+        "moduleExtensionMetadata": {
+          "explicitRootModuleDirectDeps": [],
+          "explicitRootModuleDirectDevDeps": [
+            "bazel_binaries_bazelisk",
+            "build_bazel_bazel_.bazelversion",
+            "build_bazel_bazel_6_4_0",
+            "bazel_binaries"
+          ],
+          "useAllRepos": "NO"
         }
       }
     },
