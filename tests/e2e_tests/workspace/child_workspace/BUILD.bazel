@@ -1,0 +1,4 @@
+sh_test(
+    name = "child_test",
+    srcs = ["child_test.sh"],
+)

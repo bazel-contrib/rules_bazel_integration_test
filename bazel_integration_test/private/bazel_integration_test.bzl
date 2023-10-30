@@ -168,10 +168,6 @@ def bazel_integration_test(
         ],
         args = args,
         data = data,
-        deps = [
-            "@bazel_tools//tools/bash/runfiles",
-            "@cgrindel_bazel_starlib//shlib/lib:messages",
-        ],
         timeout = timeout,
         env = env,
         env_inherit = env_inherit,

@@ -1,0 +1,13 @@
+# To update these lines, execute 
+# `bazel run @rules_bazel_integration_test//tools:update_deleted_packages`
+build --deleted_packages=child_workspace
+query --deleted_packages=child_workspace
+
+# Import Shared settings
+import %workspace%/../../../shared.bazelrc
+
+# Import CI settings.
+import %workspace%/../../../ci.bazelrc
+
+# Try to import a local.rc file; typically, written by CI
+try-import %workspace%/../../../local.bazelrc

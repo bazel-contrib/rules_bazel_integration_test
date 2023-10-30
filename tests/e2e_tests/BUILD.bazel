@@ -1,0 +1,36 @@
+load("@bazel_binaries//:defs.bzl", "bazel_binaries")
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load(
+    "//bazel_integration_test:defs.bzl",
+    "bazel_integration_tests",
+    "default_test_runner",
+    "integration_test_utils",
+)
+
+bzlformat_pkg(name = "bzlformat")
+
+default_test_runner(name = "e2e_test_runner")
+
+bazel_integration_tests(
+    name = "e2e_test",
+    bazel_binaries = bazel_binaries,
+    bazel_versions = bazel_binaries.versions.all,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        "no-sandbox",
+    ],
+    test_runner = ":e2e_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("workspace") + [
+        "//:local_repository_files",
+    ],
+    workspace_path = "workspace",
+)
+
+test_suite(
+    name = "integration_tests",
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
+    tests = integration_test_utils.bazel_integration_test_names(
+        "e2e_test",
+        bazel_binaries.versions.all,
+    ),
+    visibility = ["//:__subpackages__"],
+)

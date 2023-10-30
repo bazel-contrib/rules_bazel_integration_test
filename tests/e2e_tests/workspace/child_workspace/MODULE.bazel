@@ -1,0 +1,4 @@
+module(
+    name = "e2e_child",
+    version = "0.0.0",
+)
