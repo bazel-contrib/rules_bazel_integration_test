@@ -167,6 +167,33 @@ Download a bazel binary for integration test.\
 """,
 )
 
+# MARK: - local_bazel_binary Repository Rule
+
+def _local_bazel_binary_impl(repository_ctx):
+    repository_ctx.symlink(
+        target = repository_ctx.attr.path,
+        link_name = "bazel",
+    )
+    repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
+    repository_ctx.file("BUILD", """
+exports_files(
+    ["bazel"],
+    visibility = ["//visibility:public"],
+)""")
+
+local_bazel_binary = rule(
+    implementation = _local_bazel_binary_impl,
+    attrs = {
+        "path": attr.label(
+            allow_single_file = True,
+            mandatory = True,
+            executable = True,
+            cfg = "exec",
+        ),
+    },
+    doc = "",
+)
+
 # MARK: - bazel_binaries_helper Repository Rule
 
 _BAZEL_BINARIES_HELPER_DEFS_BZL = """\

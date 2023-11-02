@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "b539be22aff628947231a866038b521ff6ecd95547aba830ceb3abbca711fd6a",
+  "moduleFileHash": "2468fff26477f2fa8eaf55fbe9fc68b3ebcfe2823c502de84395aae37f3d00e9",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -36,10 +36,16 @@
             "column": 31
           },
           "imports": {
-            "bazel_binaries": "bazel_binaries"
+            "bazel_binaries": "bazel_binaries",
+            "bazel_binaries_bazelisk": "bazel_binaries_bazelisk",
+            "build_bazel_bazel_.bazelversion": "build_bazel_bazel_.bazelversion",
+            "build_bazel_bazel_6_4_0": "build_bazel_bazel_6_4_0"
           },
           "devImports": [
-            "bazel_binaries"
+            "bazel_binaries",
+            "bazel_binaries_bazelisk",
+            "build_bazel_bazel_.bazelversion",
+            "build_bazel_bazel_6_4_0"
           ],
           "tags": [
             {
@@ -76,7 +82,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 24,
+            "line": 30,
             "column": 37
           },
           "imports": {
@@ -1376,7 +1382,7 @@
   "moduleExtensions": {
     "//:extensions.bzl%bazel_binaries": {
       "general": {
-        "bzlTransitiveDigest": "O7TKulptMidCxRqJMN/xMtga4vaq2sDROGbXAUYiAIQ=",
+        "bzlTransitiveDigest": "djw3UcvEzTXoLZpPG72izgEbS8EAa3FuWL2OgSoQObM=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
