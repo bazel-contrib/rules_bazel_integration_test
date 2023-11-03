@@ -195,6 +195,7 @@ test_suite(
         ":custom_test_runner_test",
         ":dynamic_workspace_test",
         ":legacy_simple_test",
+        ":local_bazel_binary_test",
         ":sample_script_test",
         ":simple_test",
         ":use_create_scratch_dir_test",
