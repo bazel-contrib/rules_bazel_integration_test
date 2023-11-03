@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "2468fff26477f2fa8eaf55fbe9fc68b3ebcfe2823c502de84395aae37f3d00e9",
+  "moduleFileHash": "60ab976a6ba7a3784ee15ae4b3a93a089a0d40c779860bd9afc3ad609e69ce27",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -39,13 +39,15 @@
             "bazel_binaries": "bazel_binaries",
             "bazel_binaries_bazelisk": "bazel_binaries_bazelisk",
             "build_bazel_bazel_.bazelversion": "build_bazel_bazel_.bazelversion",
-            "build_bazel_bazel_6_4_0": "build_bazel_bazel_6_4_0"
+            "build_bazel_bazel_6_4_0": "build_bazel_bazel_6_4_0",
+            "build_bazel_bazel_local": "build_bazel_bazel_local"
           },
           "devImports": [
             "bazel_binaries",
             "bazel_binaries_bazelisk",
             "build_bazel_bazel_.bazelversion",
-            "build_bazel_bazel_6_4_0"
+            "build_bazel_bazel_6_4_0",
+            "build_bazel_bazel_local"
           ],
           "tags": [
             {
@@ -71,6 +73,18 @@
                 "line": 21,
                 "column": 24
               }
+            },
+            {
+              "tagName": "local",
+              "attributeValues": {
+                "path": "/Users/chuck/tmp/bazel.sh"
+              },
+              "devDependency": true,
+              "location": {
+                "file": "@@//:MODULE.bazel",
+                "line": 24,
+                "column": 21
+              }
             }
           ],
           "hasDevUseExtension": true,
@@ -82,7 +96,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 30,
+            "line": 36,
             "column": 37
           },
           "imports": {
@@ -1382,7 +1396,7 @@
   "moduleExtensions": {
     "//:extensions.bzl%bazel_binaries": {
       "general": {
-        "bzlTransitiveDigest": "djw3UcvEzTXoLZpPG72izgEbS8EAa3FuWL2OgSoQObM=",
+        "bzlTransitiveDigest": "J/kSRokYnmVjMYHkLb/K4e6GmXrixe32sMCCRSW9fDw=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1393,6 +1407,14 @@
               "name": "_main~bazel_binaries~build_bazel_bazel_6_4_0",
               "version": "6.4.0",
               "bazelisk": "@bazel_binaries_bazelisk//:bazelisk"
+            }
+          },
+          "build_bazel_bazel_local": {
+            "bzlFile": "@@//bazel_integration_test/private:bazel_binaries.bzl",
+            "ruleClassName": "local_bazel_binary",
+            "attributes": {
+              "name": "_main~bazel_binaries~build_bazel_bazel_local",
+              "path": "/Users/chuck/tmp/bazel.sh"
             }
           },
           "bazel_binaries_bazelisk": {
@@ -1419,7 +1441,8 @@
               "name": "_main~bazel_binaries~bazel_binaries",
               "version_to_repo": {
                 "'@@//:.bazelversion'": "build_bazel_bazel_.bazelversion",
-                "6.4.0": "build_bazel_bazel_6_4_0"
+                "6.4.0": "build_bazel_bazel_6_4_0",
+                "local": "build_bazel_bazel_local"
               },
               "current_version": "'@@//:.bazelversion'"
             }
@@ -1431,6 +1454,7 @@
             "bazel_binaries_bazelisk",
             "build_bazel_bazel_.bazelversion",
             "build_bazel_bazel_6_4_0",
+            "build_bazel_bazel_local",
             "bazel_binaries"
           ],
           "useAllRepos": "NO"

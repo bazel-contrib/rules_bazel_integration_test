@@ -19,12 +19,18 @@ bazel_binaries = use_extension(
 )
 bazel_binaries.download(version_file = "//:.bazelversion")
 bazel_binaries.download(version = "6.4.0")
+
+# DEBUG BEGIN
+bazel_binaries.local(path = "/Users/chuck/tmp/bazel.sh")
+
+# DEBUG END
 use_repo(
     bazel_binaries,
     "bazel_binaries",
     "bazel_binaries_bazelisk",
     "build_bazel_bazel_.bazelversion",
     "build_bazel_bazel_6_4_0",
+    "build_bazel_bazel_local",
 )
 
 download_sample_file = use_extension(

@@ -135,6 +135,11 @@ def _declare_local_bazel_binary(local):
         type = _version_types.local,
         current = local.current,
     )
+
+    # DEBUG BEGIN
+    print("*** CHUCK vi: ", vi)
+
+    # DEBUG END
     _local_bazel_binary_repo_rule(
         name = vi.repo_name,
         path = local.path,
@@ -240,9 +245,12 @@ _local_tag = tag_class(
         "name": attr.string(
             default = "local",
         ),
-        "path": attr.label(
-            allow_single_file = True,
+        "path": attr.string(
+            mandatory = True,
         ),
+        # "path": attr.label(
+        #     allow_single_file = True,
+        # ),
     },
 )
 
