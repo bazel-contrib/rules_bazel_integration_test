@@ -190,15 +190,12 @@ local_bazel_binary = repository_rule(
     attrs = {
         "path": attr.string(
             mandatory = True,
+            doc = "The path to a Bazel binary.",
         ),
-        # "path": attr.label(
-        #     allow_single_file = True,
-        #     mandatory = True,
-        #     executable = True,
-        #     cfg = "exec",
-        # ),
     },
-    doc = "",
+    doc = """\
+Makes a local Bazel binary available for use in an integration test.\
+""",
 )
 
 # MARK: - bazel_binaries_helper Repository Rule

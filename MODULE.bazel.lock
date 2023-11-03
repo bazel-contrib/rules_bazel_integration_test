@@ -1396,7 +1396,7 @@
   "moduleExtensions": {
     "//:extensions.bzl%bazel_binaries": {
       "general": {
-        "bzlTransitiveDigest": "J/kSRokYnmVjMYHkLb/K4e6GmXrixe32sMCCRSW9fDw=",
+        "bzlTransitiveDigest": "SrboP1DtxYyLiTGjudFCeiwGebgp5hldobw6UXIEPPs=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
