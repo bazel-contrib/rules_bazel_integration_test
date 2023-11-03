@@ -11,6 +11,8 @@ load(
 
 bzlformat_pkg(name = "bzlformat")
 
+_LOCAL_BAZEL_BINARY_VERSION = "local"
+
 # MARK: - Simple Tests
 
 default_test_runner(
@@ -56,6 +58,12 @@ bazel_integration_test(
     workspace_path = "simple",
 )
 
+_SIMPLE_TEST_VERSIONS = [
+    version
+    for version in bazel_binaries.versions.other
+    if version != _LOCAL_BAZEL_BINARY_VERSION
+]
+
 # If you want to execute an integration test using multiple versions of Bazel,
 # use bazel_integration_tests. It will generate multiple integration test
 # targets with names derived from the base name and the bazel version.
@@ -63,7 +71,7 @@ bazel_integration_tests(
     # buildifier: disable=duplicated-name
     name = "simple_test",
     bazel_binaries = bazel_binaries,
-    bazel_versions = bazel_binaries.versions.other,
+    bazel_versions = _SIMPLE_TEST_VERSIONS,
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:shared_bazelrc_files",
@@ -159,6 +167,19 @@ script_test(
     ],
 )
 
+# MARK: - Local Bazel Binary Example/Test
+
+script_test(
+    name = "local_bazel_binary_test",
+    srcs = ["local_bazel_binary_test.sh"],
+    bazel_binaries = bazel_binaries,
+    bazel_version = _LOCAL_BAZEL_BINARY_VERSION,
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
+
 # MARK: - Test Suite
 
 # By default, the integration test targets are tagged as `manual`. This
@@ -179,7 +200,7 @@ test_suite(
         ":use_create_scratch_dir_test",
     ] + integration_test_utils.bazel_integration_test_names(
         "simple_test",
-        bazel_binaries.versions.other,
+        _SIMPLE_TEST_VERSIONS,
     ),
     visibility = ["//:__subpackages__"],
 )

@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "60ab976a6ba7a3784ee15ae4b3a93a089a0d40c779860bd9afc3ad609e69ce27",
+  "moduleFileHash": "8771944058783db67d1dba89bf1f8d780495fbd54fbb27f84601619337670204",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -77,12 +77,12 @@
             {
               "tagName": "local",
               "attributeValues": {
-                "path": "/Users/chuck/tmp/bazel.sh"
+                "path": "tools/fake_bazel.sh"
               },
               "devDependency": true,
               "location": {
                 "file": "@@//:MODULE.bazel",
-                "line": 24,
+                "line": 22,
                 "column": 21
               }
             }
@@ -96,7 +96,7 @@
           "usingModule": "<root>",
           "location": {
             "file": "@@//:MODULE.bazel",
-            "line": 36,
+            "line": 32,
             "column": 37
           },
           "imports": {
@@ -1396,7 +1396,7 @@
   "moduleExtensions": {
     "//:extensions.bzl%bazel_binaries": {
       "general": {
-        "bzlTransitiveDigest": "SrboP1DtxYyLiTGjudFCeiwGebgp5hldobw6UXIEPPs=",
+        "bzlTransitiveDigest": "2YpQtmxm7IW8Ldz4jpGThmEDybtrPhL/NCQeG1JSpPI=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1414,7 +1414,7 @@
             "ruleClassName": "local_bazel_binary",
             "attributes": {
               "name": "_main~bazel_binaries~build_bazel_bazel_local",
-              "path": "/Users/chuck/tmp/bazel.sh"
+              "path": "tools/fake_bazel.sh"
             }
           },
           "bazel_binaries_bazelisk": {

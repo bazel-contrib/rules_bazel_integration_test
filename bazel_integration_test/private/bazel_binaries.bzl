@@ -1,5 +1,6 @@
 """Manages the download of Bazel binaries."""
 
+load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@cgrindel_bazel_starlib//bzllib:defs.bzl", "lists")
 load(":no_deps_utils.bzl", "no_deps_utils")
 
@@ -170,7 +171,11 @@ Download a bazel binary for integration test.\
 # MARK: - local_bazel_binary Repository Rule
 
 def _local_bazel_binary_impl(repository_ctx):
-    repository_ctx.symlink(repository_ctx.attr.path, "bazel")
+    path = repository_ctx.attr.path
+    if not paths.is_absolute(path):
+        path = paths.join(str(repository_ctx.workspace_root), path)
+
+    repository_ctx.symlink(path, "bazel")
     repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
     repository_ctx.file("BUILD", """
 exports_files(
