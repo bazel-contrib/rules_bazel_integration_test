@@ -5,6 +5,7 @@ load(
     "//bazel_integration_test/private:bazel_binaries.bzl",
     _bazel_binary_repo_rule = "bazel_binary",
     _bazelisk_binary_repo_rule = "bazelisk_binary",
+    _local_bazel_binary_repo_rule = "local_bazel_binary",
 )
 load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
@@ -95,6 +96,7 @@ def _version_info(version, type, current):
 _version_types = struct(
     string = "string",
     label = "label",
+    local = "local",
 )
 
 def _declare_bazel_binary(download, bazelisk_repo_name):
@@ -125,6 +127,18 @@ version, version_file.\
             version_file = download.version_file,
             bazelisk = "@%s//:bazelisk" % bazelisk_repo_name,
         )
+    return vi
+
+def _declare_local_bazel_binary(local):
+    vi = _version_info(
+        version = local.name,
+        type = _version_types.local,
+        current = local.current,
+    )
+    _local_bazel_binary_repo_rule(
+        name = vi.repo_name,
+        path = local.path,
+    )
     return vi
 
 # TODO(GH184): Make this configurable.
@@ -159,6 +173,13 @@ def _bazel_binaries_impl(module_ctx):
             _add_dep_name(
                 vi.repo_name,
                 is_dev_dependency = module_ctx.is_dev_dependency(download),
+            )
+        for local in mod.tags.local:
+            vi = _declare_local_bazel_binary(local)
+            version_infos.append(vi)
+            _add_dep_name(
+                vi.repo_name,
+                is_dev_dependency = module_ctx.is_dev_dependency(local),
             )
 
     if len(version_infos) == 0:
@@ -211,9 +232,31 @@ Identifies Bazel versions that will be downloaded and made available for \
 """,
 )
 
+_local_tag = tag_class(
+    attrs = {
+        "current": attr.bool(
+            doc = "Designate this version as the current version.",
+        ),
+        "name": attr.string(
+            default = "local",
+            doc = """\
+This value is used to generate a repository name from which the local Bazel \
+binary is referenced.\
+""",
+        ),
+        "path": attr.string(
+            mandatory = True,
+            doc = "The path to the Bazel binary.",
+        ),
+    },
+    doc = """\
+Makes a local Bazel binary available for use in an integration test.\
+""",
+)
+
 bazel_binaries = module_extension(
     implementation = _bazel_binaries_impl,
-    tag_classes = {"download": _download_tag},
+    tag_classes = {"download": _download_tag, "local": _local_tag},
     doc = """\
 Provides a means for clients to download Bazel binaries for their integration \
 tests.\

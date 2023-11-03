@@ -1,5 +1,6 @@
 """Manages the download of Bazel binaries."""
 
+load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@cgrindel_bazel_starlib//bzllib:defs.bzl", "lists")
 load(":no_deps_utils.bzl", "no_deps_utils")
 
@@ -164,6 +165,41 @@ string.\
     implementation = _bazel_binary_impl,
     doc = """\
 Download a bazel binary for integration test.\
+""",
+)
+
+# MARK: - local_bazel_binary Repository Rule
+
+def _local_bazel_binary_impl(repository_ctx):
+    path = repository_ctx.attr.path
+    if not paths.is_absolute(path):
+        path = paths.join(str(repository_ctx.workspace_root), path)
+
+    repository_ctx.symlink(path, "bazel")
+    repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
+    repository_ctx.file("BUILD", """
+exports_files(
+    ["bazel"],
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "bazel_binary",
+    actual = "bazel",
+    visibility = ["//visibility:public"],
+)
+""")
+
+local_bazel_binary = repository_rule(
+    implementation = _local_bazel_binary_impl,
+    attrs = {
+        "path": attr.string(
+            mandatory = True,
+            doc = "The path to a Bazel binary.",
+        ),
+    },
+    doc = """\
+Makes a local Bazel binary available for use in an integration test.\
 """,
 )
 
