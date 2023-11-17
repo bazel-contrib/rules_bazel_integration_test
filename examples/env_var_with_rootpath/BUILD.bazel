@@ -21,6 +21,12 @@ bazel_integration_test(
     env = {
         "SAMPLE_FILE": "$(rootpath @sample_file//file)",
     },
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
     test_runner = ":simple_test_runner",
     workspace_path = "sample_workspace",
 )

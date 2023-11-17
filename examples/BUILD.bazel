@@ -38,6 +38,12 @@ bazel_integration_test(
     name = "simple_test",
     bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:shared_bazelrc_files",
@@ -51,6 +57,12 @@ bazel_integration_test(
     name = "legacy_simple_test",
     bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
     test_runner = ":legacy_simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:shared_bazelrc_files",
@@ -72,6 +84,12 @@ bazel_integration_tests(
     name = "simple_test",
     bazel_binaries = bazel_binaries,
     bazel_versions = _SIMPLE_TEST_VERSIONS,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
     test_runner = ":simple_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:shared_bazelrc_files",
@@ -96,6 +114,12 @@ bazel_integration_test(
     name = "custom_test_runner_test",
     bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
     # GH120: Enable the custom_test_runner test once swift_bazel supports
     # bzlmod.
     target_compatible_with = select({
@@ -128,6 +152,12 @@ bazel_integration_test(
     name = "use_create_scratch_dir_test",
     bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
     test_runner = ":use_create_scratch_dir_test_runner",
     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
         "//:local_repository_files",
@@ -151,6 +181,12 @@ bazel_integration_test(
     name = "dynamic_workspace_test",
     bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
     test_runner = ":dynamic_workspace_test_runner",
 )
 
