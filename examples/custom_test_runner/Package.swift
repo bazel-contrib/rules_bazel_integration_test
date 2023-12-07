@@ -6,7 +6,7 @@ let package = Package(
     name: "my-project",
     dependencies: [
         // Replace these entries with your dependencies.
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.3"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
         .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.3.0"),
     ]
 )
