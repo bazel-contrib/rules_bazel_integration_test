@@ -45,7 +45,9 @@ find_bazel_pkgs() {
   local path="${1}"
   # Make sure that the -print0 is the last primary for find. Otherwise, you
   # will get undesirable results.
-  find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 | xargs -0 -n 1 dirname 
+  while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
+    find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 | xargs -0 -n 1 dirname 
+  )
 }
 
 # MARK - Main
