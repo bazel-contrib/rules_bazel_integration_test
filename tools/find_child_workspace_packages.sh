@@ -43,10 +43,22 @@ source "${shared_fns_sh}"
 
 find_bazel_pkgs() {
   local path="${1}"
+
+  # # DEBUG BEGIN
+  # dbg_output="$( find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 )"
+  # echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") dbg_output: ${dbg_output}" 
+  # # DEBUG END
+
   # Make sure that the -print0 is the last primary for find. Otherwise, you
   # will get undesirable results.
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
-    find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 | xargs -0 -n 1 dirname 
+    # The -r in the xargs tells gnu xargs not to run if empty. The FreeBSD 
+    # version supports the flag, but ignores it as it provides this behavior
+    # by default.
+    # The -S 511 addresses "xargs: command line cannot be assembled, too long" 
+    # errors that can occur if the found paths are long.
+    find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 | \
+      xargs -r -0 -S 511 -I {} dirname "{}"
   )
 }
 

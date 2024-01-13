@@ -36,6 +36,12 @@ find_workspace_dirs() {
   # Make sure that the -print0 is the last primary for find. Otherwise, you
   # will get undesirable results.
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
-    find "${path}" \( -name "WORKSPACE" -o -name "WORKSPACE.bazel" \) -print0  | xargs -0 -n 1 dirname
+    # The -r in the xargs tells gnu xargs not to run if empty. The FreeBSD 
+    # version supports the flag, but ignores it as it provides this behavior
+    # by default.
+    # The -S 511 addresses "xargs: command line cannot be assembled, too long" 
+    # errors that can occur if the found paths are long.
+    find "${path}" \( -name "WORKSPACE" -o -name "WORKSPACE.bazel" \) -print0  | \
+      xargs -r -S 511 -0 -I {} dirname "{}"
   )
 }
