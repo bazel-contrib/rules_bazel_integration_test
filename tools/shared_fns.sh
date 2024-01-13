@@ -36,6 +36,8 @@ find_workspace_dirs() {
   # Make sure that the -print0 is the last primary for find. Otherwise, you
   # will get undesirable results.
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
+    # NOTE: If you update the find or xargs flags, be sure to check if those 
+    # changes should be applied to find_bazel_pkgs in find_child_workspace_packages.sh.
     # The -r in the xargs tells gnu xargs not to run if empty. The FreeBSD 
     # version supports the flag, but ignores it as it provides this behavior
     # by default.
