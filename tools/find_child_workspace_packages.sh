@@ -49,13 +49,8 @@ find_bazel_pkgs() {
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
     # NOTE: If you update the find or xargs flags, be sure to check if those 
     # changes should be applied to find_workspace_dirs in shared_fns.sh.
-    # The -r in the xargs tells gnu xargs not to run if empty. The FreeBSD 
-    # version supports the flag, but ignores it as it provides this behavior
-    # by default.
-    # The -S 511 addresses "xargs: command line cannot be assembled, too long" 
-    # errors that can occur if the found paths are long.
     find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 | \
-      xargs -r -0 -S 511 -I {} dirname "{}"
+      exec_cmd_for_each dirname "{}"
   )
 }
 
