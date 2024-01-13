@@ -22,8 +22,12 @@ initial_test_dir="${PWD}"
 
 # MARK - Execute without a workspace
 
-"${find_bin}" --workspace "${PWD}" \
-  || fail "Expected no failure with no child workspace."
+actual=()
+while IFS=$'\n' read -r line; do actual+=("$line"); done < <(
+  "${find_bin}" --workspace "${PWD}" \
+    || fail "Expected no failure with no child workspace."
+)
+assert_equal 0 "${#actual[@]}" "no child workspace"
 
 # MARK - Execute with empty workspace
 
@@ -31,8 +35,12 @@ empty_example_workspace_dir="${PWD}/examples/empty"
 mkdir -p "${empty_example_workspace_dir}"
 touch "${empty_example_workspace_dir}/WORKSPACE"
 
-"${find_bin}" --workspace "${PWD}" \
-  || fail "Expected no failure with empty child workspace."
+actual=()
+while IFS=$'\n' read -r line; do actual+=("$line"); done < <(
+  "${find_bin}" --workspace "${PWD}" \
+    || fail "Expected no failure with empty child workspace."
+)
+assert_equal 0 "${#actual[@]}" "empty child workspace"
 
 rm -rf "${empty_example_workspace_dir}"
 
