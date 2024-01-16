@@ -31,11 +31,35 @@ filter_bazelignored_directories() {
   echo "${path}"
 }
 
+is_macos() {
+  local os_name
+  os_name="$( uname )"
+  [[ "${os_name}" == "Darwin" ]]
+}
+
+exec_cmd_for_each() {
+  # The -r in the xargs tells gnu xargs not to run if empty. The FreeBSD 
+  # version supports the flag, but ignores it as it provides this behavior
+  # by default.
+  local cmd=( xargs -r -0 -I {} )
+  if is_macos; then
+    # FreeBSD version of xargs limits the command length to 255 characters. 
+    # Long paths can exceed that length. The -S 511 addresses "xargs: command 
+    # line cannot be assembled, too long" errors that can occur if the found 
+    # paths are long.
+    cmd+=( -S 511 )
+  fi
+  "${cmd[@]}" "$@"
+}
+
 find_workspace_dirs() {
   local path="${1}"
   # Make sure that the -print0 is the last primary for find. Otherwise, you
   # will get undesirable results.
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
-    find "${path}" \( -name "WORKSPACE" -o -name "WORKSPACE.bazel" \) -print0  | xargs -0 -n 1 dirname
+    # NOTE: If you update the find or xargs flags, be sure to check if those 
+    # changes should be applied to find_bazel_pkgs in find_child_workspace_packages.sh.
+    find "${path}" \( -name "WORKSPACE" -o -name "WORKSPACE.bazel" \) -print0  | \
+      exec_cmd_for_each dirname "{}"
   )
 }
