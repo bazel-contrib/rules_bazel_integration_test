@@ -13,6 +13,7 @@ filegroup(
 sh_library(
     name = "shared_fns",
     srcs = ["shared_fns.sh"],
+    visibility = ["//tests:__subpackages__"],
 )
 
 # MARK: - Binary Declarations

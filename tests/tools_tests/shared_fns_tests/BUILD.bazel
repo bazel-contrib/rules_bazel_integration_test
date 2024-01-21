@@ -11,3 +11,13 @@ sh_test(
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
     ],
 )
+
+sh_test(
+    name = "find_workspace_dirs_test",
+    srcs = ["find_workspace_dirs_test.sh"],
+    deps = [
+        "//tools:shared_fns",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)

@@ -74,19 +74,18 @@ find_any_file() {
     fi
     idx=$(( idx + 1 ))
   done
+  # Make sure that the -print0 is the last primary for find. Otherwise, you
+  # will get undesirable results.
   find_cmd+=( \) -print0 )
   "${find_cmd[@]}"
 }
 
 find_workspace_dirs() {
   local path="${1}"
-  # Make sure that the -print0 is the last primary for find. Otherwise, you
-  # will get undesirable results.
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
-    # NOTE: If you update the find or xargs flags, be sure to check if those 
-    # changes should be applied to find_bazel_pkgs in find_child_workspace_packages.sh.
-    # find "${path}" \( -name "WORKSPACE" -o -name "WORKSPACE.bazel" \) -print0  | \
-    find_any_file "${path}" "WORKSPACE" "WORKSPACE.bazel" | \
-      exec_cmd_for_each dirname "{}"
+    find_any_file "${path}" MODULE.bazel REPO.bazel WORKSPACE WORKSPACE.bazel | \
+      exec_cmd_for_each dirname "{}" | \
+      # Return a unique list
+      sort -u
   )
 }
