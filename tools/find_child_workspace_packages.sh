@@ -43,13 +43,8 @@ source "${shared_fns_sh}"
 
 find_bazel_pkgs() {
   local path="${1}"
-
-  # Make sure that the -print0 is the last primary for find. Otherwise, you
-  # will get undesirable results.
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
-    # NOTE: If you update the find or xargs flags, be sure to check if those 
-    # changes should be applied to find_workspace_dirs in shared_fns.sh.
-    find "${path}" \( -name BUILD -or -name BUILD.bazel \) -print0 | \
+    find_any_file "${path}" BUILD BUILD.bazel | \
       exec_cmd_for_each dirname "{}"
   )
 }

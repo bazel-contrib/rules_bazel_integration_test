@@ -52,14 +52,40 @@ exec_cmd_for_each() {
   "${cmd[@]}" "$@"
 }
 
-find_workspace_dirs() {
-  local path="${1}"
+find_any_file() {
+  local dir="${1}"
+  if [[ -z "${dir:-}" ]]; then
+    echo >&2 "No directory was provided."
+    return 1
+  fi
+  shift 1
+  local arg_cnt=${#}
+  if [[ ${arg_cnt} -eq 0 ]]; then
+    echo >&2 "No file names provided to find_any_file."
+    return 1
+  fi
+  local last_idx=$(( arg_cnt - 1 ))
+  local find_cmd=( find "${dir}" \( )
+  local idx=0
+  for fname in "${@}" ; do
+    find_cmd+=( -name "${fname}" )
+    if [[ ${idx} -ne ${last_idx} ]]; then
+      find_cmd+=( -o )
+    fi
+    idx=$(( idx + 1 ))
+  done
   # Make sure that the -print0 is the last primary for find. Otherwise, you
   # will get undesirable results.
+  find_cmd+=( \) -print0 )
+  "${find_cmd[@]}"
+}
+
+find_workspace_dirs() {
+  local path="${1}"
   while IFS=$'\n' read -r line; do filter_bazelignored_directories "${path}" "${line}" ; done < <(
-    # NOTE: If you update the find or xargs flags, be sure to check if those 
-    # changes should be applied to find_bazel_pkgs in find_child_workspace_packages.sh.
-    find "${path}" \( -name "WORKSPACE" -o -name "WORKSPACE.bazel" \) -print0  | \
-      exec_cmd_for_each dirname "{}"
+    find_any_file "${path}" MODULE.bazel REPO.bazel WORKSPACE WORKSPACE.bazel | \
+      exec_cmd_for_each dirname "{}" | \
+      # Return a unique list
+      sort -u
   )
 }
