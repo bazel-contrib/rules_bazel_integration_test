@@ -1464,7 +1464,7 @@
     },
     "//examples/env_var_with_rootpath:sample_file_extension.bzl%download_sample_file": {
       "general": {
-        "bzlTransitiveDigest": "WOm8tH/18hIwAc7a8SWlATLDCKP7A3qAbVE601eVeAo=",
+        "bzlTransitiveDigest": "nR+ahuB5nE5Zbt2o2DdgT0WtZKaoN9Tkf1C0Fd0YC7Q=",
         "accumulatedFileDigests": {},
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -1478,7 +1478,13 @@
             }
           }
         },
-        "recordedRepoMappingEntries": []
+        "recordedRepoMappingEntries": [
+          [
+            "",
+            "bazel_tools",
+            "bazel_tools"
+          ]
+        ]
       }
     },
     "@@apple_support~1.5.0//crosstool:setup.bzl%apple_cc_configure_extension": {
