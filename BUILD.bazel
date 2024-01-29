@@ -3,7 +3,7 @@ load(
     "bzlformat_missing_pkgs",
     "bzlformat_pkg",
 )
-load("@cgrindel_bazel_starlib//bzltidy:defs.bzl", "tidy")
+load("@cgrindel_bazel_starlib//bzltidy:defs.bzl", "tidy", "tidy_all")
 load("@cgrindel_bazel_starlib//markdown:defs.bzl", "markdown_pkg")
 load(
     "@cgrindel_bazel_starlib//updatesrc:defs.bzl",
@@ -21,6 +21,8 @@ bzlformat_pkg(name = "bzlformat")
 bzlformat_missing_pkgs(
     name = "bzlformat_missing_pkgs",
 )
+
+tidy_all(name = "tidy_all")
 
 tidy(
     name = "tidy",
