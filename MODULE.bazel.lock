@@ -1555,7 +1555,7 @@
     },
     "//examples/env_var_with_rootpath:sample_file_extension.bzl%download_sample_file": {
       "general": {
-        "bzlTransitiveDigest": "WXjOsdgs9VjkiTdBSmS9yYGuzVEatic8jbzoz5BSyPs=",
+        "bzlTransitiveDigest": "rz73xGquWB7REKwEWnIFXBVOWx+jWgWQRIoyUT3FJXU=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1669,7 +1669,7 @@
     },
     "@@bazel_tools//tools/test:extensions.bzl%remote_coverage_tools_extension": {
       "general": {
-        "bzlTransitiveDigest": "l5mcjH2gWmbmIycx97bzI2stD0Q0M5gpDc0aLOHKIm8=",
+        "bzlTransitiveDigest": "7n9r2sWPYvn/OzUdHUoiJN/1hgIqWKOFCEQFVwHZGU0=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1690,7 +1690,7 @@
     },
     "@@buildifier_prebuilt~//:defs.bzl%buildifier_prebuilt_deps_extension": {
       "general": {
-        "bzlTransitiveDigest": "ZLz8nU7kwZ0wfwY66sYRmuSjBB3R2KenLwVQfaHkvRI=",
+        "bzlTransitiveDigest": "NvIZr5G7dpZTvf3pJq8bYU5dwPRf0BO2NAY4FWZbw1Q=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1815,7 +1815,7 @@
     },
     "@@gazelle~//:extensions.bzl%go_deps": {
       "general": {
-        "bzlTransitiveDigest": "9ycV5IxC2IP59B5AXCRn2v9QuX0TURPPajQHOIZwf7c=",
+        "bzlTransitiveDigest": "B/bcZuZkL2fzFaSXzjf5gc6me4wfDMSkt/fomRvABNo=",
         "recordedFileInputs": {
           "@@rules_go~//go.mod": "a7143f329c2a3e0b983ce74a96c0c25b0d0c59d236d75f7e1b069aadd988d55e",
           "@@gazelle~//go.sum": "7491cc4ce7c344c149d512167d9e580be4d3c1dcd6fbb334e677ead2c2951b3d",
@@ -2228,7 +2228,7 @@
     },
     "@@rules_go~//go:extensions.bzl%go_sdk": {
       "general": {
-        "bzlTransitiveDigest": "eGDLbciJngLG8USN6/HoLZ91MLuFliA9P4tEvCXvuec=",
+        "bzlTransitiveDigest": "bkrnpy1VxwiJcOOl7yXetkuzf3wwVpFEprr0vL4InKk=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -2289,7 +2289,7 @@
     },
     "@@rules_go~//go/private:extensions.bzl%non_module_dependencies": {
       "general": {
-        "bzlTransitiveDigest": "GXCPP6l+bsdqcRscjGNCRds6cxpRP2wigCJx3uwfGn0=",
+        "bzlTransitiveDigest": "yq+aajMJrcmflnxyN+QJ7Ndn4ZUqdQL48H7UQMIkasM=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -2487,7 +2487,7 @@
     },
     "@@rules_java~//java:extensions.bzl%toolchains": {
       "general": {
-        "bzlTransitiveDigest": "tJHbmWnq7m+9eUBnUdv7jZziQ26FmcGL9C5/hU3Q9UQ=",
+        "bzlTransitiveDigest": "0N5b5J9fUzo0sgvH4F3kIEaeXunz4Wy2/UtSFV/eXUY=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
