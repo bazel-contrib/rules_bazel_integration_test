@@ -48,6 +48,9 @@ bazelrc_template="
 build --deleted_packages=
 query --deleted_packages=
 # EOF"
+# todo: should these lines be in the template above?
+# startup --windows_enable_symlinks
+# common --enable_runfiles
 
 reset_bazelrc_files() {
   for bazelrc in "${bazelrcs[@]}" ; do
