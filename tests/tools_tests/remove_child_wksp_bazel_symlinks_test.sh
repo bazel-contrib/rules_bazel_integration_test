@@ -38,6 +38,10 @@ child_a_bazel_out="${bazel_out}/child_a"
 child_b_bazel_out="${bazel_out}/child_b"
 mkdir -p "${bazel_out}" "${child_a_bazel_out}" "${child_b_bazel_out}" "${parent_bazel_out}"
 
+# Windows requires this for msys to create real symlinks
+# https://superuser.com/questions/1097481/msys2-create-a-sym-link-into-windows-folder-location
+export MSYS=winsymlinks:nativestrict
+
 # Add bazel symlinks
 parent_symlink="${parent_dir}/bazel-parent"
 child_a_symlink="${child_a_dir}/bazel-child_a"
