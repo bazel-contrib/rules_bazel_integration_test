@@ -18,7 +18,7 @@ bazel_dep(name = "cgrindel_bazel_starlib", version = "0.21.0")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(
     name = "gazelle",
-    version = "0.37.0",
+    version = "0.38.0",
     repo_name = "bazel_gazelle",
 )
 bazel_dep(
