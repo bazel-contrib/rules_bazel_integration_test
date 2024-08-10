@@ -20,4 +20,4 @@ export BAZELISK_HOME="${PWD}"
 BINARY="$(rlocation {bazelisk})" || \
   (echo >&2 "Failed to locate bazelisk at {bazelisk}" && exit 1)
 
-exec "${BINARY}" "$@"
+exec "${BINARY}" $BIT_STARTUP_OPTIONS "$@"
