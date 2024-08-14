@@ -81,7 +81,7 @@ bazel_skylib_workspace()
 
 #### Recommended: Add Bazel versions to `MODULE.bazel`
 
-Load the `bazel_binaries` extension and specify the Bazel verions to download.
+Load the `bazel_binaries` extension and specify the Bazel versions to download.
 All version specifiers supported by
 [Bazelisk](https://github.com/bazelbuild/bazelisk#how-does-bazelisk-know-which-bazel-version-to-run)
 are supported.
