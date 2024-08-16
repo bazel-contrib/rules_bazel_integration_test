@@ -97,7 +97,7 @@ def bazel_integration_test(
             `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
             build file.
         data: Optional. A list of files to make present at test runtime.
-        startup_options: Optional. Flags that should be passed to Bazel as 
+        startup_options: Optional. Flags that should be passed to Bazel as
                          startup options using the `BIT_STARTUP_OPTIONS`
                          environment variable.
         **kwargs: additional attributes like timeout and visibility
@@ -224,7 +224,7 @@ def bazel_integration_tests(
             is loaded by adding
             `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
             build file.
-        startup_options: Optional. Flags that should be passed to Bazel as 
+        startup_options: Optional. Flags that should be passed to Bazel as
                          startup options using the `BIT_STARTUP_OPTIONS`
                          environment variable.
         **kwargs: additional attributes like timeout and visibility
