@@ -44,11 +44,12 @@ def bazel_integration_test(
         workspace_files = None,
         tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS,
         timeout = "long",
-        env = {},
+        env = None,
         env_inherit = _DEFAULT_ENV_INHERIT,
         additional_env_inherit = [],
         bazel_binaries = None,
         data = None,
+        startup_options = "",
         **kwargs):
     """Macro that defines a set of targets for a single Bazel integration test.
 
@@ -96,8 +97,12 @@ def bazel_integration_test(
             `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
             build file.
         data: Optional. A list of files to make present at test runtime.
+        startup_options: Optional. Flags that should be passed to Bazel as
+                         startup options using the `BIT_STARTUP_OPTIONS`
+                         environment variable.
         **kwargs: additional attributes like timeout and visibility
     """
+    env = env or {}
 
     # To support clients that have not transitioned to bzlmod, we provide a
     # bazel_binaries implementation that works in that mode. If a client using
@@ -161,6 +166,8 @@ def bazel_integration_test(
     if env_vars_are_rootpaths:
         env["ENV_VARS_TO_ABSOLUTIFY"] = " ".join(env_vars_are_rootpaths)
 
+    env["BIT_STARTUP_OPTIONS"] = startup_options
+
     native.sh_test(
         name = name,
         srcs = [
@@ -186,6 +193,7 @@ def bazel_integration_tests(
         env_inherit = _DEFAULT_ENV_INHERIT,
         additional_env_inherit = [],
         bazel_binaries = None,
+        startup_options = "",
         **kwargs):
     """Macro that defines a set Bazel integration tests each executed with a different version of Bazel.
 
@@ -216,6 +224,9 @@ def bazel_integration_tests(
             is loaded by adding
             `load("@bazel_binaries//:defs.bzl", "bazel_binaries")` to your
             build file.
+        startup_options: Optional. Flags that should be passed to Bazel as
+                         startup options using the `BIT_STARTUP_OPTIONS`
+                         environment variable.
         **kwargs: additional attributes like timeout and visibility
     """
     if bazel_versions == []:
@@ -236,5 +247,6 @@ def bazel_integration_tests(
             env_inherit = env_inherit,
             additional_env_inherit = additional_env_inherit,
             bazel_binaries = bazel_binaries,
+            startup_options = startup_options,
             **kwargs
         )
