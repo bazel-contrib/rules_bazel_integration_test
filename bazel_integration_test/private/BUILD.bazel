@@ -41,6 +41,7 @@ bzl_library(
         ":integration_test_utils",
         "@bazel_skylib//lib:paths",
         "@bazel_skylib//rules:select_file",
+        "@rules_shell//shell:rules_bzl",
     ],
 )
 
