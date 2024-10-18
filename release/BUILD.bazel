@@ -11,6 +11,7 @@ load(
     "release_archive",
     "update_readme",
 )
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load(
     "//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
@@ -75,7 +76,7 @@ sh_binary(
     name = "archive_test_runner",
     testonly = True,
     srcs = ["archive_test_runner.sh"],
-    data = ["//release:archive"],
+    data = [":archive"],
     deps = [
         "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:assertions",

@@ -13,6 +13,7 @@ load(
     "@rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "integration_test_utils",
 )
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 markdown_pkg(name = "markdown")
 

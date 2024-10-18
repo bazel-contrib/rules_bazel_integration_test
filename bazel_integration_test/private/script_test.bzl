@@ -1,5 +1,6 @@
 "A facility for script tests that create workspaces and call Bazel."
 
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load(
     "//bazel_integration_test/private:bazel_integration_test.bzl",
     "bazel_integration_test",
@@ -98,7 +99,7 @@ def script_test(
     )
 
     # Create the test runner that sets up and calls the test.
-    native.sh_binary(
+    sh_binary(
         name = runner_target,
         testonly = True,
         srcs = [runner_script],

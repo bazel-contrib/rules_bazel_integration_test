@@ -62,3 +62,16 @@ http_file(
     sha256 = "0baf36f9c3ef9d8b4833833e1d633707965c9850f69f04dd96712672b9e75cc0",
     url = "https://raw.githubusercontent.com/bazel-contrib/rules_bazel_integration_test/v0.12.0/.bazelversion",
 )
+
+http_archive(
+    name = "rules_shell",
+    sha256 = "410e8ff32e018b9efd2743507e7595c26e2628567c42224411ff533b57d27c28",
+    strip_prefix = "rules_shell-0.2.0",
+    url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.2.0/rules_shell-v0.2.0.tar.gz",
+)
+
+load("@rules_shell//shell:repositories.bzl", "rules_shell_dependencies", "rules_shell_toolchains")
+
+rules_shell_dependencies()
+
+rules_shell_toolchains()

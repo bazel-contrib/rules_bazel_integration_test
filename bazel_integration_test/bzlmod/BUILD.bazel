@@ -1,6 +1,7 @@
 load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load(
     "//bazel_integration_test:defs.bzl",
     "bazel_integration_test",

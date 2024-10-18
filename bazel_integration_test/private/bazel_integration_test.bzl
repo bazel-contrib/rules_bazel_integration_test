@@ -3,6 +3,7 @@ an integration test.\
 """
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load(":integration_test_utils.bzl", "integration_test_utils")
 
 # This was lovingly inspired by
@@ -168,7 +169,7 @@ def bazel_integration_test(
 
     env["BIT_STARTUP_OPTIONS"] = startup_options
 
-    native.sh_test(
+    sh_test(
         name = name,
         srcs = [
             "@rules_bazel_integration_test//bazel_integration_test/private:integration_test_wrapper.sh",
