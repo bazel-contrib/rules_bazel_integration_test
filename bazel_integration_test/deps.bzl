@@ -6,6 +6,13 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 def bazel_integration_test_rules_dependencies():
     """Declares the dependencies for `rules_bazel_integration_test`."""
     maybe(
+        name = "rules_shell",
+        sha256 = "410e8ff32e018b9efd2743507e7595c26e2628567c42224411ff533b57d27c28",
+        strip_prefix = "rules_shell-0.2.0",
+        url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.2.0/rules_shell-v0.2.0.tar.gz",
+    )
+
+    maybe(
         http_archive,
         name = "bazel_skylib",
         urls = [
