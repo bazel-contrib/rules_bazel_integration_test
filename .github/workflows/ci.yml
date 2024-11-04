@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  XCODE_VERSION: 14.0.1
+  XCODE_VERSION: 16.1.0
 
 jobs:
   tidy_and_test_matrix:
