@@ -12,14 +12,14 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  XCODE_VERSION: 14.0.1
+  XCODE_VERSION: 16.1.0
 
 jobs:
   tidy_and_test_matrix:
     strategy:
       fail-fast: false
       matrix:
-        runner: [macos-12, ubuntu-22.04]
+        runner: [macos-14, ubuntu-22.04]
     runs-on: ${{ matrix.runner }}
     env:
       # Linux runners need this.
@@ -45,7 +45,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [macos-12, ubuntu-22.04]
+        runner: [macos-14, ubuntu-22.04]
     runs-on: ${{ matrix.runner }}
     env:
       # Linux runners need this.
