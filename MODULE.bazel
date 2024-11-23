@@ -25,14 +25,14 @@ bazel_binaries = use_extension(
     dev_dependency = True,
 )
 bazel_binaries.download(version_file = "//:.bazelversion")
-bazel_binaries.download(version = "8.0.0rc3")
+bazel_binaries.download(version = "8.0.0rc2")
 bazel_binaries.local(path = "tools/fake_bazel.sh")
 use_repo(
     bazel_binaries,
     "bazel_binaries",
     "bazel_binaries_bazelisk",
     "build_bazel_bazel_.bazelversion",
-    "build_bazel_bazel_8_0_0rc3",
+    "build_bazel_bazel_8_0_0rc2",
     "build_bazel_bazel_local",
 )
 
