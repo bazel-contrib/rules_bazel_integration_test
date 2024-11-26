@@ -121,6 +121,7 @@ def _bazel_binary_impl(repository_ctx):
 
     repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
     repository_ctx.file("BUILD", """
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 sh_binary(
     name = "bazel_binary",
     srcs = ["bazel.sh"],
