@@ -2,6 +2,7 @@
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@cgrindel_bazel_starlib//bzllib:defs.bzl", "lists")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load(":no_deps_utils.bzl", "no_deps_utils")
 
 # Lovingly inspired by https://github.com/bazelbuild/bazel-integration-testing/blob/master/tools/repositories.bzl.
@@ -121,6 +122,7 @@ def _bazel_binary_impl(repository_ctx):
 
     repository_ctx.file("WORKSPACE", "workspace(name='%s')" % repository_ctx.attr.name)
     repository_ctx.file("BUILD", """
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 sh_binary(
     name = "bazel_binary",
     srcs = ["bazel.sh"],
