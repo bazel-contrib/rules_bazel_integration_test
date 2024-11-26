@@ -2,7 +2,6 @@
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@cgrindel_bazel_starlib//bzllib:defs.bzl", "lists")
-load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load(":no_deps_utils.bzl", "no_deps_utils")
 
 # Lovingly inspired by https://github.com/bazelbuild/bazel-integration-testing/blob/master/tools/repositories.bzl.
