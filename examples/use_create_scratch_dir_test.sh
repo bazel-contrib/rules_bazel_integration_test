@@ -16,6 +16,11 @@ assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
 source "${assertions_sh}"
 
+arrays_sh_location=cgrindel_bazel_starlib/shlib/lib/arrays.sh
+arrays_sh="$(rlocation "${arrays_sh_location}")" || \
+  (echo >&2 "Failed to locate ${arrays_sh_location}" && exit 1)
+source "${arrays_sh}"
+
 create_scratch_dir_sh_location=rules_bazel_integration_test/tools/create_scratch_dir.sh
 create_scratch_dir_sh="$(rlocation "${create_scratch_dir_sh_location}")" || \
   (echo >&2 "Failed to locate ${create_scratch_dir_sh_location}" && exit 1)
@@ -47,3 +52,18 @@ cd "${scratch_dir}"
 
 # Should not fail
 "${bazel}" test //... || fail "Expected tests to succeed in the scratch directory."
+
+expected_hidden_files=( ./.bazelrc ./.hidden_file ./mockascript/private/.another_hidden_file )
+found_hidden_files=()
+while IFS=$'\n' read -r line; do found_hidden_files+=("$line"); done < <(
+  find . -type f -name ".*"
+)
+assert_equal "${#expected_hidden_files[@]}" "${#found_hidden_files[@]}" "expected count"
+
+sorted=()
+while IFS=$'\n' read -r line; do sorted+=("$line"); done < <(
+  sort_items "${found_hidden_files[@]}"
+)
+for (( i = 0; i < "${#expected_hidden_files[@]}"; i++ )); do
+  assert_equal "${expected_hidden_files[i]}" "${sorted[i]}" "hidden file ${i} ${expected_hidden_files[i]}"
+done

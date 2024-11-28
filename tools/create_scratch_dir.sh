@@ -64,11 +64,11 @@ mkdir -p "${scratch_dir}"
 # Change to the workspace dir
 cd "${workspace_dir}"
 
-# Copy the non-hidden files
+# Copy the files. All but the top-level hidden files will be copied.
 cp -R -L ./* "${scratch_dir}"
 
-# # Copy the hidden files
-# find . \( -type f -or -type l \) -name ".*" -print0 | xargs -0 -I {} cp {} "${scratch_dir}/"
+# Copy the top-level, hidden files.
+find . -maxdepth 1 \( -type f -or -type l \) -name ".*" -print0 | xargs -0 -I {} cp {} "${scratch_dir}/"
 
 # Output the scratch directory
 echo "${scratch_dir}"

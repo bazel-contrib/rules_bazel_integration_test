@@ -1,3 +1,4 @@
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 load(
     "@cgrindel_bazel_starlib//updatesrc:defs.bzl",
@@ -18,4 +19,11 @@ genrule(
     srcs = [".hidden_file"],
     outs = ["copy_of_hidden_file"],
     cmd = "cat $(location .hidden_file) > $@",
+)
+
+build_test(
+    name = "copy_hidden_file_test",
+    targets = [
+        ":copy_hidden_file",
+    ],
 )
