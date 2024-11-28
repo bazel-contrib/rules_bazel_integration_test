@@ -65,10 +65,10 @@ mkdir -p "${scratch_dir}"
 cd "${workspace_dir}"
 
 # Copy the non-hidden files
-cp -R -L * "${scratch_dir}"
+cp -R -L ./* "${scratch_dir}"
 
 # Copy the hidden files
-find . \( -type f -or -type l \) -name ".*" -print0 | xargs -0 -I {} cp {} "${scratch_dir}/"
+find . \( -type f -or -type l \) -name ".*" -print0 | xargs -0 -I {} cp -f {} "${scratch_dir}/"
 
 # Output the scratch directory
 echo "${scratch_dir}"
