@@ -1,4 +1,5 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
 
 package(default_visibility = ["//mockascript:__subpackages__"])
@@ -9,3 +10,18 @@ bzl_library(
 )
 
 bzlformat_pkg()
+
+# This exists to ensure that the hidden file is copied by create_scratch_dir.sh
+genrule(
+    name = "copy_hidden_file",
+    srcs = [".another_hidden_file"],
+    outs = ["copy_of_hidden_file"],
+    cmd = "cat $(location .another_hidden_file) > $@",
+)
+
+build_test(
+    name = "copy_hidden_file_test",
+    targets = [
+        ":copy_hidden_file",
+    ],
+)
