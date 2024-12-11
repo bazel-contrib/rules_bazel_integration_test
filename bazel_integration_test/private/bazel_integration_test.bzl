@@ -18,10 +18,12 @@ _DEFAULT_ENV_INHERIT = ["SUDO_ASKPASS", "HOME", "CC"]
 def _select_workspace_file_impl(ctx):
     workspace_file = paths.join(ctx.attr.workspace_path, "WORKSPACE")
     workspace_bazel = paths.join(ctx.attr.workspace_path, "WORKSPACE.bazel")
+    workspace_module = paths.join(ctx.attr.workspace_path, "MODULE.bazel")
+    workspace_repo = paths.join(ctx.attr.workspace_path, "REPO.bazel")
     for file in ctx.attr.srcs.files.to_list():
-        if file.path.endswith(workspace_file) or file.path.endswith(workspace_bazel):
+        if file.path.endswith(workspace_file) or file.path.endswith(workspace_bazel) or file.path.endswith(workspace_module) or file.path.endswith(workspace_repo):
             return [DefaultInfo(files = depset([file]))]
-    fail("Can't find WORKSPACE or WORKSPACE.bazel in %s" % ctx.attr.workspace_path)
+    fail("Can't find WORKSPACE, WORKSPACE.bazel, MODULE.bazel, nor REPO.bazel in %s" % ctx.attr.workspace_path)
 
 select_workspace_file = rule(
     implementation = _select_workspace_file_impl,
