@@ -1,5 +1,7 @@
 """Macro for asserting the existence of `env_inherit` values."""
 
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
 def env_inherit_attr_test(name, integration_test, expected_values):
     """Test for the existence of the specified values for a test target's `env_inherit` attribute.
 
@@ -20,7 +22,7 @@ def env_inherit_attr_test(name, integration_test, expected_values):
         scope = [integration_test],
     )
 
-    native.sh_test(
+    sh_test(
         name = name,
         srcs = ["env_inherit_attr_test.sh"],
         args = [
