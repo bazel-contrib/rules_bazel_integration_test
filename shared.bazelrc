@@ -19,7 +19,3 @@ startup --windows_enable_symlinks
 # this library requires runfiles for the bzlformat_lint_test
 # but this is off by default on windows. Switch it on.
 common --enable_runfiles
-
-# # Do not autoload any modules.
-# build --incompatible_autoload_externally=
-
