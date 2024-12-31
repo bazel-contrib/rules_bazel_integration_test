@@ -39,6 +39,8 @@ def _download_bazelisk_binary(repository_ctx, version):
         suffix = "darwin-arm64"
     elif _is_windows(os_name) and _is_x86_64(arch_name):
         suffix = "windows-amd64.exe"
+    elif _is_windows(os_name) and _is_arm(arch_name):
+        suffix = "windows-arm64.exe"
     else:
         fail("Unrecognized os and arch. os: {}, arch: {}".format(
             os_name,
