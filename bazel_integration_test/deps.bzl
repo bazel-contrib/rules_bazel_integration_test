@@ -26,9 +26,9 @@ def bazel_integration_test_rules_dependencies():
     maybe(
         http_archive,
         name = "cgrindel_bazel_starlib",
-        sha256 = "43e375213dabe0c3928e65412ea7ec16850db93285c8c6f8b0eaa41cacd0f882",
+        sha256 = "9d1bf18f859f16286cfe4157feb23beab6e79abe40620d0cb8f86fd0ba29e834",
         urls = [
-            "https://github.com/cgrindel/bazel-starlib/releases/download/v0.21.0/bazel-starlib.v0.21.0.tar.gz",
+            "https://github.com/cgrindel/bazel-starlib/releases/download/v0.22.0/bazel-starlib.v0.22.0.tar.gz",
         ],
     )
 
