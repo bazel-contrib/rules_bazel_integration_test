@@ -1,6 +1,6 @@
-###############################################################################
-# Bazel now uses Bzlmod by default to manage external dependencies.
-# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
-#
-# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
-###############################################################################
+module(
+    name = "test_workspace",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "rules_shell", version = "0.3.0")
