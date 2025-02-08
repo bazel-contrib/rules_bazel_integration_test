@@ -142,7 +142,7 @@ def _declare_local_bazel_binary(local):
     return vi
 
 # TODO(GH184): Make this configurable.
-_BAZELISK_VERSION = "1.18.0"
+_BAZELISK_VERSION = "1.25.0"
 
 def _bazel_binaries_impl(module_ctx):
     dep_names = []
