@@ -41,6 +41,11 @@ jobs:
         bazel_repo_cache_dir: ""
         bazel_disk_cache_dir: ""
     - uses: ./.github/actions/tidy_and_test
+      if: ${{ startsWith(matrix.runner, 'ubuntu') }}
+    - if: ${{ startsWith(matrix.runner, 'macos') }}
+      name: Execute tests
+      shell: bash
+      run: "bazelisk test //... \n"
   integration_test_matrix:
     strategy:
       fail-fast: false
