@@ -173,6 +173,7 @@ default_test_runner(
 # bazel_integration_test.
 bazel_integration_test(
     name = "simple_test",
+    bazel_binaries = bazel_binaries,
     bazel_version = bazel_binaries.versions.current,
     test_runner = ":simple_test_runner",
     workspace_path = "simple",
@@ -183,6 +184,7 @@ bazel_integration_test(
 # targets with names derived from the base name and the bazel version.
 bazel_integration_tests(
     name = "simple_test",
+    bazel_binaries = bazel_binaries,
     bazel_versions = bazel_binaries.versions.other,
     test_runner = ":simple_test_runner",
     workspace_path = "simple",
