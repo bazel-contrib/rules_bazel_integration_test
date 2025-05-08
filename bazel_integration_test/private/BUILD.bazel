@@ -49,6 +49,7 @@ bzl_library(
     name = "bazel_binaries",
     srcs = ["bazel_binaries.bzl"],
     deps = [
+        ":bazelisks",
         ":no_deps_utils",
         "@bazel_skylib//lib:paths",
         "@cgrindel_bazel_starlib//bzllib:defs",
@@ -66,4 +67,9 @@ bzl_library(
     deps = [
         ":bazel_integration_test",
     ],
+)
+
+bzl_library(
+    name = "bazelisks",
+    srcs = ["bazelisks.bzl"],
 )
