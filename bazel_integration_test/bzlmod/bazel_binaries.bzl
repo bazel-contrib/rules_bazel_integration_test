@@ -159,7 +159,7 @@ def _bazel_binaries_impl(module_ctx):
     _bazelisk_binary_repo_rule(
         name = bazelisk_repo_name,
         # TODO(GH184): Make this configurable.
-        version = bazelisks.VERSION,
+        version = bazelisks.DEFAULT_VERSION,
     )
     _add_dep_name(bazelisk_repo_name, is_dev_dependency = ext_is_dev_dep)
 

@@ -239,7 +239,7 @@ that load dependencies via the `WORKSPACE`.\
 
 def bazel_binaries(
         versions,
-        bazelisk_version = "1.18.0",
+        bazelisk_version = bazelisks.DEFAULT_VERSION,
         current = None,
         name = "bazel_binaries"):
     """Download the specified bazel binaries.

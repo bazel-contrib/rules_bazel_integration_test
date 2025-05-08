@@ -1,6 +1,6 @@
 """Module containing Bazelisk constants and utility functions."""
 
-_VERSION = "1.26.0"
+_DEFAULT_VERSION = "1.26.0"
 
 _BAZELISK_URL_TEMPLATE = "https://github.com/bazelbuild/bazelisk/releases/download/v{version}/{filename}"
 
@@ -19,13 +19,14 @@ def _is_x86_64(arch_name):
 def _is_arm(arch_name):
     return arch_name.startswith("aarch64") or arch_name.startswith("arm")
 
-def _url(version, os, arch):
+def _url(os, arch, version = _DEFAULT_VERSION):
     """Provide the Bazelisk URL for a specific version, OS, arch.
 
     Args:
-        version: The version as a `string`.
         os: The OS name as a `string`.
         arch: The arch as a `string`.
+        version: Optional. The version as a `string`. Uses the default version
+            if not specified.
 
     Returns:
         A URl as a `string`.
@@ -57,6 +58,6 @@ def _url(version, os, arch):
     )
 
 bazelisks = struct(
-    VERSION = _VERSION,
+    DEFAULT_VERSION = _DEFAULT_VERSION,
     url = _url,
 )
