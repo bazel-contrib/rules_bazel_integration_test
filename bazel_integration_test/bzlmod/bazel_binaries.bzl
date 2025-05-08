@@ -7,6 +7,7 @@ load(
     _bazelisk_binary_repo_rule = "bazelisk_binary",
     _local_bazel_binary_repo_rule = "local_bazel_binary",
 )
+load("//bazel_integration_test/private:bazelisks.bzl", "bazelisks")
 load("//bazel_integration_test/private:no_deps_utils.bzl", "no_deps_utils")
 
 # MARK: - bazel_binaries_helper Repository Rule
@@ -141,9 +142,6 @@ def _declare_local_bazel_binary(local):
     )
     return vi
 
-# TODO(GH184): Make this configurable.
-_BAZELISK_VERSION = "1.25.0"
-
 def _bazel_binaries_impl(module_ctx):
     dep_names = []
     dev_dep_names = []
@@ -160,7 +158,8 @@ def _bazel_binaries_impl(module_ctx):
     bazelisk_repo_name = "bazel_binaries_bazelisk"
     _bazelisk_binary_repo_rule(
         name = bazelisk_repo_name,
-        version = _BAZELISK_VERSION,
+        # TODO(GH184): Make this configurable.
+        version = bazelisks.VERSION,
     )
     _add_dep_name(bazelisk_repo_name, is_dev_dependency = ext_is_dev_dep)
 
