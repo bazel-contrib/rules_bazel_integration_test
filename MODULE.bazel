@@ -9,7 +9,8 @@ bazel_dep(name = "platforms", version = "0.0.10")
 bazel_dep(name = "cgrindel_bazel_starlib", version = "0.27.0")
 bazel_dep(name = "rules_shell", version = "0.3.0")
 
-# not a direct dependency, but required here for bazel starlib's difftest macros to work
+# not a direct dependency, but required here for bazel starlib's difftest
+# macros to work
 bazel_dep(
     name = "buildifier_prebuilt",
     version = "6.1.2",
@@ -25,14 +26,17 @@ bazel_binaries = use_extension(
     dev_dependency = True,
 )
 bazel_binaries.download(version_file = "//:.bazelversion")
-bazel_binaries.download(version = "last_green")
+
+# GH466: Disable last green while we investigate
+# bazel_binaries.download(version = "last_green")
 bazel_binaries.local(path = "tools/fake_bazel.sh")
 use_repo(
     bazel_binaries,
     "bazel_binaries",
     "bazel_binaries_bazelisk",
     "build_bazel_bazel_.bazelversion",
-    "build_bazel_bazel_last_green",
+    # GH466: Disable last green while we investigate
+    # "build_bazel_bazel_last_green",
     "build_bazel_bazel_local",
 )
 
