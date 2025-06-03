@@ -43,7 +43,7 @@ reset_test_workspace() {
 # MARK - Test Specifying Flags
 
 # Execute specifying workspace flag
-"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
+"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}" --exclude_dir somewhere_else/child_c
 
 actual=$(< "${parent_bazelrc}")
 assert_equal "${expected_with_change}" "${actual}"
@@ -65,10 +65,10 @@ cd "${examples_dir}"
 export BUILD_WORKSPACE_DIRECTORY="${parent_dir}"
 
 # Execute specifying workspace flag
-"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}"
+"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}" --exclude_dir somewhere_else/child_c
 
 # Execute the update
-"${update_bin}" 
+"${update_bin}" --exclude_dir somewhere_else/child_c
 
 actual=$(< "${parent_bazelrc}")
 assert_equal "${expected_with_change}" "${actual}"
