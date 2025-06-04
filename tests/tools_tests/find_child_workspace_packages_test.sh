@@ -53,7 +53,7 @@ setup_test_workspace_sh="$(rlocation "${setup_test_workspace_sh_location}")" || 
 # shellcheck source=SCRIPTDIR/setup_test_workspace.sh
 source "${setup_test_workspace_sh}"
 
-expected=("examples/child_a" "examples/child_a/foo" "somewhere_else/child_b/bar")
+expected=("examples/child_a" "examples/child_a/foo" "somewhere_else/child_b/bar" "somewhere_else/child_c" "somewhere_else/child_c/baz")
 
 # Execute specifying workspace flag
 actual=()
