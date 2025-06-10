@@ -64,9 +64,6 @@ cd "${examples_dir}"
 # Set the BUILD_WORKSPACE_DIRECTORY to the parent
 export BUILD_WORKSPACE_DIRECTORY="${parent_dir}"
 
-# Execute specifying workspace flag
-"${update_bin}" --workspace "${parent_dir}" --bazelrc "${parent_bazelrc}" --exclude_dir somewhere_else/child_c
-
 # Execute the update
 "${update_bin}" --exclude_dir somewhere_else/child_c
 
