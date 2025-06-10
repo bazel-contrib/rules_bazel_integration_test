@@ -45,6 +45,7 @@ source "${paths_lib}"
 # MARK - Main
 
 starting_dir=$(pwd)
+excluded_dirs=()
 pkg_search_dirs=()
 
 # Make sure that we end up back in the original directory.
@@ -62,6 +63,10 @@ while (("$#")); do
       ;;
     "--bazelrc")
       bazelrc_path="${2}"
+      shift 2
+      ;;
+    "--exclude_dir")
+      excluded_dirs+=("${2}")
       shift 2
       ;;
     *)
@@ -87,7 +92,15 @@ fi
 
 # Find the child packages
 pkgs=()
-while IFS=$'\n' read -r line; do pkgs+=("$line"); done < <(
+while IFS=$'\n' read -r line; do
+  # Filter out entries that start with an excluded directory.
+  for excluded_dir in "${excluded_dirs[@]:+${excluded_dirs[@]}}"; do
+    if [[ "${line}"/ == "${excluded_dir%/}"/* ]]; then
+      continue 2  # Continue to the next iteration of the external while loop.
+    fi
+  done
+  pkgs+=("$line")
+done < <(
   "${find_pkgs_script}" --workspace "${workspace_root}"
 )
 
