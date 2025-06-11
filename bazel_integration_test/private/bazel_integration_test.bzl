@@ -20,7 +20,7 @@ def _select_workspace_file_impl(ctx):
     workspace_bazel = paths.join(ctx.attr.workspace_path, "WORKSPACE.bazel")
     workspace_module = paths.join(ctx.attr.workspace_path, "MODULE.bazel")
     workspace_repo = paths.join(ctx.attr.workspace_path, "REPO.bazel")
-    for file in ctx.attr.srcs.files.to_list():
+    for file in ctx.attr.srcs[DefaultInfo].files.to_list():
         if file.path.endswith(workspace_file) or file.path.endswith(workspace_bazel) or file.path.endswith(workspace_module) or file.path.endswith(workspace_repo):
             return [DefaultInfo(files = depset([file]))]
     fail("Can't find WORKSPACE, WORKSPACE.bazel, MODULE.bazel, nor REPO.bazel in %s" % ctx.attr.workspace_path)
