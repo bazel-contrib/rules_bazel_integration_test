@@ -29,9 +29,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_swift_package_manager",
-    sha256 = "ba9ae1fa1fb7766333b91eb2d9fd47095fdef162009d301d6ee0becc21692a53",
+    sha256 = "86ddc241d83bc0c97e9dde62746ae326bc4941c00e5819b0eee4c91551dd6dec",
     urls = [
-        "https://github.com/cgrindel/rules_swift_package_manager/releases/download/v1.3.0/rules_swift_package_manager.v1.3.0.tar.gz",
+        "https://github.com/cgrindel/rules_swift_package_manager/releases/download/v1.4.0/rules_swift_package_manager.v1.4.0.tar.gz",
     ],
 )
 
