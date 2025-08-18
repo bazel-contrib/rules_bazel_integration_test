@@ -114,4 +114,4 @@ while IFS=$'\n' read -r line; do sorted_abs_path_pkgs+=("$line"); done < <(
 # Strip the workspace_root prefix from the paths
 pkgs=( "${sorted_abs_path_pkgs[@]#"${workspace_root}/"}")
 
-print_by_line "${pkgs[@]}"
+print_by_line "${pkgs[@]}" | sort
