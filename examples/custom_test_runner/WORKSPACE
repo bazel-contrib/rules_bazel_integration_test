@@ -41,8 +41,8 @@ swift_bazel_dependencies()
 
 http_archive(
     name = "build_bazel_rules_swift",
-    sha256 = "13219bde174594c7af5403c7f3f41c37d1a62041294a0fd14c0834ca472fa8dc",
-    url = "https://github.com/bazelbuild/rules_swift/releases/download/3.4.0/rules_swift.3.4.0.tar.gz",
+    sha256 = "6309d226474c6b9293f790d3da43d3b04dc0a71b75b87df3107871a0ea59d5f6",
+    url = "https://github.com/bazelbuild/rules_swift/releases/download/3.4.1/rules_swift.3.4.1.tar.gz",
 )
 
 load("//:swift_deps.bzl", "swift_dependencies")
