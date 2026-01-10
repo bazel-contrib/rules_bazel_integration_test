@@ -3,18 +3,28 @@ module(
     version = "0.0.0",
 )
 
-bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "rules_python", version = "0.40.0")
-bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "cgrindel_bazel_starlib", version = "0.27.0")
-bazel_dep(name = "rules_shell", version = "0.3.0")
+bazel_dep(name = "rules_shell", version = "0.6.1")
 
 # not a direct dependency, but required here for bazel starlib's difftest
 # macros to work
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "6.1.2",
+    version = "7.3.1",
 )
+
+# DEBUG BEGIN
+# TODO: REMOVE THIS OVERRIDE BEFORE MERGING WITH main
+# Test bazel-starlib 0.28.0 to fix deprecated host_windows_x64_constraint warnings
+git_override(
+    module_name = "cgrindel_bazel_starlib",
+    commit = "89bff55c04ab29e5ae7ac3527d13e529a8ebe4a0",
+    remote = "https://github.com/cgrindel/bazel-starlib",
+)
+# DEBUG END
 
 # Must keep the Bazel version listed in WORKSPACE in sync with those loaded
 # below.
