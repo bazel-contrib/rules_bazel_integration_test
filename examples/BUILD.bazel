@@ -4,6 +4,7 @@ load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load(
     "//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
+    "bazel_integration_tests",
     "default_test_runner",
     "integration_test_utils",
     "script_test",
@@ -71,34 +72,32 @@ bazel_integration_test(
     workspace_path = "simple",
 )
 
-# GH466: Disable last green while we investigate
-# _SIMPLE_TEST_VERSIONS = [
-#     version
-#     for version in bazel_binaries.versions.other
-#     if version != _LOCAL_BAZEL_BINARY_VERSION
-# ]
+_SIMPLE_TEST_VERSIONS = [
+    version
+    for version in bazel_binaries.versions.other
+    if version != _LOCAL_BAZEL_BINARY_VERSION
+]
 
-# GH466: Disable last green while we investigate
-# # If you want to execute an integration test using multiple versions of Bazel,
-# # use bazel_integration_tests. It will generate multiple integration test
-# # targets with names derived from the base name and the bazel version.
-# bazel_integration_tests(
-#     # buildifier: disable=duplicated-name
-#     name = "simple_test",
-#     bazel_binaries = bazel_binaries,
-#     bazel_versions = _SIMPLE_TEST_VERSIONS,
-#     tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
-#         # Avoid file permssion error when using disk and repository cache after
-#         # 7.0.0rc2 upgrade.
-#         # https://github.com/bazelbuild/bazel/issues/19908
-#         "no-sandbox",
-#     ],
-#     test_runner = ":simple_test_runner",
-#     workspace_files = integration_test_utils.glob_workspace_files("simple") + [
-#         "//:shared_bazelrc_files",
-#     ],
-#     workspace_path = "simple",
-# )
+# If you want to execute an integration test using multiple versions of Bazel,
+# use bazel_integration_tests. It will generate multiple integration test
+# targets with names derived from the base name and the bazel version.
+bazel_integration_tests(
+    # buildifier: disable=duplicated-name
+    name = "simple_test",
+    bazel_binaries = bazel_binaries,
+    bazel_versions = _SIMPLE_TEST_VERSIONS,
+    tags = integration_test_utils.DEFAULT_INTEGRATION_TEST_TAGS + [
+        # Avoid file permssion error when using disk and repository cache after
+        # 7.0.0rc2 upgrade.
+        # https://github.com/bazelbuild/bazel/issues/19908
+        "no-sandbox",
+    ],
+    test_runner = ":simple_test_runner",
+    workspace_files = integration_test_utils.glob_workspace_files("simple") + [
+        "//:shared_bazelrc_files",
+    ],
+    workspace_path = "simple",
+)
 
 # MARK: - Custom Test Runner Tests
 
@@ -239,11 +238,9 @@ test_suite(
         ":sample_script_test",
         ":simple_test",
         ":use_create_scratch_dir_test",
-    ],
-    # GH466: Disable last green while we investigate
-    # ] + integration_test_utils.bazel_integration_test_names(
-    #     "simple_test",
-    #     _SIMPLE_TEST_VERSIONS,
-    # ),
+    ] + integration_test_utils.bazel_integration_test_names(
+        "simple_test",
+        _SIMPLE_TEST_VERSIONS,
+    ),
     visibility = ["//:__subpackages__"],
 )
