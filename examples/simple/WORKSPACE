@@ -17,9 +17,9 @@ rules_shell_toolchains()
 
 http_archive(
     name = "cgrindel_bazel_starlib",
-    sha256 = "a2df865c31df2060533331186c996009fd285c25e258c6a1b1b53d470310feb4",
+    sha256 = "3b7f31c6d38cae637d4a951b212128233e1ec64ec7a187e530bec7b45176c6e0",
     urls = [
-        "https://github.com/cgrindel/bazel-starlib/releases/download/v0.29.0/bazel-starlib.v0.29.0.tar.gz",
+        "https://github.com/cgrindel/bazel-starlib/releases/download/v0.29.3/bazel-starlib.v0.29.3.tar.gz",
     ],
 )
 
