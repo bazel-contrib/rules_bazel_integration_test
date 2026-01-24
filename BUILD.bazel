@@ -75,6 +75,7 @@ filegroup(
         "//bazel_integration_test:all_files",
         "//bazel_integration_test/bzlmod:all_files",
         "//bazel_integration_test/private:all_files",
+        "//bazel_integration_test/py:all_files",
         "//tools:all_files",
     ],
     visibility = ["//:__subpackages__"],
