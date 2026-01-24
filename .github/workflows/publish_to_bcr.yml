@@ -18,6 +18,8 @@ jobs:
     with:
       tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || github.event.release.tag_name }}
       registry_fork: bazel-contrib/bazel-central-registry
+      author_name: Chuck Grindel
+      author_email: chuck.grindel@gmail.com
       attest: false
     secrets:
       publish_token: ${{ secrets.BCR_PUBLISH_TOKEN }}
