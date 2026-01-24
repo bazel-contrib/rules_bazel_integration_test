@@ -42,7 +42,7 @@ If you are using Bazel with bzlmod enabled, add the following snippet to your `M
 ```python
 bazel_dep(
     name = "rules_bazel_integration_test",
-    version = "0.35.0",
+    version = "0.36.0",
     dev_dependency = True,
 )
 ```
@@ -57,9 +57,9 @@ repository and its dependencies.
 ```python
 http_archive(
     name = "rules_bazel_integration_test",
-    sha256 = "caadcd3adafc2cdcd4b020cf0ae530ddab4dc61201a9948473909b75a91e9192",
+    sha256 = "a2c650c946abd16f957d67cd669655f99acc644f4a712e7b106e161d85e4fabb",
     urls = [
-        "https://github.com/bazel-contrib/rules_bazel_integration_test/releases/download/v0.35.0/rules_bazel_integration_test.v0.35.0.tar.gz",
+        "https://github.com/bazel-contrib/rules_bazel_integration_test/releases/download/v0.36.0/rules_bazel_integration_test.v0.36.0.tar.gz",
     ],
 )
 
