@@ -7,6 +7,9 @@ build --incompatible_strict_action_env=true
 # Change default for glob
 build --incompatible_disallow_empty_glob
 
+# Require explicit exports_files() declarations instead of implicit file exports
+build --incompatible_no_implicit_file_export
+
 # Pretty output
 common --color=auto --curses=auto
 

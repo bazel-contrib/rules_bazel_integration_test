@@ -13,7 +13,7 @@ bazel_dep(name = "rules_shell", version = "0.6.1")
 # macros to work
 bazel_dep(
     name = "buildifier_prebuilt",
-    version = "7.3.1",
+    version = "8.2.1.1",
 )
 
 # Must keep the Bazel version listed in WORKSPACE in sync with those loaded
