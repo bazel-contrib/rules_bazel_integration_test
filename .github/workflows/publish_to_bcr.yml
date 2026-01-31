@@ -21,5 +21,6 @@ jobs:
       author_name: Chuck Grindel
       author_email: chuck.grindel@gmail.com
       attest: false
+      draft: false
     secrets:
       publish_token: ${{ secrets.BCR_PUBLISH_TOKEN }}
