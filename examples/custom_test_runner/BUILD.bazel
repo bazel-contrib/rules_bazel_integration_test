@@ -29,7 +29,7 @@ test_suite(
 gazelle_binary(
     name = "gazelle_bin",
     languages = [
-        "@rules_swift_package_manager//gazelle",
+        "@swift_gazelle_plugin//gazelle",
     ],
 )
 
