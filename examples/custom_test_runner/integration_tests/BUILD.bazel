@@ -2,6 +2,7 @@ load("@bazel_binaries//:defs.bzl", "bazel_binaries")
 load(
     "@rules_bazel_integration_test//bazel_integration_test:defs.bzl",
     "bazel_integration_test",
+    "integration_test_utils",
 )
 
 # This Bazel integration test uses the custom test runner from this workspace to execute Bazel
