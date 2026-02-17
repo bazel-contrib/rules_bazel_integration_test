@@ -10,7 +10,7 @@ swift_library(
     module_name = "CustomTestRunnerLib",
     visibility = ["//visibility:public"],
     deps = [
-        "@swiftpkg_shellout//:Sources_ShellOut",
-        "@swiftpkg_swift_argument_parser//:Sources_ArgumentParser",
+        "@swiftpkg_shellout//:ShellOut",
+        "@swiftpkg_swift_argument_parser//:ArgumentParser",
     ],
 )
