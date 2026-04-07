@@ -32,7 +32,7 @@ jobs:
         xcode-version: ${{ env.XCODE_VERSION }}
     - uses: ./.github/actions/configure_swift_for_linux
       if: ${{ startsWith(matrix.runner, 'ubuntu') }}
-    - uses: cgrindel/gha_set_up_bazel@v1
+    - uses: cgrindel/gha_set_up_bazel@v2
       with:
         repo_name: rules_bazel_integration_test
         # Disable local disk and repository caches related to file permission 
@@ -63,7 +63,7 @@ jobs:
         xcode-version: ${{ env.XCODE_VERSION }}
     - uses: ./.github/actions/configure_swift_for_linux
       if: ${{ startsWith(matrix.runner, 'ubuntu') }}
-    - uses: cgrindel/gha_set_up_bazel@v1
+    - uses: cgrindel/gha_set_up_bazel@v2
       with:
         repo_name: rules_bazel_integration_test
         # Disable local disk and repository caches related to file permission 
