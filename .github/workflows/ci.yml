@@ -29,6 +29,17 @@ jobs:
       - uses: ./.github/actions/configure_swift_for_linux
         if: ${{ startsWith(matrix.runner, 'ubuntu') }}
       - uses: cgrindel/gha_set_up_bazel@v2
+        with:
+          # Nested Bazel in integration tests inherits ~/.bazelrc, but child
+          # workspaces don't define a ci config. Write it to local.bazelrc
+          # (workspace-scoped) instead.
+          enable_ci_config: "false"
+          # Repository cache causes lock contention between outer and inner
+          # Bazel instances in integration tests.
+          repository_cache: "false"
+      - name: Enable ci config
+        shell: bash
+        run: echo "common --config=ci" >> local.bazelrc
       - uses: ./.github/actions/tidy_and_test
         if: ${{ startsWith(matrix.runner, 'ubuntu') }}
       - if: ${{ startsWith(matrix.runner, 'macos') }}
@@ -53,6 +64,12 @@ jobs:
       - uses: ./.github/actions/configure_swift_for_linux
         if: ${{ startsWith(matrix.runner, 'ubuntu') }}
       - uses: cgrindel/gha_set_up_bazel@v2
+        with:
+          enable_ci_config: "false"
+          repository_cache: "false"
+      - name: Enable ci config
+        shell: bash
+        run: echo "common --config=ci" >> local.bazelrc
       - uses: ./.github/actions/execute_integration_tests
   all_ci_tests:
     runs-on: ubuntu-24.04
