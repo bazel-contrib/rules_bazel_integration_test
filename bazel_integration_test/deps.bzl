@@ -8,9 +8,9 @@ def bazel_integration_test_rules_dependencies():
     maybe(
         http_archive,
         name = "rules_shell",
-        sha256 = "3709d1745ba4be4ef054449647b62e424267066eca887bb00dd29242cb8463a0",
-        strip_prefix = "rules_shell-0.7.1",
-        url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.7.1/rules_shell-v0.7.1.tar.gz",
+        sha256 = "20721f63908879c083f94869e618ea8d4ff5edb91ff9a72a2ebee357fdbc352d",
+        strip_prefix = "rules_shell-0.8.0",
+        url = "https://github.com/bazelbuild/rules_shell/releases/download/v0.8.0/rules_shell-v0.8.0.tar.gz",
     )
 
     maybe(
