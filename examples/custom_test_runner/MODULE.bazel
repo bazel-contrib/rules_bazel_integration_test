@@ -27,7 +27,7 @@ bazel_dep(
     version = "3.6.1",
     repo_name = "build_bazel_rules_swift",
 )
-bazel_dep(name = "rules_swift_package_manager", version = "1.19.0")
+bazel_dep(name = "rules_swift_package_manager", version = "1.20.0")
 bazel_dep(
     name = "swift_gazelle_plugin",
     version = "0.2.2",
