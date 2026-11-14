@@ -28,7 +28,7 @@ jobs:
           xcode-version: ${{ env.XCODE_VERSION }}
       - uses: ./.github/actions/configure_swift_for_linux
         if: ${{ startsWith(matrix.runner, 'ubuntu') }}
-      - uses: cgrindel/gha_set_up_bazel@23231a8bf33b830ca45bfb55a456a079fbf98087 # v2.0.6
+      - uses: cgrindel/gha_set_up_bazel@18264e68d4d698b4748e9190a522595c41e34181 # v2.0.25
         with:
           # Nested Bazel in integration tests inherits ~/.bazelrc, but child
           # workspaces don't define a ci config. Write it to local.bazelrc
@@ -63,7 +63,7 @@ jobs:
           xcode-version: ${{ env.XCODE_VERSION }}
       - uses: ./.github/actions/configure_swift_for_linux
         if: ${{ startsWith(matrix.runner, 'ubuntu') }}
-      - uses: cgrindel/gha_set_up_bazel@23231a8bf33b830ca45bfb55a456a079fbf98087 # v2.0.6
+      - uses: cgrindel/gha_set_up_bazel@18264e68d4d698b4748e9190a522595c41e34181 # v2.0.25
         with:
           enable_ci_config: "false"
           repository_cache: "false"
