@@ -1,0 +1,24 @@
+queue_rules:
+  - name: default
+    batch_size: 1
+    merge_conditions:
+      - check-success=all_ci_tests
+    queue_conditions:
+      - check-success=all_ci_tests
+
+pull_request_rules:
+  - name: Automatic merge on approval
+    conditions:
+      - check-success=all_ci_tests
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+      - -draft
+      - -closed
+      - -merged
+      - base=main
+    actions:
+      queue:
+        name: default
+
+merge_queue:
+  max_parallel_checks: 1
